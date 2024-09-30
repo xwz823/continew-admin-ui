@@ -31,7 +31,19 @@ const dataId = ref('')
 const isUpdate = computed(() => !!dataId.value)
 const title = computed(() => (isUpdate.value ? '修改站点' : '新增站点'))
 const formRef = ref<InstanceType<typeof GiForm>>()
-const languages = ref<LanguagesResp[]>([])
+const langs = ref([])
+
+const getLangs = async () => {
+  const response = await listLanguages({ size: 999});
+  langs.value = response.data.list.map(e => ({
+    label: e.name,
+    value: e.id
+  }));
+}
+
+onMounted(() => {
+  getLangs()
+})
 
 const options: Options = {
   form: {},
@@ -62,7 +74,7 @@ const columns: Columns = reactive([
     label: '绑定语言',
     field: 'bindLangs',
     type: 'select', 
-    options: languages.value,
+    options: langs,
     rules: [{ required: false, message: '请选择绑定语言' }]
   },
 ])
@@ -83,7 +95,7 @@ const onAdd = async () => {
   reset()
   dataId.value = ''
   visible.value = true
-  languages.value = (await listLanguages({size: 999})).data.list
+  getLangs()
 }
 
 // 修改
@@ -93,7 +105,6 @@ const onUpdate = async (id: string) => {
   const res = await getSiteInfo(id)
   Object.assign(form, res.data)
   visible.value = true
-  languages.value = (await listLanguages({size: 999})).data.list
 }
 
 // 保存
