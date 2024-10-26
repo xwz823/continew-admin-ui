@@ -15,7 +15,6 @@ import {
 } from '@/apis'
 import { clearToken, getToken, setToken } from '@/utils/auth'
 import { resetHasRouteFlag } from '@/router/permission'
-import getAvatar from '@/utils/avatar'
 
 const storeSetup = () => {
   const userInfo = reactive<UserInfo>({
@@ -33,7 +32,8 @@ const storeSetup = () => {
     roles: [],
     permissions: []
   })
-  const name = computed(() => userInfo.nickname)
+  const nickname = computed(() => userInfo.nickname)
+  const username = computed(() => userInfo.username)
   const avatar = computed(() => userInfo.avatar)
 
   const token = ref(getToken() || '')
@@ -100,7 +100,7 @@ const storeSetup = () => {
   const getInfo = async () => {
     const res = await getUserInfoApi()
     Object.assign(userInfo, res.data)
-    userInfo.avatar = getAvatar(res.data.avatar, res.data.gender)
+    userInfo.avatar = res.data.avatar
     if (res.data.roles && res.data.roles.length) {
       roles.value = res.data.roles
       permissions.value = res.data.permissions
@@ -109,7 +109,8 @@ const storeSetup = () => {
 
   return {
     userInfo,
-    name,
+    nickname,
+    username,
     avatar,
     token,
     roles,

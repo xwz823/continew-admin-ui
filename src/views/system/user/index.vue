@@ -18,7 +18,7 @@
           :scroll="{ x: '100%', y: '100%', minWidth: 1500 }"
           :pagination="pagination"
           :disabled-tools="['size']"
-          :disabled-column-keys="['username']"
+          :disabled-column-keys="['nickname']"
           @refresh="search"
         >
           <template #top>
@@ -40,9 +40,8 @@
               <template #default>导出</template>
             </a-button>
           </template>
-          <template #username="{ record }">
-            <GiCellAvatar :avatar="getAvatar(record.avatar, record.gender)" :name="record.username" is-link
-                          @click="onDetail(record)" />
+          <template #nickname="{ record }">
+            <GiCellAvatar :avatar="record.avatar" :name="record.nickname" />
           </template>
           <template #gender="{ record }">
             <GiCellGender :gender="record.gender" />
@@ -59,6 +58,7 @@
           </template>
           <template #action="{ record }">
             <a-space>
+              <a-link v-permission="['system:user:list']" @click="onDetail(record)">详情</a-link>
               <a-link v-permission="['system:user:update']" @click="onUpdate(record)">修改</a-link>
               <a-link
                 v-permission="['system:user:delete']"
@@ -103,7 +103,6 @@ import type { Columns, Options } from '@/components/GiForm'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useDownload, useTable } from '@/hooks'
 import { isMobile } from '@/utils'
-import getAvatar from '@/utils/avatar'
 import has from '@/utils/has'
 import { DisEnableStatusList } from '@/constant/common'
 
@@ -170,15 +169,15 @@ const columns: TableInstanceColumns[] = [
     fixed: !isMobile() ? 'left' : undefined
   },
   {
-    title: '用户名',
-    dataIndex: 'username',
-    slotName: 'username',
-    width: 140,
+    title: '昵称',
+    dataIndex: 'nickname',
+    slotName: 'nickname',
+    minWidth: 140,
     ellipsis: true,
     tooltip: true,
     fixed: !isMobile() ? 'left' : undefined
   },
-  { title: '昵称', dataIndex: 'nickname', width: 120, ellipsis: true, tooltip: true },
+  { title: '用户名', dataIndex: 'username', slotName: 'username', minWidth: 140, ellipsis: true, tooltip: true },
   { title: '状态', slotName: 'status', align: 'center', width: 80 },
   { title: '性别', slotName: 'gender', align: 'center', width: 100 },
   { title: '所属部门', dataIndex: 'deptName', ellipsis: true, tooltip: true, width: 180 },
@@ -194,7 +193,7 @@ const columns: TableInstanceColumns[] = [
   {
     title: '操作',
     slotName: 'action',
-    width: 150,
+    width: 190,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
     show: has.hasPermOr(['system:user:update', 'system:user:delete', 'system:user:resetPwd'])

@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('./../components/Avatar/index.vue')['default']
     Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
     Chart: typeof import('./../components/Chart/index.vue')['default']
     CronForm: typeof import('./../components/GenCron/CronForm/index.vue')['default']

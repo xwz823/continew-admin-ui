@@ -11,10 +11,9 @@
           :on-before-upload="onBeforeUpload"
         >
           <template #upload-button>
-            <a-avatar :size="100">
+            <Avatar :src="avatarList[0].url" :name="userStore.nickname" :size="100" trigger>
               <template #trigger-icon><icon-camera /></template>
-              <img v-if="avatarList.length" :src="avatarList[0].url" alt="avatar" />
-            </a-avatar>
+            </Avatar>
           </template>
         </a-upload>
         <div class="name">
