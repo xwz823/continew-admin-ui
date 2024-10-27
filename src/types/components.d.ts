@@ -22,6 +22,7 @@ declare module 'vue' {
     GiCellTags: typeof import('./../components/GiCell/GiCellTags.vue')['default']
     GiCodeView: typeof import('./../components/GiCodeView/index.vue')['default']
     GiDot: typeof import('./../components/GiDot/index.tsx')['default']
+    GiEditTable: typeof import('./../components/GiEditTable/GiEditTable.vue')['default']
     GiFlexibleBox: typeof import('./../components/GiFlexibleBox/index.vue')['default']
     GiFooter: typeof import('./../components/GiFooter/index.vue')['default']
     GiForm: typeof import('./../components/GiForm/src/GiForm.vue')['default']
