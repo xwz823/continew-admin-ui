@@ -20,11 +20,11 @@
             <IconCaretDown v-if="!isLeaf" />
             <IconIdcard v-else />
           </template>
-          <template #title="nodeData">
-            <template v-if="index = getMatchIndex(nodeData?.title), index < 0">{{ nodeData?.title }}</template>
-            <span v-else>{{ nodeData?.title?.substr(0, index) }}
-              <span style="color: rgb(var(--arcoblue-6));">{{ nodeData?.title?.substr(index, searchKey.length) }}</span>
-              {{ nodeData?.title?.substr(index + searchKey.length) }}
+          <template #title="node">
+            <template v-if="index = getMatchIndex(node?.title), index < 0">{{ node?.title }}</template>
+            <span v-else>{{ node?.title?.substr(0, index) }}
+              <span style="color: rgb(var(--arcoblue-6));">{{ node?.title?.substr(index, searchKey.length) }}</span>
+              {{ node?.title?.substr(index + searchKey.length) }}
             </span>
           </template>
         </a-tree>
@@ -50,6 +50,9 @@ const emit = defineEmits<{
 // 选中节点
 const selectedKeys = ref()
 const select = (keys: Array<any>) => {
+  if (selectedKeys.value && selectedKeys.value[0] === keys[0]) {
+    return
+  }
   selectedKeys.value = keys
   emit('node-click', keys)
 }

@@ -11,15 +11,15 @@
       </a-col>
       <a-col :xs="24" :sm="16" :md="17" :lg="18" :xl="19" :xxl="20" flex="1" class="h-full ov-hidden">
         <GiTable
-        row-key="id"
-        :data="dataList"
-        :columns="columns"
-        :loading="loading"
-        :scroll="{ x: '100%', y: '100%', minWidth: 600 }"
-        :pagination="pagination"
-        :disabled-tools="['size']"
-        :disabled-column-keys="['label']"
-        @refresh="search"
+          row-key="id"
+          :data="dataList"
+          :columns="columns"
+          :loading="loading"
+          :scroll="{ x: '100%', y: '100%', minWidth: 600 }"
+          :pagination="pagination"
+          :disabled-tools="['size']"
+          :disabled-column-keys="['label']"
+          @refresh="search"
         >
           <template #toolbar-left>
             <a-input v-model="queryForm.description" placeholder="请输入标签/描述" allow-clear @change="search">
