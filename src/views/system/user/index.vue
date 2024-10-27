@@ -121,8 +121,7 @@ const {
 
 const options: Options = reactive({
   form: { layout: 'inline' },
-  col: { xs: 24, sm: 24, md: 5, lg: 4, xl: 4, xxl: 4 },
-  btns: { col: { xs: 24, sm: 24, md: 7, lg: 8, xl: 6, xxl: 6 } },
+  grid: { cols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 } },
   fold: { enable: true, index: 1, defaultCollapsed: true }
 })
 
@@ -130,33 +129,31 @@ const queryFormColumns: Columns = reactive([
   {
     type: 'input',
     field: 'description',
-    item: {
+    formItemProps: {
       hideLabel: true
     },
     props: {
-      placeholder: '用户名/昵称/描述',
-      allowClear: true
+      placeholder: '用户名/昵称/描述'
     }
   },
   {
     type: 'select',
     field: 'status',
     options: DisEnableStatusList,
-    item: {
+    formItemProps: {
       hideLabel: true
     },
     props: {
-      placeholder: '请选择状态',
-      allowClear: true
+      placeholder: '请选择状态'
     }
   },
   {
     type: 'range-picker',
     field: 'createTime',
-    item: {
+    span: { lg: 2, xl: 2, xxl: 1 },
+    formItemProps: {
       hideLabel: true
-    },
-    col: { xs: 24, sm: 24, md: 10, lg: 9.5, xl: 9, xxl: 8 }
+    }
   }
 ])
 

@@ -33,7 +33,6 @@ const { app_type } = useDict('app_type')
 
 const options: Options = {
   form: {},
-  col: { xs: 24, sm: 24, md: 24, lg: 24, xl: 24, xxl: 24 },
   btns: { hide: true }
 }
 
@@ -78,8 +77,8 @@ const columns: Columns = reactive([
   {
     label: '应用描述',
     field: 'appDesc',
-    type: 'textarea',
-  },
+    type: 'textarea'
+  }
 ])
 
 const { form, resetForm } = useForm({

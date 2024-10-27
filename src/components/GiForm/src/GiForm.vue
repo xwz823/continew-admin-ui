@@ -1,10 +1,10 @@
 <template>
   <a-form ref="formRef" :auto-label-width="true" v-bind="options.form" :model="modelValue">
-    <a-row :gutter="14" v-bind="options.row" class="w-full">
+    <a-grid class="w-full" :col-gap="8" v-bind="options.grid" :collapsed="collapsed">
       <template v-for="(item, index) in columns" :key="item.field">
-        <a-col v-if="!isHide(item.hide)" v-show="colVShow(index)" :span="item.span || 12"
-               v-bind="item.col || item.span ? item.col : options.col">
-          <a-form-item v-bind="item.item" :label="item.label" :field="item.field" :rules="item.rules"
+        <a-grid-item v-if="!isHide(item.hide)" v-show="colVShow(index)" v-bind="item.gridItemProps || props.options.gridItem"
+                     :span="item.span || options.gridItem?.span">
+          <a-form-item v-bind="item.formItemProps" :label="item.label" :field="item.field" :rules="item.rules"
                        :disabled="isDisabled(item.disabled)">
             <slot v-if="!['group-title'].includes(item.type || '')" :name="item.field"
                   v-bind="{ disabled: isDisabled(item.disabled) }">
@@ -21,9 +21,9 @@
               <a-alert v-bind="item.props">{{ item.label }}</a-alert>
             </slot>
           </a-form-item>
-        </a-col>
+        </a-grid-item>
       </template>
-      <a-col v-if="!options.btns?.hide" :span="options.btns?.span || 12" v-bind="options.btns?.col">
+      <a-grid-item v-if="!options.btns?.hide" :suffix="options.fold?.enable">
         <a-space wrap :size="[8, 16]" style="flex-wrap: nowrap">
           <slot name="suffix">
             <a-button type="primary" @click="emit('search')">
@@ -34,7 +34,8 @@
               <template #icon><icon-refresh /></template>
               <template #default>重置</template>
             </a-button>
-            <a-button v-if="options.fold?.enable" type="text" size="mini" @click="collapsed = !collapsed">
+            <a-button v-if="options.fold?.enable" class="gi-form__fold-btn" type="text" size="mini"
+                      @click="collapsed = !collapsed">
               <template #icon>
                 <icon-up v-if="!collapsed" />
                 <icon-down v-else />
@@ -43,23 +44,24 @@
             </a-button>
           </slot>
         </a-space>
-      </a-col>
-    </a-row>
+      </a-grid-item>
+    </a-grid>
   </a-form>
 </template>
 
 <script setup lang="ts">
 import { cloneDeep } from 'lodash-es'
-import type { Columns, ColumnsItem, ColumnsItemDisabled, ColumnsItemHide, Options } from './type'
-import DateRangePicker from '@/components/DateRangePicker/index.vue'
+import type { ColumnsItem, ColumnsItemDisabled, ColumnsItemHide, Options } from './type'
 
 interface Props {
   modelValue: any
-  options: Options
-  columns: Columns
+  options?: Options
+  columns: ColumnsItem[]
 }
 
-const props = withDefaults(defineProps<Props>(), {})
+const props = withDefaults(defineProps<Props>(), {
+  options: () => ({})
+})
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: any): void
@@ -67,7 +69,14 @@ const emit = defineEmits<{
   (e: 'reset'): void
 }>()
 
-const formRef = ref('formRef')
+const options = computed(() => ({
+  grid: { cols: 1 },
+  gridItem: { span: { xs: 2, sm: 1 } },
+  ...props.options
+}
+))
+
+const formRef = useTemplateRef('formRef')
 const collapsed = ref(props.options.fold?.defaultCollapsed ?? false)
 const dicData: Record<string, any> = reactive({})
 
@@ -80,12 +89,15 @@ const colVShow = (index: number) => {
 const getComponentBindProps = (item: ColumnsItem) => {
   const obj: Partial<ColumnsItem['props'] & { placeholder: string }> = {}
   if (item.type === 'input') {
+    obj.allowClear = true
     obj.placeholder = `请输入${item.label}`
   }
   if (item.type === 'input-password') {
+    obj.allowClear = true
     obj.placeholder = `请输入${item.label}`
   }
   if (item.type === 'input-number') {
+    obj.allowClear = true
     obj.placeholder = `请输入${item.label}`
   }
   if (item.type === 'textarea') {
@@ -93,14 +105,17 @@ const getComponentBindProps = (item: ColumnsItem) => {
     obj.maxLength = 200
   }
   if (item.type === 'select') {
+    obj.allowClear = true
     obj.placeholder = `请选择${item.label}`
     obj.options = dicData[item.field] || item.options
   }
   if (item.type === 'cascader') {
+    obj.allowClear = true
     obj.placeholder = `请选择${item.label}`
     obj.options = dicData[item.field] || item.options
   }
   if (item.type === 'tree-select') {
+    obj.allowClear = true
     obj.placeholder = `请选择${item.label}`
     obj.data = dicData[item.field] || item.data
   }
@@ -146,6 +161,7 @@ props.columns.forEach((item) => {
   if (item.request && typeof item.request === 'function' && item?.init) {
     item.request(props.modelValue).then((res) => {
       dicData[item.field] = item.resultFormat ? item.resultFormat(res) : res.data
+      // console.log('dicData', dicData)
     })
   }
 })
@@ -190,5 +206,8 @@ watch(cloneForm as any, (newVal, oldVal) => {
 <style lang="scss" scoped>
 :deep(.arco-form-item-layout-inline) {
   margin-right: 0;
+}
+.gi-form__fold-btn {
+  padding: 0 5px;
 }
 </style>
