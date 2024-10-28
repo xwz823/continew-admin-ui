@@ -120,7 +120,7 @@ const dataList = computed(() => {
 })
 
 const columns: TableInstanceColumns[] = [
-  { title: '名称', dataIndex: 'name', width: 170, ellipsis: true, tooltip: true },
+  { title: '名称', dataIndex: 'name', minWidth: 170, ellipsis: true, tooltip: true },
   { title: '状态', slotName: 'status', align: 'center' },
   { title: '排序', dataIndex: 'sort', align: 'center', show: false },
   { title: '系统内置', slotName: 'isSystem', align: 'center', show: false },

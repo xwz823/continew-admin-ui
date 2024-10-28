@@ -97,7 +97,7 @@ const columns: TableInstanceColumns[] = [
     align: 'center',
     render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
-  { title: '标题', dataIndex: 'title', slotName: 'title', width: 200, ellipsis: true, tooltip: true },
+  { title: '标题', dataIndex: 'title', slotName: 'title', minWidth: 200, ellipsis: true, tooltip: true },
   { title: '类型', slotName: 'type', align: 'center' },
   { title: '状态', slotName: 'status', align: 'center' },
   { title: '生效时间', dataIndex: 'effectiveTime', width: 180 },
