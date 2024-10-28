@@ -21,7 +21,7 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
       left: 55,
       right: 20,
       top: 0,
-      bottom: 20
+      bottom: 20,
     },
     xAxis: {
       type: 'value',
@@ -30,38 +30,38 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         formatter(value: number, idx: number) {
           if (idx === 0) return String(value)
           return `${Number(value) / 1000}k`
-        }
+        },
       },
       splitLine: {
         lineStyle: {
-          color: isDark ? '#484849' : '#E5E8EF'
-        }
-      }
+          color: isDark ? '#484849' : '#E5E8EF',
+        },
+      },
     },
     yAxis: {
       type: 'category',
       data: yAxis.value,
       axisLabel: {
         show: true,
-        color: '#4E5969'
+        color: '#4E5969',
       },
       axisTick: {
         show: true,
         length: 2,
         lineStyle: {
-          color: '#A9AEB8'
+          color: '#A9AEB8',
         },
-        alignWithLabel: true
+        alignWithLabel: true,
       },
       axisLine: {
         lineStyle: {
-          color: isDark ? '#484849' : '#A9AEB8'
-        }
-      }
+          color: isDark ? '#484849' : '#A9AEB8',
+        },
+      },
     },
     tooltip: {
       show: true,
-      trigger: 'axis'
+      trigger: 'axis',
     },
     series: [
       {
@@ -70,10 +70,10 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         barWidth: 7,
         itemStyle: {
           color: '#4086FF',
-          borderRadius: 4
-        }
-      }
-    ]
+          borderRadius: 4,
+        },
+      },
+    ],
   }
 })
 

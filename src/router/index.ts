@@ -13,25 +13,25 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/default/redirect/index.vue')
-      }
-    ]
+        component: () => import('@/views/default/redirect/index.vue'),
+      },
+    ],
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/index.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
   {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/default/error/404.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
   {
     path: '/403',
     component: () => import('@/views/default/error/403.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
   {
     path: '/',
@@ -44,25 +44,25 @@ export const constantRoutes: RouteRecordRaw[] = [
         path: '/dashboard/workplace',
         name: 'Workplace',
         component: () => import('@/views/dashboard/workplace/index.vue'),
-        meta: { title: '工作台', icon: 'desktop', hidden: false, affix: true }
+        meta: { title: '工作台', icon: 'desktop', hidden: false, affix: true },
       },
       {
         path: '/dashboard/analysis',
         name: 'Analysis',
         component: () => import('@/views/dashboard/analysis/index.vue'),
-        meta: { title: '分析页', icon: 'insert-chart', hidden: false }
-      }
-    ]
+        meta: { title: '分析页', icon: 'insert-chart', hidden: false },
+      },
+    ],
   },
   {
     path: '/social/callback',
     component: () => import('@/views/login/social/index.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
   {
     path: '/pwdExpired',
     component: () => import('@/views/login/pwdExpired/index.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
   {
     path: '/setting',
@@ -74,22 +74,22 @@ export const constantRoutes: RouteRecordRaw[] = [
         path: '/setting/profile',
         name: 'SettingProfile',
         component: () => import('@/views/setting/profile/index.vue'),
-        meta: { title: '个人中心', showInTabs: false }
+        meta: { title: '个人中心', showInTabs: false },
       },
       {
         path: '/setting/message',
         name: 'SettingMessage',
         component: () => import('@/views/setting/message/index.vue'),
-        meta: { title: '消息中心', showInTabs: false }
-      }
-    ]
-  }
+        meta: { title: '消息中心', showInTabs: false },
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: constantRoutes,
-  scrollBehavior: () => ({ left: 0, top: 0 })
+  scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
 /**

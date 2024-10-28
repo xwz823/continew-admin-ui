@@ -29,7 +29,7 @@ const tooltipItemsHtmlString = (items) => {
         <span class="tooltip-value">
         ${el.value}
         </span>
-      </div>`
+      </div>`,
     )
     .join('')
 }
@@ -43,14 +43,14 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
       left: '38',
       right: '5',
       top: '10',
-      bottom: '50'
+      bottom: '50',
     },
     legend: {
       bottom: -3,
       icon: 'circle',
       textStyle: {
-        color: '#4E5969'
-      }
+        color: '#4E5969',
+      },
     },
     xAxis: {
       type: 'category',
@@ -63,13 +63,13 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           if (idx === 0) return ''
           if (idx === xAxis.value.length - 1) return ''
           return `${value}`
-        }
+        },
       },
       axisLine: {
-        show: false
+        show: false,
       },
       axisTick: {
-        show: false
+        show: false,
       },
       splitLine: {
         show: true,
@@ -78,16 +78,16 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           return idx !== xAxis.value.length - 1
         },
         lineStyle: {
-          color: isDark ? '#3F3F3F' : '#E5E8EF'
-        }
+          color: isDark ? '#3F3F3F' : '#E5E8EF',
+        },
       },
       axisPointer: {
         show: true,
         lineStyle: {
           color: '#23ADFF',
-          width: 2
-        }
-      }
+          width: 2,
+        },
+      },
     },
     yAxis: {
       type: 'value',
@@ -98,17 +98,17 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
             return `${value / 1000}k`
           }
           return `${value}`
-        }
+        },
       },
       axisLine: {
-        show: false
+        show: false,
       },
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: isDark ? '#3F3F3F' : '#E5E8EF'
-        }
-      }
+          color: isDark ? '#3F3F3F' : '#E5E8EF',
+        },
+      },
     },
     tooltip: {
       show: true,
@@ -120,7 +120,7 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
             ${tooltipItemsHtmlString(params)}
           </div>`
       },
-      className: 'echarts-tooltip-diy'
+      className: 'echarts-tooltip-diy',
     },
     series: [
       {
@@ -136,22 +136,22 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           focus: 'series',
           itemStyle: {
             borderWidth: 2,
-            borderColor: '#E0E3FF'
-          }
+            borderColor: '#E0E3FF',
+          },
         },
         areaStyle: {
           opacity: 0.8,
           color: new graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgba(17, 126, 255, 0.16)'
+              color: 'rgba(17, 126, 255, 0.16)',
             },
             {
               offset: 1,
-              color: 'rgba(17, 128, 255, 0)'
-            }
-          ])
-        }
+              color: 'rgba(17, 128, 255, 0)',
+            },
+          ]),
+        },
       },
       {
         name: '独立IP',
@@ -166,24 +166,24 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           focus: 'series',
           itemStyle: {
             borderWidth: 2,
-            borderColor: '#E2F2FF'
-          }
+            borderColor: '#E2F2FF',
+          },
         },
         areaStyle: {
           opacity: 0.8,
           color: new graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgba(17, 126, 255, 0.16)'
+              color: 'rgba(17, 126, 255, 0.16)',
             },
             {
               offset: 1,
-              color: 'rgba(17, 128, 255, 0)'
-            }
-          ])
-        }
-      }
-    ]
+              color: 'rgba(17, 128, 255, 0)',
+            },
+          ]),
+        },
+      },
+    ],
   }
 })
 

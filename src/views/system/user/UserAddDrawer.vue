@@ -108,12 +108,12 @@ const rules: FormInstance['rules'] = {
   nickname: [{ required: true, message: '请输入昵称' }],
   password: [{ required: true, message: '请输入密码' }],
   deptId: [{ required: true, message: '请选择所属部门' }],
-  roleIds: [{ required: true, message: '请选择角色' }]
+  roleIds: [{ required: true, message: '请选择角色' }],
 }
 
 const { form, resetForm } = useForm({
   gender: 1 as Gender,
-  status: 1 as Status
+  status: 1 as Status,
 })
 
 // 重置

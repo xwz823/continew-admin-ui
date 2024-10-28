@@ -1,5 +1,5 @@
 <template>
-  <a-drawer v-model:visible="visible" title="应用详情" :width="width >= 580 ? 580 : '100%'" :footer="false" >
+  <a-drawer v-model:visible="visible" title="应用详情" :width="width >= 580 ? 580 : '100%'" :footer="false">
     <a-descriptions :column="1" size="large" class="general-description" bordered>
       <a-descriptions-item label="应用名称">{{ dataDetail?.name }}</a-descriptions-item>
       <a-descriptions-item label="APPKEY">{{ dataDetail?.appKey }}</a-descriptions-item>

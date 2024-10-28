@@ -2,20 +2,30 @@
   <a-form ref="formRef" :auto-label-width="true" v-bind="options.form" :model="modelValue">
     <a-grid class="w-full" :col-gap="8" v-bind="options.grid" :collapsed="collapsed">
       <template v-for="(item, index) in columns" :key="item.field">
-        <a-grid-item v-if="!isHide(item.hide)" v-show="colVShow(index)" v-bind="item.gridItemProps || props.options.gridItem"
-                     :span="item.span || options.gridItem?.span">
-          <a-form-item v-bind="item.formItemProps" :label="item.label" :field="item.field" :rules="item.rules"
-                       :disabled="isDisabled(item.disabled)">
-            <slot v-if="!['group-title'].includes(item.type || '')" :name="item.field"
-                  v-bind="{ disabled: isDisabled(item.disabled) }">
+        <a-grid-item
+          v-if="!isHide(item.hide)" v-show="colVShow(index)" v-bind="item.gridItemProps || props.options.gridItem"
+          :span="item.span || options.gridItem?.span"
+        >
+          <a-form-item
+            v-bind="item.formItemProps" :label="item.label" :field="item.field" :rules="item.rules"
+            :disabled="isDisabled(item.disabled)"
+          >
+            <slot
+              v-if="!['group-title'].includes(item.type || '')" :name="item.field"
+              v-bind="{ disabled: isDisabled(item.disabled) }"
+            >
               <template v-if="item.type === 'range-picker'">
-                <DateRangePicker v-bind="(item.props as A.RangePickerInstance['$props'])"
-                                 :model-value="modelValue[item.field as keyof typeof modelValue]"
-                                 @update:model-value="valueChange($event, item.field)" />
+                <DateRangePicker
+                  v-bind="(item.props as A.RangePickerInstance['$props'])"
+                  :model-value="modelValue[item.field as keyof typeof modelValue]"
+                  @update:model-value="valueChange($event, item.field)"
+                />
               </template>
-              <component :is="`a-${item.type}`" v-else v-bind="getComponentBindProps(item)"
-                         :model-value="modelValue[item.field as keyof typeof modelValue]"
-                         @update:model-value="valueChange($event, item.field)"></component>
+              <component
+                :is="`a-${item.type}`" v-else v-bind="getComponentBindProps(item)"
+                :model-value="modelValue[item.field as keyof typeof modelValue]"
+                @update:model-value="valueChange($event, item.field)"
+              ></component>
             </slot>
             <slot v-else name="group-title">
               <a-alert v-bind="item.props">{{ item.label }}</a-alert>
@@ -34,8 +44,10 @@
               <template #icon><icon-refresh /></template>
               <template #default>重置</template>
             </a-button>
-            <a-button v-if="options.fold?.enable" class="gi-form__fold-btn" type="text" size="mini"
-                      @click="collapsed = !collapsed">
+            <a-button
+              v-if="options.fold?.enable" class="gi-form__fold-btn" type="text" size="mini"
+              @click="collapsed = !collapsed"
+            >
               <template #icon>
                 <icon-up v-if="!collapsed" />
                 <icon-down v-else />
@@ -60,7 +72,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  options: () => ({})
+  options: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -72,7 +84,7 @@ const emit = defineEmits<{
 const options = computed(() => ({
   grid: { cols: 1 },
   gridItem: { span: { xs: 2, sm: 1 } },
-  ...props.options
+  ...props.options,
 }
 ))
 

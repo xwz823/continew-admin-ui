@@ -46,9 +46,9 @@
             <a-space>
               <a-link v-permission="['system:dict:item:update']" @click="onUpdate(record)">修改</a-link>
               <a-link
-              v-permission="['system:dict:item:delete']"
-              status="danger"
-              @click="onDelete(record)"
+                v-permission="['system:dict:item:delete']"
+                status="danger"
+                @click="onDelete(record)"
               >
                 删除
               </a-link>
@@ -75,7 +75,7 @@ defineOptions({ name: 'SystemDict' })
 
 const queryForm = reactive<DictItemQuery>({
   dictId: '',
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
@@ -83,7 +83,7 @@ const {
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listDictItem({ ...queryForm, ...page }), { immediate: false })
 
 const columns: TableInstanceColumns[] = [
@@ -91,7 +91,7 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '标签', dataIndex: 'label', slotName: 'label', width: 100, align: 'center' },
   { title: '值', dataIndex: 'value', width: 100, align: 'center', ellipsis: true, tooltip: true },
@@ -102,8 +102,8 @@ const columns: TableInstanceColumns[] = [
     width: 90,
     align: 'center',
     sortable: {
-      sortDirections: ['ascend', 'descend']
-    }
+      sortDirections: ['ascend', 'descend'],
+    },
   },
   { title: '描述', dataIndex: 'description', width: 130, ellipsis: true, tooltip: true },
   { title: '创建人', dataIndex: 'createUserString', width: 140, ellipsis: true, tooltip: true, show: false },
@@ -116,8 +116,8 @@ const columns: TableInstanceColumns[] = [
     width: 130,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:dict:item:update', 'system:dict:item:delete'])
-  }
+    show: has.hasPermOr(['system:dict:item:update', 'system:dict:item:delete']),
+  },
 ]
 
 // 重置

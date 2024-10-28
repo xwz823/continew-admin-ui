@@ -2,13 +2,13 @@
   <div>
     <div style="display: flex;">
       <a-select
-          v-model="selectedUsers"
-          :allow-clear="true"
-          :multiple="props.multiple"
-          :max-tag-count="4"
-          :field-names="{ value: 'id', label: 'nickname' }"
-          :options="options"
-          @change="handleSelectChange"
+        v-model="selectedUsers"
+        :allow-clear="true"
+        :multiple="props.multiple"
+        :max-tag-count="4"
+        :field-names="{ value: 'id', label: 'nickname' }"
+        :options="options"
+        @change="handleSelectChange"
       />
       <a-tooltip content="选择用户">
         <a-button @click="onOpen">
@@ -19,18 +19,18 @@
       </a-tooltip>
     </div>
     <a-modal
-        v-model:visible="visible"
-        title="用户选择"
-        :width="width >= 1350 ? 1350 : '100%'"
-        :esc-to-close="true"
-        @ok="handleModalOk"
+      v-model:visible="visible"
+      title="用户选择"
+      :width="width >= 1350 ? 1350 : '100%'"
+      :esc-to-close="true"
+      @ok="handleModalOk"
     >
       <UserSelectContent
-          ref="userSelectContentRef"
-          :value="selectedUsers"
-          :multiple="props.multiple"
-          :selected-users="selectedUsers"
-          @update:selected-users="updateSelectedUsers"
+        ref="userSelectContentRef"
+        :value="selectedUsers"
+        :multiple="props.multiple"
+        :selected-users="selectedUsers"
+        @update:selected-users="updateSelectedUsers"
       />
     </a-modal>
   </div>
@@ -44,7 +44,7 @@ import type { UserSelectPropType } from '@/components/UserSelect/type'
 
 const props = withDefaults(defineProps<UserSelectPropType>(), {
   multiple: false, // 是否支持多选
-  value: ''
+  value: '',
 })
 
 const emit = defineEmits(['update:value'])

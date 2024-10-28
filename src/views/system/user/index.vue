@@ -109,20 +109,20 @@ import { DisEnableStatusList } from '@/constant/common'
 defineOptions({ name: 'SystemUser' })
 
 const queryForm = reactive<UserQuery>({
-  sort: ['t1.createTime,desc']
+  sort: ['t1.createTime,desc'],
 })
 const {
   tableData: dataList,
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listUser({ ...queryForm, ...page }), { immediate: false })
 
 const options: Options = reactive({
   form: { layout: 'inline' },
   grid: { cols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 } },
-  fold: { enable: true, index: 1, defaultCollapsed: true }
+  fold: { enable: true, index: 1, defaultCollapsed: true },
 })
 
 const queryFormColumns: Columns = reactive([
@@ -130,31 +130,31 @@ const queryFormColumns: Columns = reactive([
     type: 'input',
     field: 'description',
     formItemProps: {
-      hideLabel: true
+      hideLabel: true,
     },
     props: {
-      placeholder: '用户名/昵称/描述'
-    }
+      placeholder: '用户名/昵称/描述',
+    },
   },
   {
     type: 'select',
     field: 'status',
     options: DisEnableStatusList,
     formItemProps: {
-      hideLabel: true
+      hideLabel: true,
     },
     props: {
-      placeholder: '请选择状态'
-    }
+      placeholder: '请选择状态',
+    },
   },
   {
     type: 'range-picker',
     field: 'createTime',
     span: { lg: 2, xl: 2, xxl: 1 },
     formItemProps: {
-      hideLabel: true
-    }
-  }
+      hideLabel: true,
+    },
+  },
 ])
 
 const columns: TableInstanceColumns[] = [
@@ -163,7 +163,7 @@ const columns: TableInstanceColumns[] = [
     width: 66,
     align: 'center',
     render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
-    fixed: !isMobile() ? 'left' : undefined
+    fixed: !isMobile() ? 'left' : undefined,
   },
   {
     title: '昵称',
@@ -172,7 +172,7 @@ const columns: TableInstanceColumns[] = [
     minWidth: 140,
     ellipsis: true,
     tooltip: true,
-    fixed: !isMobile() ? 'left' : undefined
+    fixed: !isMobile() ? 'left' : undefined,
   },
   { title: '用户名', dataIndex: 'username', slotName: 'username', minWidth: 140, ellipsis: true, tooltip: true },
   { title: '状态', slotName: 'status', align: 'center', width: 80 },
@@ -193,8 +193,8 @@ const columns: TableInstanceColumns[] = [
     width: 190,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:user:update', 'system:user:delete', 'system:user:resetPwd'])
-  }
+    show: has.hasPermOr(['system:user:update', 'system:user:delete', 'system:user:resetPwd']),
+  },
 ]
 
 // 重置
@@ -209,7 +209,7 @@ const reset = () => {
 const onDelete = (record: UserResp) => {
   return handleDelete(() => deleteUser(record.id), {
     content: `是否确定删除 [${record.nickname}(${record.username})]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

@@ -1,14 +1,14 @@
 <template>
   <a-drawer
-      v-model:visible="visible"
-      title="导入用户"
-      :mask-closable="false"
-      :esc-to-close="false"
-      :width="width >= 600 ? 600 : '100%'"
-      ok-text="确认导入"
-      cancel-text="取消导入"
-      @before-ok="save"
-      @close="reset"
+    v-model:visible="visible"
+    title="导入用户"
+    :mask-closable="false"
+    :esc-to-close="false"
+    :width="width >= 600 ? 600 : '100%'"
+    ok-text="确认导入"
+    cancel-text="取消导入"
+    @before-ok="save"
+    @close="reset"
   >
     <a-form ref="formRef" :model="form" size="large" auto-label-width>
       <a-alert v-if="!form.disabled" :show-icon="false" style="margin-bottom: 15px">
@@ -20,13 +20,14 @@
       <fieldset>
         <legend>1.上传解析文件</legend>
         <div class="file-box">
-          <a-upload draggable
-                    :custom-request="handleUpload"
-                    :limit="1"
-                    :show-retry-butto="false"
-                    :show-cancel-button="false" tip="仅支持xls、xlsx格式"
-                    :file-list="uploadFile"
-                    accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          <a-upload
+            draggable
+            :custom-request="handleUpload"
+            :limit="1"
+            :show-retry-butto="false"
+            :show-cancel-button="false" tip="仅支持xls、xlsx格式"
+            :file-list="uploadFile"
+            accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           />
         </div>
         <div v-if="dataResult.importKey">
@@ -68,12 +69,12 @@
         </a-form-item>
         <a-form-item label="默认状态" field="defaultStatus">
           <a-switch
-              v-model="form.defaultStatus"
-              :checked-value="1"
-              :unchecked-value="2"
-              checked-text="启用"
-              unchecked-text="禁用"
-              type="round"
+            v-model="form.defaultStatus"
+            :checked-value="1"
+            :unchecked-value="2"
+            checked-text="启用"
+            unchecked-text="禁用"
+            type="round"
           />
         </a-form-item>
       </fieldset>
@@ -100,7 +101,7 @@ const { form, resetForm } = useForm({
   duplicateUser: 1,
   duplicateEmail: 1,
   duplicatePhone: 1,
-  defaultStatus: 1
+  defaultStatus: 1,
 })
 
 const dataResult = ref<UserImportResp>({
@@ -109,7 +110,7 @@ const dataResult = ref<UserImportResp>({
   validRows: 0,
   duplicateUserRows: 0,
   duplicateEmailRows: 0,
-  duplicatePhoneRows: 0
+  duplicatePhoneRows: 0,
 })
 
 // 重置
@@ -151,7 +152,7 @@ const handleUpload = (options: RequestOption) => {
   return {
     abort() {
       controller.abort()
-    }
+    },
   }
 }
 

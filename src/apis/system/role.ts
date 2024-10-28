@@ -34,6 +34,6 @@ export function listRoleUsers(id: string) {
   return http.get(`${BASE_URL}/listRoleUsers/${id}`)
 }
 
-export function bindUsers(id: string, userIds : Array<string>) {
-  return http.post(`${BASE_URL}/bindUsers/${id}`,userIds)
+export function bindUsers(id: string, userIds: Array<string>) {
+  return http.post(`${BASE_URL}/bindUsers/${id}`, userIds)
 }

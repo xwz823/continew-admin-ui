@@ -33,7 +33,7 @@ defineOptions({ name: 'GiCellAvatar' })
 const props = withDefaults(defineProps<Props>(), {
   avatar: '',
   name: '',
-  isLink: false // 是否可以点击
+  isLink: false, // 是否可以点击
 })
 
 const emit = defineEmits<{

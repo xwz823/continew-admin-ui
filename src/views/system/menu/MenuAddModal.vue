@@ -127,7 +127,7 @@ interface Props {
   menus: MenuResp[]
 }
 const props = withDefaults(defineProps<Props>(), {
-  menus: () => []
+  menus: () => [],
 })
 
 const emit = defineEmits<{
@@ -141,7 +141,7 @@ const menuSelectTree = computed(() => {
   return mapTree(data, (i) => ({
     key: i.id,
     title: i.title,
-    children: i.children
+    children: i.children,
   }))
 })
 
@@ -164,7 +164,7 @@ const rules: FormInstance['rules'] = {
   path: [{ required: true, message: '请输入路由地址' }],
   name: [{ required: true, message: '请输入组件名称' }],
   component: [{ required: true, message: '请输入组件路径' }],
-  permission: [{ required: true, message: '请输入权限标识' }]
+  permission: [{ required: true, message: '请输入权限标识' }],
 }
 
 const { form, resetForm } = useForm({
@@ -173,7 +173,7 @@ const { form, resetForm } = useForm({
   isExternal: false,
   isCache: false,
   isHidden: false,
-  status: 1
+  status: 1,
 })
 const componentName = computed(() => transformPathToName(form.path))
 // eslint-disable-next-line vue/return-in-computed-property

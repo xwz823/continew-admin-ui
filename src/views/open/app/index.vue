@@ -1,16 +1,16 @@
 <template>
   <div class="table-page">
     <GiTable
-        row-key="id"
-        title="应用管理"
-        :data="dataList"
-        :columns="columns"
-        :loading="loading"
-        :scroll="{ x: '100%', y: '100%', minWidth: 1000 }"
-        :pagination="pagination"
-        :disabled-tools="['size']"
-        :disabled-column-keys="['name']"
-        @refresh="search"
+      row-key="id"
+      title="应用管理"
+      :data="dataList"
+      :columns="columns"
+      :loading="loading"
+      :scroll="{ x: '100%', y: '100%', minWidth: 1000 }"
+      :pagination="pagination"
+      :disabled-tools="['size']"
+      :disabled-column-keys="['name']"
+      @refresh="search"
     >
       <template #toolbar-left>
         <a-input v-model="queryForm.name" placeholder="请输入应用名称" allow-clear @change="search">
@@ -53,10 +53,10 @@
         <a-space>
           <a-link v-permission="['open:app:update']" @click="onUpdate(record)">修改</a-link>
           <a-link
-              v-permission="['open:app:delete']"
-              status="danger"
-              :disabled="record.disabled"
-              @click="onDelete(record)"
+            v-permission="['open:app:delete']"
+            status="danger"
+            :disabled="record.disabled"
+            @click="onDelete(record)"
           >
             删除
           </a-link>
@@ -74,7 +74,7 @@ import { Message } from '@arco-design/web-vue'
 import AppAddModal from './AppAddModal.vue'
 import AppDetailDrawer from './AppDetailDrawer.vue'
 import AppGetSecretModal from './AppGetSecretModal.vue'
-import { type AppResp, type AppQuery, deleteApp, exportApp, listApp, refreshAppSecret } from '@/apis/open/app'
+import { type AppQuery, type AppResp, deleteApp, exportApp, listApp, refreshAppSecret } from '@/apis/open/app'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useDownload, useTable } from '@/hooks'
 import { isMobile } from '@/utils'
@@ -88,7 +88,7 @@ const { app_type } = useDict('app_type')
 const queryForm = reactive<AppQuery>({
   name: '',
   appKey: '',
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
@@ -96,7 +96,7 @@ const {
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listApp({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -111,8 +111,8 @@ const columns: TableInstanceColumns[] = [
     width: 130,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['open:app:update', 'open:app:delete'])
-  }
+    show: has.hasPermOr(['open:app:update', 'open:app:delete']),
+  },
 ]
 
 // 重置
@@ -126,7 +126,7 @@ const reset = () => {
 const onDelete = (record: AppResp) => {
   return handleDelete(() => deleteApp(record.id), {
     content: `是否确定删除该条数据？`,
-    showModal: true
+    showModal: true,
   })
 }
 

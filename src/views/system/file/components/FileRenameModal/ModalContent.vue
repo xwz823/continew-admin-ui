@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {})
 
 const formRef = ref<FormInstance>()
 const form = reactive({
-  name: props.data?.name || ''
+  name: props.data?.name || '',
 })
 
 defineExpose({ formRef })

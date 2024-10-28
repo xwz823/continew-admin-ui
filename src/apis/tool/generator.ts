@@ -36,7 +36,7 @@ export function generate(tableNames: Array<string>) {
   return http.requestNative({
     url: `${BASE_URL}/${tableNames}`,
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
 

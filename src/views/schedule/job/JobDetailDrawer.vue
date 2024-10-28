@@ -45,7 +45,7 @@ const { job_status_enum, job_trigger_type_enum, job_task_type_enum, job_route_st
   'job_trigger_type_enum',
   'job_task_type_enum',
   'job_route_strategy_enum',
-  'job_block_strategy_enum'
+  'job_block_strategy_enum',
 )
 
 const visible = ref(false)

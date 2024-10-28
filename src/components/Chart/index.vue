@@ -16,20 +16,20 @@ defineProps({
     type: Object,
     default() {
       return {}
-    }
+    },
   },
   autoResize: {
     type: Boolean,
-    default: true
+    default: true,
   },
   width: {
     type: String,
-    default: '100%'
+    default: '100%',
   },
   height: {
     type: String,
-    default: '100%'
-  }
+    default: '100%',
+  },
 })
 const renderChart = ref(false)
 // wait container expand

@@ -15,7 +15,7 @@ defineOptions({ name: 'GiSvgIcon' })
 const props = withDefaults(defineProps<Props>(), {
   name: '',
   color: '',
-  size: 20
+  size: 20,
 })
 
 interface Props {

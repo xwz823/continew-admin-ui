@@ -11,7 +11,7 @@ import {
   getUserInfo as getUserInfoApi,
   logout as logoutApi,
   phoneLogin as phoneLoginApi,
-  socialLogin as socialLoginApi
+  socialLogin as socialLoginApi,
 } from '@/apis'
 import { clearToken, getToken, setToken } from '@/utils/auth'
 import { resetHasRouteFlag } from '@/router/permission'
@@ -30,7 +30,7 @@ const storeSetup = () => {
     registrationDate: '',
     deptName: '',
     roles: [],
-    permissions: []
+    permissions: [],
   })
   const nickname = computed(() => userInfo.nickname)
   const username = computed(() => userInfo.username)
@@ -123,10 +123,10 @@ const storeSetup = () => {
     logout,
     logoutCallBack,
     getInfo,
-    resetToken
+    resetToken,
   }
 }
 
 export const useUserStore = defineStore('user', storeSetup, {
-  persist: { paths: ['token', 'roles', 'permissions', 'pwdExpiredShow'], storage: localStorage }
+  persist: { paths: ['token', 'roles', 'permissions', 'pwdExpiredShow'], storage: localStorage },
 })

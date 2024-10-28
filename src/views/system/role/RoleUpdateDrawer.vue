@@ -103,14 +103,14 @@ const formRef = ref<FormInstance>()
 const rules: FormInstance['rules'] = {
   name: [{ required: true, message: '请输入名称' }],
   code: [{ required: true, message: '请输入编码' }],
-  dataScope: [{ required: true, message: '请选择数据权限' }]
+  dataScope: [{ required: true, message: '请选择数据权限' }],
 }
 
 const { form, resetForm } = useForm({
   menuCheckStrictly: true,
   deptCheckStrictly: true,
   sort: 999,
-  dataScope: 4
+  dataScope: 4,
 })
 
 const menuTreeRef = ref()
@@ -180,8 +180,7 @@ const getMenuAllCheckedKeys = () => {
   // 获取半选中的菜单
   const halfCheckedNodes = menuTreeRef.value?.getHalfCheckedNodes()
   const halfCheckedKeys = halfCheckedNodes.map((item: TreeNodeData) => item.key)
-  // eslint-disable-next-line prefer-spread
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
+  checkedKeys.unshift(...halfCheckedKeys)
   return checkedKeys
 }
 
@@ -196,8 +195,7 @@ const getDeptAllCheckedKeys = () => {
   // 获取半选中的部门
   const halfCheckedNodes = deptTreeRef.value?.getHalfCheckedNodes()
   const halfCheckedKeys = halfCheckedNodes.map((item: TreeNodeData) => item.key)
-  // eslint-disable-next-line prefer-spread
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
+  checkedKeys.unshift(...halfCheckedKeys)
   return checkedKeys
 }
 

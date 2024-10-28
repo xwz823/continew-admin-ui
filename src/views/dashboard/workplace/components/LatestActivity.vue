@@ -139,7 +139,7 @@ const get = <T = unknown>(url: string, params?: object, config?: AxiosRequestCon
         paramsSerializer: (obj) => {
           return qs.stringify(obj)
         },
-        ...config
+        ...config,
       })
       .then((res: AxiosResponse) => resolve(res.data))
       .catch((err: { msg: string }) => reject(err))
@@ -156,7 +156,7 @@ const getDataList = async () => {
     data.forEach((item) => {
       dataList.value.push({
         ...item,
-        createTimeString: dayjs(new Date(item.createTime)).fromNow()
+        createTimeString: dayjs(new Date(item.createTime)).fromNow(),
       })
     })
   } catch (err) {

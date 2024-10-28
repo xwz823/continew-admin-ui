@@ -36,8 +36,8 @@ watch(
     selectedKey.value = route.query.type as string || '0'
   },
   {
-    immediate: true
-  }
+    immediate: true,
+  },
 )
 
 // 点击事件

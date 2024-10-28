@@ -59,7 +59,7 @@ const storeSetup = () => {
   // 初始化系统配置
   const initSiteConfig = () => {
     listOptionDict({
-      category: 'SITE'
+      category: 'SITE',
     }).then((res) => {
       const resMap = new Map()
       res.data.forEach((item) => {
@@ -118,7 +118,7 @@ const storeSetup = () => {
     getLogo,
     getTitle,
     getCopyright,
-    getForRecord
+    getForRecord,
   }
 }
 

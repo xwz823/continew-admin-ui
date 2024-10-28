@@ -21,7 +21,7 @@ export const useDownload = async (api: () => Promise<any>, isNotify = true, temp
     if (isNotify && !res?.code) {
       Notification.warning({
         title: '温馨提示',
-        content: '如果数据庞大会导致下载缓慢哦，请您耐心等待！'
+        content: '如果数据庞大会导致下载缓慢哦，请您耐心等待！',
       })
     }
     if (res.status !== 200 || res.data == null || !(res.data instanceof Blob)) {

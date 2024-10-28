@@ -8,28 +8,28 @@
           </template>
         </a-input>
         <a-tree
-            ref="treeRef"
-            :data="treeData"
-            block-node
-            @select="handleDeptSelect"
+          ref="treeRef"
+          :data="treeData"
+          block-node
+          @select="handleDeptSelect"
         />
       </a-col>
 
       <a-col :span="24" :md="14" class="section">
         <GiTable
-            v-model:selectedKeys="selectedKeys"
-            style="min-height: 600px;"
-            row-key="id"
-            :data="dataList"
-            :columns="tableColumns"
-            :loading="loading"
-            :scroll="{ x: '100%', y: '100%' }"
-            :pagination="pagination"
-            :disabled-tools="['size', 'fullscreen', 'setting', 'refresh']"
-            :row-selection="{ type: props.multiple ? 'checkbox' : 'radio', showCheckedAll: true }"
-            @select="onRowSelect"
-            @select-all="onTableSelectAll"
-            @refresh="search"
+          v-model:selectedKeys="selectedKeys"
+          style="min-height: 600px;"
+          row-key="id"
+          :data="dataList"
+          :columns="tableColumns"
+          :loading="loading"
+          :scroll="{ x: '100%', y: '100%' }"
+          :pagination="pagination"
+          :disabled-tools="['size', 'fullscreen', 'setting', 'refresh']"
+          :row-selection="{ type: props.multiple ? 'checkbox' : 'radio', showCheckedAll: true }"
+          @select="onRowSelect"
+          @select-all="onTableSelectAll"
+          @refresh="search"
         >
           <template #top>
             <div>
@@ -90,7 +90,7 @@ import type { UserItem, UserSelectPropType } from '@/components/UserSelect/type'
 
 const props = withDefaults(defineProps<UserSelectPropType & { selectedUsers: string | string[] }>(), {
   multiple: false,
-  selectedUsers: () => []
+  selectedUsers: () => [],
 })
 
 const emit = defineEmits(['update:selectedUsers'])
@@ -106,7 +106,7 @@ const selectedData = ref<any[]>([])
 
 const { tableData: dataList, loading, pagination, search } = useTable(
   (page) => listUser({ ...queryForm.value, deptId: selectedDeptId.value, sort: [], ...page }),
-  { immediate: false, formatResult: (data) => data.map((i) => ({ ...i, disabled: false })) }
+  { immediate: false, formatResult: (data) => data.map((i) => ({ ...i, disabled: false })) },
 )
 
 // 刷新表单
@@ -119,7 +119,7 @@ const onRefresh = () => {
 const { deptList, getDeptList } = useDept({
   onSuccess: () => {
     nextTick(() => treeRef.value?.expandAll(true))
-  }
+  },
 })
 
 // 部门树过滤函数
@@ -127,11 +127,11 @@ const deptTreeSearch = (keyword: string, data: TreeNodeData[]): TreeNodeData[] =
   return data
     .map((item) => ({
       ...item,
-      children: item.children ? deptTreeSearch(keyword, item.children) : []
+      children: item.children ? deptTreeSearch(keyword, item.children) : [],
     }))
     .filter(
       (item) =>
-        item.title?.toLowerCase().includes(keyword.toLowerCase()) || item.children?.length
+        item.title?.toLowerCase().includes(keyword.toLowerCase()) || item.children?.length,
     )
 }
 
@@ -148,13 +148,13 @@ const tableColumns = [
   { title: '角色', dataIndex: 'roleNames' },
   { title: '手机号', dataIndex: 'phone' },
   { title: '邮箱', dataIndex: 'email' },
-  { title: '状态', dataIndex: 'status', slotName: 'status' }
+  { title: '状态', dataIndex: 'status', slotName: 'status' },
 ]
 
 // 右侧已选用户列定义
 const rightColumn = [
   { title: '昵称', dataIndex: 'nickname' },
-  { title: '操作', dataIndex: 'action', slotName: 'action' }
+  { title: '操作', dataIndex: 'action', slotName: 'action' },
 ]
 
 // 处理部门选择

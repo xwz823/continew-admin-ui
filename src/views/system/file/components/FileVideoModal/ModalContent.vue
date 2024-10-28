@@ -18,7 +18,7 @@ onMounted(() => {
     lang: 'zh-cn',
     autoplay: true,
     closeVideoClick: true,
-    videoInit: true
+    videoInit: true,
   })
 })
 </script>

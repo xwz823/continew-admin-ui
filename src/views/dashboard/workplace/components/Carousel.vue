@@ -23,11 +23,11 @@
 const images = [
   {
     src: `https://continew.top/qrcode-text.png?${new Date().getTime()}`,
-    url: 'https://continew.top/about/intro.html'
+    url: 'https://continew.top/about/intro.html',
   },
   {
     src: `https://continew.top/sponsor.png?${new Date().getTime()}`,
-    url: 'https://continew.top/sponsor.html'
-  }
+    url: 'https://continew.top/sponsor.html',
+  },
 ]
 </script>

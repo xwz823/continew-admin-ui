@@ -84,7 +84,7 @@ defineOptions({ name: 'SystemStorage' })
 const { storage_type_enum } = useDict('storage_type_enum')
 
 const queryForm = reactive<StorageQuery>({
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
@@ -92,7 +92,7 @@ const {
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listStorage({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -100,7 +100,7 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '名称', dataIndex: 'name', slotName: 'name', width: 140, ellipsis: true, tooltip: true },
   { title: '编码', dataIndex: 'code', ellipsis: true, tooltip: true },
@@ -121,8 +121,8 @@ const columns: TableInstanceColumns[] = [
     width: 130,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:storage:update', 'system:storage:delete'])
-  }
+    show: has.hasPermOr(['system:storage:update', 'system:storage:delete']),
+  },
 ]
 
 // 重置

@@ -1,50 +1,76 @@
 <template>
   <a-space wrap :size="30">
-    <a-form ref="formRef" :model="form" :rules="rules" auto-label-width label-align="left"
-      :layout="width >= 500 ? 'horizontal' : 'vertical'" :disabled="!isUpdate" scroll-to-first-error>
+    <a-form
+      ref="formRef" :model="form" :rules="rules" auto-label-width label-align="left"
+      :layout="width >= 500 ? 'horizontal' : 'vertical'" :disabled="!isUpdate" scroll-to-first-error
+    >
       <a-list :bordered="false" :loading="loading">
-        <a-form-item field="PASSWORD_ERROR_LOCK_COUNT" :label="securityConfig.PASSWORD_ERROR_LOCK_COUNT.name"
-          :help="securityConfig.PASSWORD_ERROR_LOCK_COUNT.description" hide-asterisk>
-          <a-input-number v-model="form.PASSWORD_ERROR_LOCK_COUNT" class="input-width" :default-value="0" :precision="0"
-            :min="0" :max="10">
+        <a-form-item
+          field="PASSWORD_ERROR_LOCK_COUNT" :label="securityConfig.PASSWORD_ERROR_LOCK_COUNT.name"
+          :help="securityConfig.PASSWORD_ERROR_LOCK_COUNT.description" hide-asterisk
+        >
+          <a-input-number
+            v-model="form.PASSWORD_ERROR_LOCK_COUNT" class="input-width" :default-value="0" :precision="0"
+            :min="0" :max="10"
+          >
             <template #append>次</template>
           </a-input-number>
         </a-form-item>
-        <a-form-item field="PASSWORD_ERROR_LOCK_MINUTES" :label="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.name"
-          :help="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.description" hide-asterisk>
-          <a-input-number v-model="form.PASSWORD_ERROR_LOCK_MINUTES" class="input-width" :precision="0" :min="1"
-            :max="1440">
+        <a-form-item
+          field="PASSWORD_ERROR_LOCK_MINUTES" :label="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.name"
+          :help="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.description" hide-asterisk
+        >
+          <a-input-number
+            v-model="form.PASSWORD_ERROR_LOCK_MINUTES" class="input-width" :precision="0" :min="1"
+            :max="1440"
+          >
             <template #append>分钟</template>
           </a-input-number>
         </a-form-item>
-        <a-form-item field="PASSWORD_EXPIRATION_DAYS" :label="securityConfig.PASSWORD_EXPIRATION_DAYS.name"
-          :help="securityConfig.PASSWORD_EXPIRATION_DAYS.description" hide-asterisk>
-          <a-input-number v-model="form.PASSWORD_EXPIRATION_DAYS" class="input-width" :precision="0" :min="0"
-            :max="999">
+        <a-form-item
+          field="PASSWORD_EXPIRATION_DAYS" :label="securityConfig.PASSWORD_EXPIRATION_DAYS.name"
+          :help="securityConfig.PASSWORD_EXPIRATION_DAYS.description" hide-asterisk
+        >
+          <a-input-number
+            v-model="form.PASSWORD_EXPIRATION_DAYS" class="input-width" :precision="0" :min="0"
+            :max="999"
+          >
             <template #append>天</template>
           </a-input-number>
         </a-form-item>
-        <a-form-item :label="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.name"
+        <a-form-item
+          :label="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.name"
           field="PASSWORD_EXPIRATION_WARNING_DAYS" :help="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.description"
-          hide-asterisk>
-          <a-input-number v-model="form.PASSWORD_EXPIRATION_WARNING_DAYS" class="input-width" :precision="0" :min="0"
-            :max="998">
+          hide-asterisk
+        >
+          <a-input-number
+            v-model="form.PASSWORD_EXPIRATION_WARNING_DAYS" class="input-width" :precision="0" :min="0"
+            :max="998"
+          >
             <template #append>天</template>
           </a-input-number>
         </a-form-item>
-        <a-form-item field="PASSWORD_REPETITION_TIMES" :label="securityConfig.PASSWORD_REPETITION_TIMES.name"
-          :help="securityConfig.PASSWORD_REPETITION_TIMES.description" hide-asterisk>
-          <a-input-number v-model="form.PASSWORD_REPETITION_TIMES" class="input-width" :precision="0" :min="3"
-            :max="32">
+        <a-form-item
+          field="PASSWORD_REPETITION_TIMES" :label="securityConfig.PASSWORD_REPETITION_TIMES.name"
+          :help="securityConfig.PASSWORD_REPETITION_TIMES.description" hide-asterisk
+        >
+          <a-input-number
+            v-model="form.PASSWORD_REPETITION_TIMES" class="input-width" :precision="0" :min="3"
+            :max="32"
+          >
             <template #append>次</template>
           </a-input-number>
         </a-form-item>
-        <a-form-item field="PASSWORD_MIN_LENGTH" :label="securityConfig.PASSWORD_MIN_LENGTH.name"
-          :help="securityConfig.PASSWORD_MIN_LENGTH.description" hide-asterisk>
+        <a-form-item
+          field="PASSWORD_MIN_LENGTH" :label="securityConfig.PASSWORD_MIN_LENGTH.name"
+          :help="securityConfig.PASSWORD_MIN_LENGTH.description" hide-asterisk
+        >
           <a-input-number v-model="form.PASSWORD_MIN_LENGTH" class="input-width" :precision="0" :min="8" :max="32" />
         </a-form-item>
-        <a-form-item field="PASSWORD_ALLOW_CONTAIN_USERNAME"
-          :label="securityConfig.PASSWORD_ALLOW_CONTAIN_USERNAME.name">
+        <a-form-item
+          field="PASSWORD_ALLOW_CONTAIN_USERNAME"
+          :label="securityConfig.PASSWORD_ALLOW_CONTAIN_USERNAME.name"
+        >
           <a-switch v-model="form.PASSWORD_ALLOW_CONTAIN_USERNAME" type="round" :checked-value="1" :unchecked-value="0">
             <template #checked>是</template>
             <template #unchecked>否</template>
@@ -97,7 +123,7 @@ const { form } = useForm({
   PASSWORD_REPETITION_TIMES: 0,
   PASSWORD_MIN_LENGTH: 0,
   PASSWORD_ALLOW_CONTAIN_USERNAME: 0,
-  PASSWORD_REQUIRE_SYMBOLS: 0
+  PASSWORD_REQUIRE_SYMBOLS: 0,
 })
 const rules: FormInstance['rules'] = {
   PASSWORD_ERROR_LOCK_COUNT: [{ required: true, message: '请输入值' }],
@@ -112,11 +138,11 @@ const rules: FormInstance['rules'] = {
         } else {
           callback()
         }
-      }
-    }
+      },
+    },
   ],
   PASSWORD_REPETITION_TIMES: [{ required: true, message: '请输入值' }],
-  PASSWORD_MIN_LENGTH: [{ required: true, message: '请输入值' }]
+  PASSWORD_MIN_LENGTH: [{ required: true, message: '请输入值' }],
 }
 
 const securityConfig = ref<SecurityConfig>({
@@ -127,7 +153,7 @@ const securityConfig = ref<SecurityConfig>({
   PASSWORD_REPETITION_TIMES: {},
   PASSWORD_MIN_LENGTH: {},
   PASSWORD_ALLOW_CONTAIN_USERNAME: {},
-  PASSWORD_REQUIRE_SYMBOLS: {}
+  PASSWORD_REQUIRE_SYMBOLS: {},
 })
 // 重置
 const reset = () => {
@@ -155,7 +181,7 @@ const handleCancel = () => {
 }
 
 const queryForm = {
-  category: 'PASSWORD'
+  category: 'PASSWORD',
 }
 // 查询列表数据
 const getDataList = async () => {
@@ -176,7 +202,7 @@ const handleSave = async () => {
   await updateOption(
     Object.entries(form).map(([key, value]) => {
       return { id: securityConfig.value[key].id, code: key, value }
-    })
+    }),
   )
   await getDataList()
   Message.success('保存成功')
@@ -194,7 +220,7 @@ const onResetValue = () => {
     content: '确认恢复安全配置为默认值吗？',
     hideCancel: false,
     maskClosable: false,
-    onOk: handleResetValue
+    onOk: handleResetValue,
   })
 }
 

@@ -94,7 +94,7 @@ const {
   tableData,
   loading,
   search,
-  handleDelete
+  handleDelete,
 } = useTable(() => listMenu(queryForm), { immediate: true })
 
 // 过滤树
@@ -110,7 +110,7 @@ const searchData = (title: string) => {
         if (filterData.length) {
           result.push({
             ...item,
-            children: filterData
+            children: filterData,
           })
         }
       }
@@ -147,8 +147,8 @@ const columns: TableInstanceColumns[] = [
     width: 180,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:menu:update', 'system:menu:delete', 'system:menu:add'])
-  }
+    show: has.hasPermOr(['system:menu:update', 'system:menu:delete', 'system:menu:add']),
+  },
 ]
 
 // 重置
@@ -160,7 +160,7 @@ const reset = () => {
 const onDelete = (record: MenuResp) => {
   return handleDelete(() => deleteMenu(record.id), {
     content: `是否确定删除 [${record.title}]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

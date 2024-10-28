@@ -1,7 +1,9 @@
 <template>
   <a-space wrap :size="30">
-    <a-form ref="formRef" :model="form" :rules="rules" auto-label-width label-align="left"
-      :layout="width >= 500 ? 'horizontal' : 'vertical'" :disabled="!isUpdate" scroll-to-first-error>
+    <a-form
+      ref="formRef" :model="form" :rules="rules" auto-label-width label-align="left"
+      :layout="width >= 500 ? 'horizontal' : 'vertical'" :disabled="!isUpdate" scroll-to-first-error
+    >
       <a-list :bordered="false" :loading="loading">
         <a-form-item field="MAIL_PROTOCOL" :label="mailConfig.MAIL_PROTOCOL.name" hide-asterisk>
           <a-select v-model.trim="form.MAIL_PROTOCOL">
@@ -26,8 +28,10 @@
             <a-radio value="0">禁用</a-radio>
           </a-radio-group>
         </a-form-item>
-        <a-form-item v-if="form.MAIL_SSL_ENABLED === '1'" field="MAIL_SSL_PORT" :label="mailConfig.MAIL_SSL_PORT.name"
-          hide-asterisk>
+        <a-form-item
+          v-if="form.MAIL_SSL_ENABLED === '1'" field="MAIL_SSL_PORT" :label="mailConfig.MAIL_SSL_PORT.name"
+          hide-asterisk
+        >
           <a-input-number v-model="form.MAIL_SSL_PORT" :min="0" />
         </a-form-item>
         <a-space>
@@ -60,7 +64,7 @@ import {
   type OptionResp,
   listOption,
   resetOptionValue,
-  updateOption
+  updateOption,
 } from '@/apis/system'
 import { useForm } from '@/hooks'
 
@@ -75,14 +79,14 @@ const { form } = useForm({
   MAIL_USERNAME: '',
   MAIL_PASSWORD: '',
   MAIL_SSL_ENABLED: '',
-  MAIL_SSL_PORT: 0
+  MAIL_SSL_PORT: 0,
 })
 const rules: FormInstance['rules'] = {
   MAIL_HOST: [{ required: true, message: '请输入值' }],
   MAIL_PORT: [{ required: true, message: '请输入值' }],
   MAIL_USERNAME: [{ required: true, message: '请输入值' }],
   MAIL_PASSWORD: [{ required: true, message: '请输入值' }],
-  MAIL_SSL_PORT: [{ required: true, message: '请输入值' }]
+  MAIL_SSL_PORT: [{ required: true, message: '请输入值' }],
 }
 
 const mailConfig = ref<MailConfig>({
@@ -92,7 +96,7 @@ const mailConfig = ref<MailConfig>({
   MAIL_USERNAME: {},
   MAIL_PASSWORD: {},
   MAIL_SSL_ENABLED: {},
-  MAIL_SSL_PORT: {}
+  MAIL_SSL_PORT: {},
 })
 
 // 重置
@@ -120,7 +124,7 @@ const handleCancel = () => {
 }
 
 const queryForm = {
-  category: 'MAIL'
+  category: 'MAIL',
 }
 // 查询列表数据
 const getDataList = async () => {
@@ -141,7 +145,7 @@ const handleSave = async () => {
   await updateOption(
     Object.entries(form).map(([key, value]) => {
       return { id: mailConfig.value[key].id, code: key, value }
-    })
+    }),
   )
   await getDataList()
   Message.success('保存成功')
@@ -159,7 +163,7 @@ const onResetValue = () => {
     content: '确认恢复邮件配置为默认值吗？',
     hideCancel: false,
     maskClosable: false,
-    onOk: handleResetValue
+    onOk: handleResetValue,
   })
 }
 

@@ -69,7 +69,6 @@
     <RoleUpdateDrawer ref="RoleUpdateDrawerRef" @save-success="search" />
     <RoleDetailDrawer ref="RoleDetailDrawerRef" />
     <RoleUserAssociation ref="RoleUserAssociationRef" />
-
   </div>
 </template>
 
@@ -90,7 +89,7 @@ defineOptions({ name: 'SystemRole' })
 const { data_scope_enum } = useDict('data_scope_enum')
 
 const queryForm = reactive<RoleQuery>({
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
@@ -98,7 +97,7 @@ const {
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listRole({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -106,7 +105,7 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '名称', dataIndex: 'name', slotName: 'name', ellipsis: true, tooltip: true },
   { title: '编码', dataIndex: 'code', ellipsis: true, tooltip: true },
@@ -124,8 +123,8 @@ const columns: TableInstanceColumns[] = [
     width: 200,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:role:update', 'system:role:delete'])
-  }
+    show: has.hasPermOr(['system:role:update', 'system:role:delete']),
+  },
 ]
 
 // 重置

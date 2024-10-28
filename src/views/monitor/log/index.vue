@@ -24,7 +24,7 @@ const router = useRouter()
 
 const PaneMap: Record<string, Component> = {
   1: LoginLog,
-  2: OperationLog
+  2: OperationLog,
 }
 
 const activeKey = ref('1')
@@ -35,7 +35,7 @@ watch(
       activeKey.value = String(route.query.tabKey)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 const change = (key: string | number) => {

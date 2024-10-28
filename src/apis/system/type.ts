@@ -157,7 +157,7 @@ export interface DictQuery {
   sort: Array<string>
 }
 
-export type DictItemResp = {
+export interface DictItemResp {
   id: string
   label: string
   value: string
@@ -209,7 +209,7 @@ export interface NoticePageQuery extends NoticeQuery, PageQuery {
 }
 
 /** 系统文件类型 */
-export type FileItem = {
+export interface FileItem {
   id: string
   name: string
   size: number
@@ -245,7 +245,7 @@ export interface FilePageQuery extends FileQuery, PageQuery {
 }
 
 /** 系统存储类型 */
-export type StorageResp = {
+export interface StorageResp {
   id: string
   name: string
   code: string

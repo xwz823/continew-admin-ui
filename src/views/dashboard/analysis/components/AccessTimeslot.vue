@@ -23,7 +23,7 @@ const tooltipItemsHtmlString = (items) => {
         <span class="tooltip-value">
         ${el.value}
         </span>
-      </div>`
+      </div>`,
     )
     .join('')
 }
@@ -36,7 +36,7 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
       left: '40',
       right: 0,
       top: '20',
-      bottom: '100'
+      bottom: '100',
     },
     xAxis: {
       type: 'category',
@@ -49,24 +49,24 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           if (idx === 0) return ''
           if (idx === xAxis.value.length - 1) return ''
           return `${value}`
-        }
+        },
       },
       axisLine: {
         lineStyle: {
-          color: isDark ? '#3f3f3f' : '#A9AEB8'
-        }
+          color: isDark ? '#3f3f3f' : '#A9AEB8',
+        },
       },
       axisTick: {
         show: true,
         alignWithLabel: true,
         lineStyle: {
-          color: '#86909C'
+          color: '#86909C',
         },
         interval(idx: number) {
           if (idx === 0) return false
           if (idx === xAxis.value.length - 1) return false
           return true
-        }
+        },
       },
       splitLine: {
         show: true,
@@ -75,16 +75,16 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           return idx !== xAxis.value.length - 1
         },
         lineStyle: {
-          color: isDark ? '#3F3F3F' : '#E5E8EF'
-        }
+          color: isDark ? '#3F3F3F' : '#E5E8EF',
+        },
       },
       axisPointer: {
         show: true,
         lineStyle: {
           color: '#23ADFF',
-          width: 2
-        }
-      }
+          width: 2,
+        },
+      },
     },
     yAxis: {
       type: 'value',
@@ -95,17 +95,17 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
             return `${value / 1000}k`
           }
           return `${value}`
-        }
+        },
       },
       axisLine: {
-        show: false
+        show: false,
       },
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: isDark ? '#3F3F3F' : '#E5E8EF'
-        }
-      }
+          color: isDark ? '#3F3F3F' : '#E5E8EF',
+        },
+      },
     },
     tooltip: {
       show: true,
@@ -117,7 +117,7 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
             ${tooltipItemsHtmlString(params)}
           </div>`
       },
-      className: 'echarts-tooltip-diy'
+      className: 'echarts-tooltip-diy',
     },
     series: [
       {
@@ -133,23 +133,23 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
           focus: 'series',
           itemStyle: {
             borderWidth: 2,
-            borderColor: '#E0E3FF'
-          }
+            borderColor: '#E0E3FF',
+          },
         },
         areaStyle: {
           opacity: 0.8,
           color: new graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgba(17, 126, 255, 0.16)'
+              color: 'rgba(17, 126, 255, 0.16)',
             },
             {
               offset: 1,
-              color: 'rgba(17, 128, 255, 0)'
-            }
-          ])
-        }
-      }
+              color: 'rgba(17, 128, 255, 0)',
+            },
+          ]),
+        },
+      },
     ],
     dataZoom: [
       {
@@ -164,18 +164,18 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         handleSize: '20',
         handleStyle: {
           shadowColor: 'rgba(0, 0, 0, 0.2)',
-          shadowBlur: 4
+          shadowBlur: 4,
         },
         brushSelect: false,
-        backgroundColor: isDark ? '#313132' : '#F2F3F5'
+        backgroundColor: isDark ? '#313132' : '#F2F3F5',
       },
       {
         type: 'inside',
         start: 0,
         end: 100,
-        zoomOnMouseWheel: false
-      }
-    ]
+        zoomOnMouseWheel: false,
+      },
+    ],
   }
 })
 

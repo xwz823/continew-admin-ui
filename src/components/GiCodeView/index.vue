@@ -19,7 +19,7 @@ import { useAppStore } from '@/stores'
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'javascript',
-  codeJson: ''
+  codeJson: '',
 })
 const appStore = useAppStore()
 const isDark = computed(() => appStore.theme === 'dark')
@@ -32,7 +32,7 @@ const defaultConfig = {
   tabSize: 2,
   basic: true,
   dark: true,
-  readonly: true
+  readonly: true,
 }
 const config = defaultConfig
 

@@ -41,7 +41,7 @@ watch(
       activeKey.value = String(route.query.tabKey)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 const change = (key: string | number) => {
   activeKey.value = key as string

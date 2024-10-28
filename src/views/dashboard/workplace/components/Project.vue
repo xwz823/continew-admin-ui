@@ -50,7 +50,7 @@ const list = [
     logo: 'https://continew.top/logo.svg',
     url: 'https://gitee.com/continew/continew-admin',
     status: '迭代',
-    statusColor: 'rgb(var(--primary-6))'
+    statusColor: 'rgb(var(--primary-6))',
   },
   {
     name: 'ContiNew Starter',
@@ -58,7 +58,7 @@ const list = [
     logo: 'https://continew.top/logo.svg',
     url: 'https://gitee.com/continew/continew-starter',
     status: '迭代',
-    statusColor: 'rgb(var(--primary-6))'
+    statusColor: 'rgb(var(--primary-6))',
   },
   {
     name: 'ContiNew Admin UI',
@@ -66,7 +66,7 @@ const list = [
     logo: 'https://continew.top/logo.svg',
     url: 'https://gitee.com/continew/continew-admin-ui',
     status: '迭代',
-    statusColor: 'rgb(var(--primary-6))'
+    statusColor: 'rgb(var(--primary-6))',
   },
   {
     name: 'ContiNew Admin UI Arco',
@@ -74,7 +74,7 @@ const list = [
     logo: 'https://continew.top/logo.svg',
     url: 'https://gitee.com/continew/continew-admin-ui-arco',
     status: '归档',
-    statusColor: 'rgb(var(--warning-6))'
+    statusColor: 'rgb(var(--warning-6))',
   },
   {
     name: 'ContiNew Cloud',
@@ -82,7 +82,7 @@ const list = [
     logo: 'https://continew.top/logo.svg',
     url: '#',
     status: '孵化',
-    statusColor: 'rgb(var(--danger-6))'
+    statusColor: 'rgb(var(--danger-6))',
   },
   {
     name: 'charles7c.github.io',
@@ -90,8 +90,8 @@ const list = [
     logo: 'https://blog.charles7c.top/logo.png',
     url: 'https://github.com/Charles7c/charles7c.github.io',
     status: '归档',
-    statusColor: 'rgb(var(--warning-6))'
-  }
+    statusColor: 'rgb(var(--warning-6))',
+  },
 ]
 </script>
 

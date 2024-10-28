@@ -30,7 +30,7 @@ const links = [
   { text: '常见问题', url: 'https://continew.top/faq.html' },
   { text: '更新日志', url: 'https://continew.top/admin/other/changelog.html' },
   { text: '贡献指南', url: 'https://continew.top/admin/other/contributing.html' },
-  { text: '赞助支持 💖', url: 'https://continew.top/sponsor.html' }
+  { text: '赞助支持 💖', url: 'https://continew.top/sponsor.html' },
 ]
 </script>
 

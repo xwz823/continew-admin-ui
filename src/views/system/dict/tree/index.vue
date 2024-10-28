@@ -57,7 +57,7 @@ interface Props {
   placeholder?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: '请输入关键词'
+  placeholder: '请输入关键词',
 })
 const emit = defineEmits<{
   (e: 'node-click', keys: Array<any>): void
@@ -74,7 +74,7 @@ const select = (keys: Array<any>) => {
 }
 
 const queryForm = reactive<DictQuery>({
-  sort: ['createTime,asc']
+  sort: ['createTime,asc'],
 })
 
 interface TreeItem extends DictResp {
@@ -92,7 +92,7 @@ const getTreeData = async (query: DictQuery = { ...queryForm }) => {
       popupVisible: false,
       icon: () => {
         return null
-      }
+      },
     }))
     await nextTick(() => {
       select([treeData.value[0]?.id])
@@ -136,7 +136,7 @@ const onMenuItemClick = (mode: string, node: DictResp) => {
         } catch (error) {
           return false
         }
-      }
+      },
     })
   }
 }

@@ -39,7 +39,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EChartsOption } from 'echarts'
 import { useChart } from '@/hooks'
 import { useAppStore } from '@/stores'
 
@@ -49,13 +48,13 @@ const isDark = computed(() => appStore.theme === 'dark')
 const count = ref(0)
 const growth = ref(0)
 const chartData = ref<number[]>([])
-const { chartOption } = useChart((isDark: EChartsOption) => {
+const { chartOption } = useChart(() => {
   return {
     grid: {
       left: 0,
       right: 0,
       top: 0,
-      bottom: 0
+      bottom: 0,
     },
     legend: {
       show: true,
@@ -66,11 +65,11 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
       itemWidth: 6,
       itemHeight: 6,
       textStyle: {
-        color: '#4E5969'
-      }
+        color: '#4E5969',
+      },
     },
     tooltip: {
-      show: true
+      show: true,
     },
     series: [
       {
@@ -79,11 +78,11 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         radius: ['50%', '70%'],
         center: ['30%', '50%'],
         label: {
-          show: false
+          show: false,
         },
-        data: chartData.value
-      }
-    ]
+        data: chartData.value,
+      },
+    ],
   }
 })
 
@@ -101,8 +100,8 @@ const getChartData = async () => {
         name: `示例${index + 1}`,
         value: item,
         itemStyle: {
-          color: data.length > 1 && index === data.length - 1 ? colors[colors.length - 1] : colors[index]
-        }
+          color: data.length > 1 && index === data.length - 1 ? colors[colors.length - 1] : colors[index],
+        },
       })
     })
   } finally {

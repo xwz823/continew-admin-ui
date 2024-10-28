@@ -27,7 +27,7 @@ const handleNotification = () => {
     position: 'bottomRight',
     footer: () => {
       return h(Space, {}, () => [h(Button, { type: 'primary', onClick: () => onUpdateSystem(id) }, '更新'), h(Button, { type: 'secondary', onClick: () => onCloseUpdateSystem(id) }, '关闭')])
-    }
+    },
   })
 }
 
@@ -37,7 +37,7 @@ const handleNotification = () => {
  */
 const getVersionTag = async () => {
   const response = await fetch('/', {
-    cache: 'no-cache'
+    cache: 'no-cache',
   })
   return response.headers.get('etag') || response.headers.get('last-modified')
 }

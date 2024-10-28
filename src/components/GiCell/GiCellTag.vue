@@ -17,15 +17,15 @@ defineOptions({ name: 'GiCellTag' })
 const props = withDefaults(defineProps<Partial<GiCellTagType>>(), {
   dict: [{
     label: '',
-    value: ''
+    value: '',
   }],
-  value: ''
+  value: '',
 })
 
 const dictItem = computed((): LabelValueState => {
   try {
     return props.dict.find(
-      (d) => d.value === String(props.value) || d.value === Number(props.value)
+      (d) => d.value === String(props.value) || d.value === Number(props.value),
     ) || { label: '', value: '' }
   } catch (error) {
     return { label: '', value: '' }

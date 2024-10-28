@@ -1,13 +1,13 @@
 <template>
   <a-modal
-      v-model:visible="visible"
-      :title="title"
-      :mask-closable="false"
-      :esc-to-close="false"
-      :modal-style="{ maxWidth: '520px' }"
-      width="90%"
-      @before-ok="save"
-      @close="reset"
+    v-model:visible="visible"
+    :title="title"
+    :mask-closable="false"
+    :esc-to-close="false"
+    :modal-style="{ maxWidth: '520px' }"
+    width="90%"
+    @before-ok="save"
+    @close="reset"
   >
     <GiForm ref="formRef" v-model="form" :options="options" :columns="columns" />
   </a-modal>
@@ -33,7 +33,7 @@ const { app_type } = useDict('app_type')
 
 const options: Options = {
   form: {},
-  btns: { hide: true }
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
@@ -41,13 +41,13 @@ const columns: Columns = reactive([
     label: '应用名称',
     field: 'name',
     type: 'input',
-    rules: [{ required: true, message: '请输入应用名称' }]
+    rules: [{ required: true, message: '请输入应用名称' }],
   },
   {
     label: 'APPKEY',
     field: 'appKey',
     type: 'input',
-    rules: [{ required: true, message: '请输入APPKEY' }]
+    rules: [{ required: true, message: '请输入APPKEY' }],
   },
   {
     label: '应用状态',
@@ -61,24 +61,24 @@ const columns: Columns = reactive([
       uncheckedValue: '0',
       checkedText: '启用',
       uncheckedText: '禁用',
-      checkedColor: 'green'
+      checkedColor: 'green',
     },
-    rules: [{ required: false, message: '请输入应用状态' }]
+    rules: [{ required: false, message: '请输入应用状态' }],
   },
   {
     label: '失效时间',
     field: 'expirationTime',
     type: 'date-picker',
     props: {
-      showTime: true
+      showTime: true,
     },
-    rules: [{ required: true, message: '请输入失效时间' }]
+    rules: [{ required: true, message: '请输入失效时间' }],
   },
   {
     label: '应用描述',
     field: 'appDesc',
-    type: 'textarea'
-  }
+    type: 'textarea',
+  },
 ])
 
 const { form, resetForm } = useForm({

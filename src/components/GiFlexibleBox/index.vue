@@ -11,7 +11,7 @@ defineOptions({ name: 'GiFlexibleBox' })
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
-  direction: 'right'
+  direction: 'right',
 })
 
 interface Props {

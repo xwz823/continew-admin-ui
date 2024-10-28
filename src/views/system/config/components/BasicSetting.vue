@@ -6,11 +6,15 @@
         <template #extra>
           {{ siteConfig.SITE_LOGO.description }}
           <br />
-          <a-upload :file-list="logoFile ? [logoFile] : []" accept="image/*" :show-file-list="false"
-                    :custom-request="handleUploadLogo" @change="handleChangeLogo">
+          <a-upload
+            :file-list="logoFile ? [logoFile] : []" accept="image/*" :show-file-list="false"
+            :custom-request="handleUploadLogo" @change="handleChangeLogo"
+          >
             <template #upload-button>
-              <div :class="`arco-upload-list-item${logoFile && logoFile.status === 'error' ? ' arco-upload-list-item-error' : ''
-                }`">
+              <div
+                :class="`arco-upload-list-item${logoFile && logoFile.status === 'error' ? ' arco-upload-list-item-error' : ''
+                }`"
+              >
                 <div v-if="logoFile && logoFile.url" class="arco-upload-list-picture custom-upload-avatar logo">
                   <img :src="logoFile.url" alt="Logo" />
                   <div v-if="isUpdate" class="arco-upload-list-picture-mask logo">
@@ -32,13 +36,19 @@
         <template #extra>
           {{ siteConfig.SITE_FAVICON.description }}
           <br />
-          <a-upload :file-list="faviconFile ? [faviconFile] : []" accept="image/*" :show-file-list="false"
-            :custom-request="handleUploadFavicon" @change="handleChangeFavicon">
+          <a-upload
+            :file-list="faviconFile ? [faviconFile] : []" accept="image/*" :show-file-list="false"
+            :custom-request="handleUploadFavicon" @change="handleChangeFavicon"
+          >
             <template #upload-button>
-              <div :class="`arco-upload-list-item${faviconFile && faviconFile.status === 'error' ? ' arco-upload-list-item-error' : ''
-                }`">
-                <div v-if="faviconFile && faviconFile.url"
-                  class="arco-upload-list-picture custom-upload-avatar favicon">
+              <div
+                :class="`arco-upload-list-item${faviconFile && faviconFile.status === 'error' ? ' arco-upload-list-item-error' : ''
+                }`"
+              >
+                <div
+                  v-if="faviconFile && faviconFile.url"
+                  class="arco-upload-list-picture custom-upload-avatar favicon"
+                >
                   <img :src="faviconFile.url" alt="favicon" />
                   <div v-if="isUpdate" class="arco-upload-list-picture-mask favicon">
                     <IconEdit />
@@ -110,7 +120,7 @@ import {
   type SiteConfig,
   listOption,
   resetOptionValue,
-  updateOption
+  updateOption,
 } from '@/apis/system'
 import { useAppStore } from '@/stores'
 import { useForm } from '@/hooks'
@@ -124,12 +134,12 @@ const { form } = useForm({
   SITE_FAVICON: '',
   SITE_LOGO: '',
   SITE_TITLE: '',
-  SITE_COPYRIGHT: ''
+  SITE_COPYRIGHT: '',
 })
 const rules: FormInstance['rules'] = {
   SITE_TITLE: [{ required: true, message: '请输入系统标题' }],
   SITE_DESCRIPTION: [{ required: true, message: '请输入系统描述' }],
-  SITE_COPYRIGHT: [{ required: true, message: '请输入版权信息' }]
+  SITE_COPYRIGHT: [{ required: true, message: '请输入版权信息' }],
 }
 
 const siteConfig = ref<SiteConfig>({
@@ -138,7 +148,7 @@ const siteConfig = ref<SiteConfig>({
   SITE_TITLE: {},
   SITE_DESCRIPTION: {},
   SITE_COPYRIGHT: {},
-  SITE_BEIAN: {}
+  SITE_BEIAN: {},
 })
 const faviconFile = ref<FileItem>({ uid: '-1' })
 const logoFile = ref<FileItem>({ uid: '-2' })
@@ -168,7 +178,7 @@ const handleCancel = () => {
 }
 
 const queryForm = reactive({
-  category: 'SITE'
+  category: 'SITE',
 })
 // 查询列表数据
 const getDataList = async () => {
@@ -190,7 +200,7 @@ const handleSave = async () => {
   await updateOption(
     Object.entries(form).map(([key, value]) => {
       return { id: siteConfig.value[key].id, code: key, value }
-    })
+    }),
   )
   appStore.setSiteConfig(form)
   await getDataList()
@@ -210,7 +220,7 @@ const onResetValue = () => {
     content: '确认恢复基础配置为默认值吗？',
     hideCancel: false,
     maskClosable: false,
-    onOk: handleResetValue
+    onOk: handleResetValue,
   })
 }
 
@@ -236,12 +246,12 @@ const handleUploadFavicon = (options: RequestOption) => {
   return {
     abort() {
       controller.abort()
-    }
+    },
   }
 }
 const handleChangeFavicon = (_: any, currentFile: any) => {
   faviconFile.value = {
-    ...currentFile
+    ...currentFile,
   }
 }
 
@@ -267,12 +277,12 @@ const handleUploadLogo = (options: RequestOption) => {
   return {
     abort() {
       controller.abort()
-    }
+    },
   }
 }
 const handleChangeLogo = (_: any, currentFile: any) => {
   logoFile.value = {
-    ...currentFile
+    ...currentFile,
   }
 }
 

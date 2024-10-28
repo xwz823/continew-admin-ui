@@ -66,8 +66,8 @@ const formatAsyncRoutes = (menus: RouteItem[]) => {
         keepAlive: item.isCache,
         icon: item.icon,
         showInTabs: item.showInTabs,
-        activeMenu: item.activeMenu
-      }
+        activeMenu: item.activeMenu,
+      },
     }
   })
   return routes as RouteRecordRaw[]
@@ -124,7 +124,7 @@ const storeSetup = () => {
   return {
     routes,
     asyncRoutes,
-    generateRoutes
+    generateRoutes,
   }
 }
 

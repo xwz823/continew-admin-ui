@@ -166,7 +166,7 @@ const columns: TableInstanceColumns[] = [
   { title: '查询', slotName: 'showInQuery', width: 60, align: 'center' },
   { title: '表单类型', slotName: 'formType' },
   { title: '查询方式', slotName: 'queryType' },
-  { title: '关联字典', slotName: 'dictCode' }
+  { title: '关联字典', slotName: 'dictCode' },
 ]
 
 const dictList = ref<LabelValueState[]>([])
@@ -191,11 +191,11 @@ const rules: FormInstance['rules'] = {
   author: [{ required: true, message: '请输入作者名称' }],
   moduleName: [{ required: true, message: '请输入所属模块' }],
   packageName: [{ required: true, message: '请输入模块包名' }],
-  businessName: [{ required: true, message: '请输入业务名称' }]
+  businessName: [{ required: true, message: '请输入业务名称' }],
 }
 
 const { form, resetForm } = useForm({
-  isOverride: false
+  isOverride: false,
 })
 
 // 重置
@@ -240,7 +240,7 @@ const save = async () => {
     }
     await saveGenConfig(form.tableName, {
       genConfig: form,
-      fieldConfigs: dataList.value
+      fieldConfigs: dataList.value,
     } as GeneratorConfigResp)
     Message.success('保存成功')
     emit('save-success')

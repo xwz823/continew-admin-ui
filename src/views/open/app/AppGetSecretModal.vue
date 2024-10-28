@@ -1,16 +1,16 @@
 <template>
   <a-modal
-      v-model:visible="visible"
-      title="应用密钥/密码信息"
-      :mask-closable="false"
-      :esc-to-close="false"
-      :modal-style="{ maxWidth: '520px' }"
-      width="90%"
+    v-model:visible="visible"
+    title="应用密钥/密码信息"
+    :mask-closable="false"
+    :esc-to-close="false"
+    :modal-style="{ maxWidth: '520px' }"
+    width="90%"
   >
     <a-watermark :content="content" :gap="[10, 10]">
-      <div style="width: 100%; height: 150px;" >
+      <div style="width: 100%; height: 150px;">
         <a-alert type="warning" style="margin-bottom: 18px">应用密码仅可查看一次，请妥善保管，遗失请刷新。</a-alert>
-        <a-descriptions :data="data" :column="1" bordered/>
+        <a-descriptions :data="data" :column="1" bordered />
       </div>
     </a-watermark>
   </a-modal>
@@ -25,10 +25,10 @@ import { useUserStore } from '@/stores'
 const dataId = ref('')
 const initData = [{
   label: '应用密钥（appkey）',
-  value: '*********'
+  value: '*********',
 }, {
   label: '应用密码（appsecret）',
-  value: '*********'
+  value: '*********',
 }]
 const userStore = useUserStore()
 const content = ref([userStore.userInfo.username, dayjs().format('YYYY-MM-DD HH:mm:ss')])
@@ -41,10 +41,10 @@ const getAppSecretData = async (id: string) => {
   await getAppSecret(id).then((res) => {
     data = [{
       label: '应用密钥（appkey）',
-      value: res.data.appKey
+      value: res.data.appKey,
     }, {
       label: '应用密码（appsecret）',
-      value: res.data.appSecret
+      value: res.data.appSecret,
     }]
   })
 }

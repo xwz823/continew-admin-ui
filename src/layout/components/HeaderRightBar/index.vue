@@ -140,7 +140,7 @@ const logout = () => {
       } catch (error) {
         return false
       }
-    }
+    },
   })
 }
 

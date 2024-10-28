@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   icon: '',
   label: '',
   more: false,
-  active: false
+  active: false,
 })
 
 const emit = defineEmits<{

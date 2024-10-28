@@ -30,7 +30,7 @@ const formRef = ref<InstanceType<typeof GiForm>>()
 
 const options: Options = {
   form: { size: 'large' },
-  btns: { hide: true }
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
@@ -42,9 +42,9 @@ const columns: Columns = reactive([
     type: 'textarea',
     props: {
       maxLength: 200,
-      autoSize: { minRows: 3, maxRows: 5 }
-    }
-  }
+      autoSize: { minRows: 3, maxRows: 5 },
+    },
+  },
 ])
 
 const { form, resetForm } = useForm({})

@@ -82,14 +82,14 @@ const { job_execute_reason_enum, job_execute_status_enum } = useDict('job_execut
 const queryForm = reactive<JobLogQuery>({
   datetimeRange: [
     dayjs().subtract(6, 'day').startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss')
-  ]
+    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+  ],
 })
 const {
   tableData: dataList,
   pagination,
   loading,
-  search
+  search,
 } = useTable((page) => listJobLog({ ...queryForm, ...page }), { immediate: false })
 
 const columns: TableInstanceColumns[] = [
@@ -97,7 +97,7 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '任务组', dataIndex: 'groupName', width: 80, ellipsis: true, tooltip: true },
   { title: '任务名称', dataIndex: 'jobName', width: 80, ellipsis: true, tooltip: true },
@@ -111,8 +111,8 @@ const columns: TableInstanceColumns[] = [
     width: 60,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['schedule:log:stop', 'schedule:log:retry'])
-  }
+    show: has.hasPermOr(['schedule:log:stop', 'schedule:log:retry']),
+  },
 ]
 
 const groupList = ref()
@@ -121,7 +121,7 @@ const getGroupList = async () => {
   const { data } = await listGroup()
   groupList.value = data?.map((item: string) => ({
     label: item,
-    value: item
+    value: item,
   }))
 }
 
@@ -130,7 +130,7 @@ const reset = () => {
   queryForm.taskBatchStatus = undefined
   queryForm.datetimeRange = [
     dayjs().subtract(6, 'day').startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
   ]
   search()
 }

@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   color: '#168CFF',
   size: 20,
   alt: 'avatar',
-  trigger: false
+  trigger: false,
 })
 
 interface Props {
@@ -65,7 +65,7 @@ const colors = [
   '#7BC616',
   '#14C9C9',
   '#FF7D00',
-  '#FFC72E'
+  '#FFC72E',
 ]
 const avatarColor = computed(() => {
   const hash = (s) => {

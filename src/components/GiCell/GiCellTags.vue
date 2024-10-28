@@ -22,7 +22,7 @@
 defineOptions({ name: 'GiCellTags' })
 
 withDefaults(defineProps<Props>(), {
-  data: () => []
+  data: () => [],
 })
 
 interface Props {

@@ -34,7 +34,7 @@ const editorConfig = reactive<AiEditorOptions>({
   theme: appStore.theme,
   placeholder: '请输入内容',
   content: '',
-  editable: false
+  editable: false,
 })
 const init = () => {
   aieditor.value?.destroy()

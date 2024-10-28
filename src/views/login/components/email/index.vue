@@ -25,8 +25,7 @@
     </a-form-item>
     <a-form-item>
       <a-space direction="vertical" fill class="w-full">
-        <a-button disabled class="btn" type="primary" :loading="loading" html-type="submit" size="large" long>立即登录</a-button
-        >
+        <a-button disabled class="btn" type="primary" :loading="loading" html-type="submit" size="large" long>立即登录</a-button>
       </a-space>
     </a-form-item>
   </a-form>
@@ -41,15 +40,15 @@ import * as Regexp from '@/utils/regexp'
 const formRef = ref<FormInstance>()
 const form = reactive({
   email: '',
-  captcha: ''
+  captcha: '',
 })
 
 const rules: FormInstance['rules'] = {
   email: [
     { required: true, message: '请输入邮箱' },
-    { match: Regexp.Email, message: '请输入正确的邮箱' }
+    { match: Regexp.Email, message: '请输入正确的邮箱' },
   ],
-  captcha: [{ required: true, message: '请输入验证码' }]
+  captcha: [{ required: true, message: '请输入验证码' }],
 }
 
 const userStore = useUserStore()
@@ -68,8 +67,8 @@ const handleLogin = async () => {
     router.push({
       path: (redirect as string) || '/',
       query: {
-        ...othersQuery
-      }
+        ...othersQuery,
+      },
     })
     Message.success('欢迎使用')
   } catch (error) {

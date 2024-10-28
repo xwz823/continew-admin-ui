@@ -61,14 +61,14 @@ const userStore = useUserStore()
 const currentToken = userStore.token
 
 const queryForm = reactive<OnlineUserQuery>({
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
   tableData: dataList,
   loading,
   pagination,
-  search
+  search,
 } = useTable((page) => listOnlineUser({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -76,7 +76,7 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '用户昵称', slotName: 'nickname', ellipsis: true, tooltip: true },
   { title: '登录 IP', dataIndex: 'ip', ellipsis: true, tooltip: true },
@@ -90,8 +90,8 @@ const columns: TableInstanceColumns[] = [
     slotName: 'action',
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['monitor:online:kickout'])
-  }
+    show: has.hasPermOr(['monitor:online:kickout']),
+  },
 ]
 
 // 重置

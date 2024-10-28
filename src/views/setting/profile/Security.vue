@@ -52,7 +52,7 @@ modeList.value = [
     type: 'phone',
     jumpMode: 'modal',
     status: !!userInfo.value.phone,
-    statusString: userInfo.value.phone ? '已绑定' : '未绑定'
+    statusString: userInfo.value.phone ? '已绑定' : '未绑定',
   },
   {
     title: '安全邮箱',
@@ -62,7 +62,7 @@ modeList.value = [
     type: 'email',
     jumpMode: 'modal',
     status: !!userInfo.value.email,
-    statusString: userInfo.value.email ? '已绑定' : '未绑定'
+    statusString: userInfo.value.email ? '已绑定' : '未绑定',
   },
   {
     title: '登录密码',
@@ -71,8 +71,8 @@ modeList.value = [
     type: 'password',
     jumpMode: 'modal',
     status: !!userInfo.value.pwdResetTime,
-    statusString: userInfo.value.pwdResetTime ? '已设置' : '未设置'
-  }
+    statusString: userInfo.value.pwdResetTime ? '已设置' : '未设置',
+  },
 ]
 
 const verifyModelRef = ref<InstanceType<typeof VerifyModel>>()

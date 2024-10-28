@@ -74,7 +74,7 @@ defineOptions({ name: 'GiIconSelector' })
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
-  enableCopy: false
+  enableCopy: false,
 })
 
 const emit = defineEmits(['select', 'update:modelValue'])

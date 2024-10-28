@@ -51,12 +51,12 @@ const { form, resetForm } = useForm({
   effectiveTime: '',
   terminateTime: '',
   content: '',
-  noticeScope: 1
+  noticeScope: 1,
 })
 const options: Options = {
   form: { size: 'large' },
   grid: { cols: 2 },
-  btns: { hide: true }
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
@@ -66,24 +66,24 @@ const columns: Columns = reactive([
     type: 'input',
     props: {
       maxLength: 150,
-      showWordLimit: true
+      showWordLimit: true,
     },
-    rules: [{ required: true, message: '请输入标题' }]
+    rules: [{ required: true, message: '请输入标题' }],
   },
   {
     label: '类型',
     field: 'type',
     type: 'select',
     options: notice_type,
-    rules: [{ required: true, message: '请输入类型' }]
+    rules: [{ required: true, message: '请输入类型' }],
   },
   {
     label: '生效时间',
     field: 'effectiveTime',
     type: 'date-picker',
     props: {
-      showTime: true
-    }
+      showTime: true,
+    },
 
   },
   {
@@ -91,15 +91,15 @@ const columns: Columns = reactive([
     field: 'terminateTime',
     type: 'date-picker',
     props: {
-      showTime: true
-    }
+      showTime: true,
+    },
   },
   {
     label: '通知范围',
     field: 'noticeScope',
     type: 'radio-group',
     options: [{ label: '所有人', value: 1 }, { label: '指定用户', value: 2 }],
-    rules: [{ required: true, message: '请选择通知范围' }]
+    rules: [{ required: true, message: '请选择通知范围' }],
   },
   {
     label: '指定用户',
@@ -108,8 +108,8 @@ const columns: Columns = reactive([
     hide: () => {
       return form.noticeScope === 1
     },
-    rules: [{ required: true, message: '请选择指定用户' }]
-  }
+    rules: [{ required: true, message: '请选择指定用户' }],
+  },
 
 ])
 // 修改

@@ -72,7 +72,7 @@ defineOptions({ name: 'SystemMessage' })
 const { message_type } = useDict('message_type')
 
 const queryForm = reactive<MessageQuery>({
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
@@ -83,7 +83,7 @@ const {
   select,
   selectAll,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listMessage({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -91,12 +91,12 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '标题', dataIndex: 'title', slotName: 'title', ellipsis: true, tooltip: true },
   { title: '状态', dataIndex: 'isRead', slotName: 'isRead', align: 'center', width: 80 },
   { title: '时间', dataIndex: 'createTime', width: 180 },
-  { title: '类型', dataIndex: 'type', slotName: 'type', width: 180, ellipsis: true, tooltip: true }
+  { title: '类型', dataIndex: 'type', slotName: 'type', width: 180, ellipsis: true, tooltip: true },
 ]
 
 // 重置
@@ -136,7 +136,7 @@ const onReadAll = async () => {
       await readMessage([])
       Message.success('操作成功')
       search()
-    }
+    },
   })
 }
 </script>

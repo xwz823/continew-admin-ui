@@ -3,17 +3,23 @@
     <a-form ref="formRef" :model="form">
       <a-table :data="form.tableData" :bordered="{ cell: true }" :pagination="false" v-bind="attrs">
         <template #columns>
-          <a-table-column v-for="col in props.columns" :key="col.dataIndex" :title="col.title"
-            :data-index="col.dataIndex" :header-cell-class="headerCellClass(col)" v-bind="col.columnProps">
+          <a-table-column
+            v-for="col in props.columns" :key="col.dataIndex" :title="col.title"
+            :data-index="col.dataIndex" :header-cell-class="headerCellClass(col)" v-bind="col.columnProps"
+          >
             <template #cell="{ record, rowIndex, column }">
-              <a-form-item :field="`tableData[${rowIndex}].${col.dataIndex}`" :label-col-style="{ display: 'none' }"
+              <a-form-item
+                :field="`tableData[${rowIndex}].${col.dataIndex}`" :label-col-style="{ display: 'none' }"
                 :wrapper-col-props="{ span: 24 }" v-bind="col.formItemProps"
-                :rules="[{ required: col.required || false, message: getRuleMessage(col) }, ...(col.rules || [])]">
+                :rules="[{ required: col.required || false, message: getRuleMessage(col) }, ...(col.rules || [])]"
+              >
                 <template v-if="col.slotName">
                   <slot :name="col.dataIndex" v-bind="{ record, rowIndex, column }"></slot>
                 </template>
-                <component :is="`a-${col.type}`" v-else v-bind="getComponentBindProps(col)"
-                  v-model="record[col.dataIndex]" :disabled="isDisabled({ row: record, rowIndex, col })">
+                <component
+                  :is="`a-${col.type}`" v-else v-bind="getComponentBindProps(col)"
+                  v-model="record[col.dataIndex]" :disabled="isDisabled({ row: record, rowIndex, col })"
+                >
                 </component>
               </a-form-item>
             </template>
@@ -31,7 +37,7 @@ import type { ColumnItem, Disabled } from './type'
 defineOptions({ name: 'GiEditTable', inheritAttrs: false })
 
 const props = withDefaults(defineProps<Props>(), {
-  cellDisabled: false
+  cellDisabled: false,
 })
 
 defineSlots<{

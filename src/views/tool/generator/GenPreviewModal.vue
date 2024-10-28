@@ -24,15 +24,20 @@
               <GiSvgIcon v-if="!node.isLeaf && node.expanded" :size="16" name="directory-open-blue" />
               <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, '.java')" :size="16" name="file-java" />
               <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, '.vue')" :size="16" name="file-vue" />
-              <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, '.ts')" :size="16"
-                         name="file-typescript" />
-              <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, '.js')" :size="16"
-                         name="file-javascript" />
+              <GiSvgIcon
+                v-if="node.isLeaf && checkFileType(node.node.title, '.ts')" :size="16"
+                name="file-typescript"
+              />
+              <GiSvgIcon
+                v-if="node.isLeaf && checkFileType(node.node.title, '.js')" :size="16"
+                name="file-javascript"
+              />
               <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, '.json')" :size="16" name="file-json" />
               <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, 'pom.xml')" :size="16" name="file-maven" />
               <GiSvgIcon
                 v-if="node.isLeaf && checkFileType(node.node.title, '.xml') && !checkFileType(node.node.title, 'pom.xml')"
-                :size="16" name="file-xml" />
+                :size="16" name="file-xml"
+              />
               <GiSvgIcon v-if="node.isLeaf && checkFileType(node.node.title, '.sql')" :size="16" name="file-sql" />
             </template>
           </a-tree>

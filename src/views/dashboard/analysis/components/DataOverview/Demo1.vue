@@ -39,7 +39,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EChartsOption } from 'echarts'
 import { useChart } from '@/hooks'
 import { useAppStore } from '@/stores'
 
@@ -50,24 +49,24 @@ const count = ref(0)
 const growth = ref(0)
 const xAxis = ref<string[]>([])
 const chartData = ref<number[]>([])
-const { chartOption } = useChart((isDark: EChartsOption) => {
+const { chartOption } = useChart(() => {
   return {
     grid: {
       left: 0,
       right: 30,
       top: 10,
-      bottom: 0
+      bottom: 0,
     },
     xAxis: {
       type: 'category',
-      data: xAxis.value
+      data: xAxis.value,
     },
     yAxis: {
-      show: false
+      show: false,
     },
     tooltip: {
       show: true,
-      trigger: 'axis'
+      trigger: 'axis',
     },
     series: [
       {
@@ -79,10 +78,10 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         lineStyle: {
           color: '#246EFF',
           width: 2,
-          type: 'dashed'
-        }
-      }
-    ]
+          type: 'dashed',
+        },
+      },
+    ],
   }
 })
 

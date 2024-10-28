@@ -28,6 +28,7 @@
                 css: true,
               }"
             >
+              <!-- eslint-disable-next-line vue/no-parsing-error -->
               <template v-if="index = getMatchIndex(node?.title), index < 0">{{ node?.title }}</template>
               <span v-else>{{ node?.title?.substr(0, index) }}
                 <span style="color: rgb(var(--arcoblue-6));">{{ node?.title?.substr(index, searchKey.length) }}</span>
@@ -50,7 +51,7 @@ interface Props {
   placeholder?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: '请输入关键词'
+  placeholder: '请输入关键词',
 })
 const emit = defineEmits<{
   (e: 'node-click', keys: Array<any>): void
@@ -73,7 +74,7 @@ const { deptList, getDeptList } = useDept({
       treeRef.value?.expandAll(true)
       select([deptList.value[0]?.key])
     })
-  }
+  },
 })
 
 // 过滤树
@@ -89,7 +90,7 @@ const search = (keyword: string) => {
         if (filterData.length) {
           result.push({
             ...item,
-            children: filterData
+            children: filterData,
           })
         }
       }
@@ -106,8 +107,10 @@ const treeData = computed(() => {
 
 /**
  * 获取匹配索引
+ *
  * @param name 名称
  */
+// eslint-disable-next-line unused-imports/no-unused-vars
 const getMatchIndex = (name: string) => {
   if (!searchKey.value) return -1
   return name.toLowerCase().indexOf(searchKey.value.toLowerCase())
