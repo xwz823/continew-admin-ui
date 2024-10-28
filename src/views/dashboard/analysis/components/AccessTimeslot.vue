@@ -10,6 +10,7 @@
 import { type EChartsOption, graphic } from 'echarts'
 import { useChart } from '@/hooks'
 import { type DashboardChartCommonResp, getAnalysisTimeslot as getData } from '@/apis/common'
+import handleIcon from '@/assets/icons/slider.svg'
 
 // 提示框
 const tooltipItemsHtmlString = (items) => {
@@ -159,8 +160,7 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         right: 14,
         height: 14,
         borderColor: 'transparent',
-        handleIcon:
-          'image://http://p3-armor.byteimg.com/tos-cn-i-49unhts6dw/1ee5a8c6142b2bcf47d2a9f084096447.svg~tplv-49unhts6dw-image.image',
+        handleIcon: `image://${handleIcon}`,
         handleSize: '20',
         handleStyle: {
           shadowColor: 'rgba(0, 0, 0, 0.2)',
