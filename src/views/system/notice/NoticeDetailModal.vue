@@ -23,7 +23,7 @@
       </a-typography-paragraph>
     </a-typography>
     <a-divider />
-    <AiEditor :model-value="dataDetail?.content" />
+    <AiEditor v-if="dataDetail?.content" :model-value="dataDetail?.content" />
     <a-divider />
     <div v-if="dataDetail?.updateTime" class="update-time-row">
       <span>
