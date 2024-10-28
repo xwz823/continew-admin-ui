@@ -21,11 +21,19 @@
             <IconIdcard v-else />
           </template>
           <template #title="node">
-            <template v-if="index = getMatchIndex(node?.title), index < 0">{{ node?.title }}</template>
-            <span v-else>{{ node?.title?.substr(0, index) }}
-              <span style="color: rgb(var(--arcoblue-6));">{{ node?.title?.substr(index, searchKey.length) }}</span>
-              {{ node?.title?.substr(index + searchKey.length) }}
-            </span>
+            <a-typography-paragraph
+              :ellipsis="{
+                rows: 1,
+                showTooltip: true,
+                css: true,
+              }"
+            >
+              <template v-if="index = getMatchIndex(node?.title), index < 0">{{ node?.title }}</template>
+              <span v-else>{{ node?.title?.substr(0, index) }}
+                <span style="color: rgb(var(--arcoblue-6));">{{ node?.title?.substr(index, searchKey.length) }}</span>
+                {{ node?.title?.substr(index + searchKey.length) }}
+              </span>
+            </a-typography-paragraph>
           </template>
         </a-tree>
       </div>
@@ -135,6 +143,9 @@ onMounted(() => {
   background-color: rgba(var(--primary-6), 0.1);
   &:hover {
     background-color: rgba(var(--primary-6), 0.1);
+  }
+  .arco-typography {
+    color: rgb(var(--primary-6));
   }
 }
 

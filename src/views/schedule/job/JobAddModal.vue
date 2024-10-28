@@ -121,7 +121,7 @@
                 </template>
               </a-button>
             </div>
-            <a-button type="outline" class="add-button" style="width: 100%;" @click="onAddArgs">
+            <a-button type="primary" class="add-button" @click="onAddArgs">
               <template #icon>
                 <icon-plus />
               </template>
@@ -358,7 +358,7 @@ fieldset legend {
 
 .add-button {
   align-self: flex-start;
-  width: 100px;
+  width: 100%;
 }
 
 :deep(.arco-input-append) {
