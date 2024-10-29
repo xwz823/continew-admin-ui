@@ -152,7 +152,7 @@ const loading = ref(false)
 const getDataList = async () => {
   try {
     loading.value = true
-    const { data } = await get('https://api.charles7c.top/git/orgs/continew/events')
+    const { data } = await get('https://api.charles7c.top/git/orgs/events/continew')
     data.forEach((item) => {
       dataList.value.push({
         ...item,
