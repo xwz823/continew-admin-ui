@@ -184,19 +184,19 @@ export interface DictItemPageQuery extends DictItemQuery, PageQuery {
 
 /** 系统公告类型 */
 export interface NoticeResp {
-  id: string
-  title: string
+  id?: string
+  title?: string
   content: string
-  status: number
-  type: string
-  effectiveTime: string
-  terminateTime: string
-  noticeScope: number
-  noticeUsers: Array<string>
-  createUserString: string
-  createTime: string
-  updateUserString: string
-  updateTime: string
+  status?: number
+  type?: string
+  effectiveTime?: string
+  terminateTime?: string
+  noticeScope?: number
+  noticeUsers?: Array<string>
+  createUserString?: string
+  createTime?: string
+  updateUserString?: string
+  updateTime?: string
 }
 
 export interface NoticeQuery {

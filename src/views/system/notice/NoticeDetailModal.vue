@@ -23,7 +23,7 @@
       </a-typography-paragraph>
     </a-typography>
     <a-divider />
-    <AiEditor v-if="dataDetail?.content" :model-value="dataDetail?.content" />
+    <AiEditor :model-value="dataDetail?.content" />
     <a-divider />
     <div v-if="dataDetail?.updateTime" class="update-time-row">
       <span>
@@ -41,18 +41,22 @@ import AiEditor from './components/detail/index.vue'
 import { type NoticeResp, getNotice } from '@/apis/system'
 
 const { width } = useWindowSize()
-const dataDetail = ref<NoticeResp>()
+const dataDetail = ref<NoticeResp>({
+  content: '',
+})
 const visible = ref(false)
 // 详情
 const onDetail = async (id: string) => {
-  const res = await getNotice(id)
-  dataDetail.value = res.data
+  const { data } = await getNotice(id)
+  dataDetail.value = data
   visible.value = true
 }
 
 // 重置
 const reset = () => {
-  dataDetail.value = {}
+  dataDetail.value = {
+    content: '',
+  }
 }
 
 defineExpose({ onDetail })

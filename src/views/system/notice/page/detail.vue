@@ -46,6 +46,7 @@ import { useForm } from '@/hooks'
 const containerRef = ref<HTMLElement | null>()
 const tabsStore = useTabsStore()
 const route = useRoute()
+const router = useRouter()
 const { id } = route.query
 const { form, resetForm } = useForm({
   title: '',
@@ -62,6 +63,7 @@ const onDetail = async (id: string) => {
   Object.assign(form, res.data)
 }
 const onBack = () => {
+  router.back()
   tabsStore.closeCurrent(route.path)
 }
 
