@@ -44,13 +44,13 @@ export function resetUserPwd(data: any, id: string) {
 }
 
 /** @desc 下载用户导入模板 */
-export function downloadImportUserTemplate() {
-  return http.download(`${BASE_URL}/downloadImportUserTemplate`)
+export function downloadUserImportTemplate() {
+  return http.download(`${BASE_URL}/import/template`)
 }
 
 /** @desc 解析用户导入数据 */
 export function parseImportUser(data: FormData) {
-  return http.post(`${BASE_URL}/parseImportUser`, data)
+  return http.post(`${BASE_URL}/import/parse`, data)
 }
 
 /** @desc 导入用户 */

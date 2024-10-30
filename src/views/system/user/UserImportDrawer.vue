@@ -11,14 +11,17 @@
     @close="reset"
   >
     <a-form ref="formRef" :model="form" size="large" auto-label-width>
-      <a-alert v-if="!form.disabled" :show-icon="false" style="margin-bottom: 15px">
-        数据导入请严格按照模板填写，格式要求和新增一致！
+      <a-alert v-if="!form.disabled" style="margin-bottom: 15px">
+        请按照模板要求填写数据，填写完毕后，请先上传并进行解析。
         <template #action>
-          <a-button size="small" type="primary" @click="downloadTemplate">下载模板</a-button>
+          <a-link @click="downloadTemplate">
+            <template #icon><GiSvgIcon name="file-excel" :size="16" /></template>
+            <template #default>下载模板</template>
+          </a-link>
         </template>
       </a-alert>
       <fieldset>
-        <legend>1.上传解析文件</legend>
+        <legend>1.解析数据</legend>
         <div class="file-box">
           <a-upload
             draggable
@@ -85,7 +88,12 @@
 <script setup lang="ts">
 import { type FormInstance, Message, type RequestOption } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { type UserImportResp, downloadImportUserTemplate, importUser, parseImportUser } from '@/apis/system'
+import {
+  type UserImportResp,
+  downloadUserImportTemplate,
+  importUser,
+  parseImportUser,
+} from '@/apis/system/user'
 import { useDownload, useForm } from '@/hooks'
 
 const emit = defineEmits<{
@@ -129,7 +137,7 @@ const onImport = () => {
 
 // 下载模板
 const downloadTemplate = () => {
-  useDownload(() => downloadImportUserTemplate())
+  useDownload(() => downloadUserImportTemplate())
 }
 
 // 上传解析导入数据
@@ -160,11 +168,12 @@ const handleUpload = (options: RequestOption) => {
 const save = async () => {
   try {
     if (!dataResult.value.importKey) {
+      Message.warning('请先上传文件，解析导入数据')
       return false
     }
     form.importKey = dataResult.value.importKey
     const res = await importUser(form)
-    Message.success(`导入成功，新增${res.data.insertRows},修改${res.data.updateRows}`)
+    Message.success(`导入成功! 新增${res.data.insertRows}, 修改${res.data.updateRows}`)
     emit('save-success')
     return true
   } catch (error) {
