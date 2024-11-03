@@ -18,7 +18,7 @@
           :scroll="{ x: '100%', y: '100%', minWidth: 1500 }"
           :pagination="pagination"
           :disabled-tools="['size']"
-          :disabled-column-keys="['username']"
+          :disabled-column-keys="['nickname']"
           @refresh="search"
         >
           <template #top>
@@ -40,9 +40,8 @@
               <template #default>导出</template>
             </a-button>
           </template>
-          <template #username="{ record }">
-            <GiCellAvatar :avatar="getAvatar(record.avatar, record.gender)" :name="record.username" is-link
-                          @click="onDetail(record)" />
+          <template #nickname="{ record }">
+            <GiCellAvatar :avatar="record.avatar" :name="record.nickname" />
           </template>
           <template #gender="{ record }">
             <GiCellGender :gender="record.gender" />
@@ -59,6 +58,7 @@
           </template>
           <template #action="{ record }">
             <a-space>
+              <a-link v-permission="['system:user:list']" @click="onDetail(record)">详情</a-link>
               <a-link v-permission="['system:user:update']" @click="onUpdate(record)">修改</a-link>
               <a-link
                 v-permission="['system:user:delete']"
@@ -103,62 +103,58 @@ import type { Columns, Options } from '@/components/GiForm'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useDownload, useTable } from '@/hooks'
 import { isMobile } from '@/utils'
-import getAvatar from '@/utils/avatar'
 import has from '@/utils/has'
 import { DisEnableStatusList } from '@/constant/common'
 
 defineOptions({ name: 'SystemUser' })
 
 const queryForm = reactive<UserQuery>({
-  sort: ['t1.createTime,desc']
+  sort: ['t1.createTime,desc'],
 })
 const {
   tableData: dataList,
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listUser({ ...queryForm, ...page }), { immediate: false })
 
 const options: Options = reactive({
   form: { layout: 'inline' },
-  col: { xs: 24, sm: 24, md: 5, lg: 4, xl: 4, xxl: 4 },
-  btns: { col: { xs: 24, sm: 24, md: 7, lg: 8, xl: 6, xxl: 6 } },
-  fold: { enable: true, index: 1, defaultCollapsed: true }
+  grid: { cols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 } },
+  fold: { enable: true, index: 1, defaultCollapsed: true },
 })
 
 const queryFormColumns: Columns = reactive([
   {
     type: 'input',
     field: 'description',
-    item: {
-      hideLabel: true
+    formItemProps: {
+      hideLabel: true,
     },
     props: {
       placeholder: '用户名/昵称/描述',
-      allowClear: true
-    }
+    },
   },
   {
     type: 'select',
     field: 'status',
     options: DisEnableStatusList,
-    item: {
-      hideLabel: true
+    formItemProps: {
+      hideLabel: true,
     },
     props: {
       placeholder: '请选择状态',
-      allowClear: true
-    }
+    },
   },
   {
     type: 'range-picker',
     field: 'createTime',
-    item: {
-      hideLabel: true
+    span: { lg: 2, xl: 2, xxl: 1 },
+    formItemProps: {
+      hideLabel: true,
     },
-    col: { xs: 24, sm: 24, md: 10, lg: 9.5, xl: 9, xxl: 8 }
-  }
+  },
 ])
 
 const columns: TableInstanceColumns[] = [
@@ -167,38 +163,38 @@ const columns: TableInstanceColumns[] = [
     width: 66,
     align: 'center',
     render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
-    fixed: !isMobile() ? 'left' : undefined
+    fixed: !isMobile() ? 'left' : undefined,
   },
   {
-    title: '用户名',
-    dataIndex: 'username',
-    slotName: 'username',
-    width: 140,
+    title: '昵称',
+    dataIndex: 'nickname',
+    slotName: 'nickname',
+    minWidth: 140,
     ellipsis: true,
     tooltip: true,
-    fixed: !isMobile() ? 'left' : undefined
+    fixed: !isMobile() ? 'left' : undefined,
   },
-  { title: '昵称', dataIndex: 'nickname', width: 120, ellipsis: true, tooltip: true },
-  { title: '状态', slotName: 'status', align: 'center', width: 80 },
-  { title: '性别', slotName: 'gender', align: 'center', width: 100 },
-  { title: '所属部门', dataIndex: 'deptName', ellipsis: true, tooltip: true, width: 180 },
-  { title: '角色', dataIndex: 'roleNames', slotName: 'roleNames', width: 160 },
-  { title: '手机号', dataIndex: 'phone', width: 170, ellipsis: true, tooltip: true },
-  { title: '邮箱', dataIndex: 'email', width: 170, ellipsis: true, tooltip: true },
+  { title: '用户名', dataIndex: 'username', slotName: 'username', minWidth: 140, ellipsis: true, tooltip: true },
+  { title: '状态', slotName: 'status', align: 'center' },
+  { title: '性别', slotName: 'gender', align: 'center' },
+  { title: '所属部门', dataIndex: 'deptName', ellipsis: true, tooltip: true, minWidth: 180 },
+  { title: '角色', dataIndex: 'roleNames', minWidth: 160, slotName: 'roleNames' },
+  { title: '手机号', dataIndex: 'phone', minWidth: 170, ellipsis: true, tooltip: true },
+  { title: '邮箱', dataIndex: 'email', minWidth: 170, ellipsis: true, tooltip: true },
   { title: '系统内置', slotName: 'isSystem', width: 100, align: 'center', show: false },
-  { title: '描述', dataIndex: 'description', width: 130, ellipsis: true, tooltip: true },
-  { title: '创建人', dataIndex: 'createUserString', ellipsis: true, tooltip: true, width: 140, show: false },
+  { title: '描述', dataIndex: 'description', minWidth: 130, ellipsis: true, tooltip: true },
+  { title: '创建人', dataIndex: 'createUserString', width: 140, ellipsis: true, tooltip: true, show: false },
   { title: '创建时间', dataIndex: 'createTime', width: 180 },
-  { title: '修改人', dataIndex: 'updateUserString', ellipsis: true, tooltip: true, width: 140, show: false },
+  { title: '修改人', dataIndex: 'updateUserString', width: 140, ellipsis: true, tooltip: true, show: false },
   { title: '修改时间', dataIndex: 'updateTime', width: 180, show: false },
   {
     title: '操作',
     slotName: 'action',
-    width: 150,
+    width: 190,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:user:update', 'system:user:delete', 'system:user:resetPwd'])
-  }
+    show: has.hasPermOr(['system:user:update', 'system:user:delete', 'system:user:resetPwd']),
+  },
 ]
 
 // 重置
@@ -213,7 +209,7 @@ const reset = () => {
 const onDelete = (record: UserResp) => {
   return handleDelete(() => deleteUser(record.id), {
     content: `是否确定删除 [${record.nickname}(${record.username})]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

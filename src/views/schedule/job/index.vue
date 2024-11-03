@@ -44,9 +44,9 @@
             <template #content>
               <a-textarea :model-value="parseCron(record.triggerInterval)" :auto-size="true" style="margin-top: 10px" />
             </template>
-             <a-link>{{ record.triggerInterval }}</a-link>
+            <a-link>{{ record.triggerInterval }}</a-link>
           </a-popover>
-         </span>
+        </span>
       </template>
       <template #taskType="{ record }">
         <GiCellTag :value="record.taskType" :dict="job_task_type_enum" />
@@ -95,14 +95,14 @@ defineOptions({ name: 'ScheduleJob' })
 const { job_status_enum, job_trigger_type_enum, job_task_type_enum } = useDict('job_status_enum', 'job_trigger_type_enum', 'job_task_type_enum')
 
 const queryForm = reactive<JobQuery>({
-  groupName: ''
+  groupName: '',
 })
 const {
   tableData: dataList,
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listJob({ ...queryForm, ...page }), { immediate: false })
 
 const columns: TableInstanceColumns[] = [
@@ -110,13 +110,13 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
-  { title: '任务名称', dataIndex: 'jobName', slotName: 'jobName', width: 100, ellipsis: true, tooltip: true },
-  { title: '调度类型', dataIndex: 'triggerType', slotName: 'triggerType', width: 130 },
-  { title: '任务类型', dataIndex: 'taskType', slotName: 'taskType', width: 130, ellipsis: true, tooltip: true },
-  { title: '状态', dataIndex: 'jobStatus', width: 60, align: 'center', slotName: 'jobStatus' },
-  { title: '描述', dataIndex: 'description', width: 130, ellipsis: true, tooltip: true },
+  { title: '任务名称', dataIndex: 'jobName', slotName: 'jobName', minWidth: 100, ellipsis: true, tooltip: true },
+  { title: '调度类型', dataIndex: 'triggerType', slotName: 'triggerType', minWidth: 130 },
+  { title: '任务类型', dataIndex: 'taskType', slotName: 'taskType', minWidth: 130, ellipsis: true, tooltip: true },
+  { title: '状态', dataIndex: 'jobStatus', align: 'center', slotName: 'jobStatus' },
+  { title: '描述', dataIndex: 'description', minWidth: 130, ellipsis: true, tooltip: true },
   { title: '创建时间', dataIndex: 'createDt', width: 180 },
   { title: '修改时间', dataIndex: 'updateDt', width: 180, show: false },
   {
@@ -125,8 +125,8 @@ const columns: TableInstanceColumns[] = [
     width: 130,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['schedule:job:trigger', 'schedule:job:update', 'schedule:job:delete'])
-  }
+    show: has.hasPermOr(['schedule:job:trigger', 'schedule:job:update', 'schedule:job:delete']),
+  },
 ]
 
 const groupList = ref()
@@ -135,7 +135,7 @@ const getGroupList = async () => {
   const { data } = await listGroup()
   groupList.value = data?.map((item: string) => ({
     label: item,
-    value: item
+    value: item,
   }))
   queryForm.groupName = groupList.value[0].label
   search()
@@ -152,7 +152,7 @@ const reset = () => {
 const onDelete = (record: JobResp) => {
   return handleDelete(() => deleteJob(record.id), {
     content: `是否确定删除任务 [${record.jobName}]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

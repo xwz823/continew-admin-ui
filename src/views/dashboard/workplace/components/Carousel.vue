@@ -12,7 +12,7 @@
           target="_blank"
           rel="noopener"
         >
-          <img :src="`${image.src}?${new Date().getTime()}`" style="width: 100%" alt="" />
+          <img :src="image.src" style="width: 100%" alt="" />
         </a-link>
       </div>
     </a-carousel-item>
@@ -22,12 +22,12 @@
 <script lang="ts" setup>
 const images = [
   {
-    src: 'https://continew.top/qrcode-text.png',
-    url: 'https://continew.top/about/intro.html'
+    src: `https://continew.top/qrcode-text.png?${new Date().getTime()}`,
+    url: 'https://continew.top/about/intro.html',
   },
   {
-    src: 'https://continew.top/sponsor.png',
-    url: 'https://continew.top/sponsor.html'
-  }
+    src: `https://continew.top/sponsor.png?${new Date().getTime()}`,
+    url: 'https://continew.top/sponsor.html',
+  },
 ]
 </script>

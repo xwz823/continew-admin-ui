@@ -29,12 +29,11 @@ const formRef = ref<InstanceType<typeof GiForm>>()
 
 const options: Options = {
   form: { size: 'large' },
-  col: { xs: 24, sm: 24, md: 24, lg: 24, xl: 24, xxl: 24 },
-  btns: { hide: true }
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
-  { label: '密码', field: 'newPassword', type: 'input-password', rules: [{ required: true, message: '请输入密码' }] }
+  { label: '密码', field: 'newPassword', type: 'input-password', rules: [{ required: true, message: '请输入密码' }] },
 ])
 
 const { form, resetForm } = useForm({})

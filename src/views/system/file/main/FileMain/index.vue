@@ -17,8 +17,10 @@
         </a-dropdown>
 
         <a-input-group>
-          <a-input v-model="queryForm.name" placeholder="请输入文件名" allow-clear style="width: 200px"
-                   @change="search" />
+          <a-input
+            v-model="queryForm.name" placeholder="请输入文件名" allow-clear style="width: 200px"
+            @change="search"
+          />
           <a-button type="primary" @click="search">
             <template #icon>
               <icon-search />
@@ -30,8 +32,10 @@
 
       <!-- 右侧区域 -->
       <a-space wrap>
-        <a-button v-if="isBatchMode" :disabled="!selectedFileIds.length" type="primary" status="danger"
-                  @click="handleMulDelete">
+        <a-button
+          v-if="isBatchMode" :disabled="!selectedFileIds.length" type="primary" status="danger"
+          @click="handleMulDelete"
+        >
           <template #icon>
             <icon-delete />
           </template>
@@ -57,14 +61,18 @@
 
     <!-- 文件列表-宫格模式 -->
     <a-spin id="fileMain" class="file-main__list" :loading="loading">
-      <FileGrid v-show="fileList.length && mode === 'grid'" :data="fileList" :is-batch-mode="isBatchMode"
-                :selected-file-ids="selectedFileIds" @click="handleClickFile" @select="handleSelectFile"
-                @right-menu-click="handleRightMenuClick"></FileGrid>
+      <FileGrid
+        v-show="fileList.length && mode === 'grid'" :data="fileList" :is-batch-mode="isBatchMode"
+        :selected-file-ids="selectedFileIds" @click="handleClickFile" @select="handleSelectFile"
+        @right-menu-click="handleRightMenuClick"
+      ></FileGrid>
 
       <!-- 文件列表-列表模式 -->
-      <FileList v-show="fileList.length && mode === 'list'" :data="fileList" :is-batch-mode="isBatchMode"
-                :selected-file-ids="selectedFileIds" @click="handleClickFile" @select="handleSelectFile"
-                @right-menu-click="handleRightMenuClick"></FileList>
+      <FileList
+        v-show="fileList.length && mode === 'list'" :data="fileList" :is-batch-mode="isBatchMode"
+        :selected-file-ids="selectedFileIds" @click="handleClickFile" @select="handleSelectFile"
+        @right-menu-click="handleRightMenuClick"
+      ></FileList>
 
       <a-empty v-if="!fileList.length" />
     </a-spin>
@@ -82,7 +90,7 @@ import {
   openFileDetailModal,
   openFileRenameModal,
   previewFileAudioModal,
-  previewFileVideoModal
+  previewFileVideoModal,
 } from '../../components/index'
 import FileGrid from './FileGrid.vue'
 import useFileManage from './useFileManage'
@@ -101,18 +109,18 @@ const { mode, selectedFileIds, toggleMode, addSelectedFileItem } = useFileManage
 const queryForm = reactive<FileQuery>({
   name: undefined,
   type: route.query.type?.toString() !== '0' ? route.query.type?.toString() : undefined,
-  sort: ['updateTime,desc']
+  sort: ['updateTime,desc'],
 })
 const paginationOption = reactive({
   defaultPageSize: 30,
-  defaultSizeOptions: [30, 40, 50, 100, 120]
+  defaultSizeOptions: [30, 40, 50, 100, 120],
 })
 const isBatchMode = ref(false)
 const {
   tableData: fileList,
   loading,
   pagination,
-  search
+  search,
 } = useTable((page) => listFile({ ...queryForm, ...page }), { immediate: false, paginationOption })
 const filePreviewRef = ref()
 // 点击文件
@@ -124,9 +132,9 @@ const handleClickFile = (item: FileItem) => {
       if (imgList.length) {
         viewerApi({
           options: {
-            initialViewIndex: index
+            initialViewIndex: index,
           },
-          images: imgList
+          images: imgList,
         })
       }
     }
@@ -143,11 +151,11 @@ const handleClickFile = (item: FileItem) => {
       },
       transformData: (workbookData) => {
         return workbookData
-      }
+      },
     }
     filePreviewRef.value.onPreview({
       fileInfo: { data: item.url, fileName: item.name, fileType: item.extension },
-      excelConfig
+      excelConfig,
     })
   }
   if (item.extension === 'mp4') {
@@ -162,7 +170,7 @@ const onDownload = async (fileInfo: FileItem) => {
   const res = await downloadByUrl({
     url: fileInfo.url,
     target: '_self',
-    fileName: `${fileInfo.name}.${fileInfo.extension}`
+    fileName: `${fileInfo.name}.${fileInfo.extension}`,
   })
   res ? Message.success('下载成功') : Message.error('下载失败')
   search()
@@ -180,7 +188,7 @@ const handleRightMenuClick = async (mode: string, fileInfo: FileItem) => {
         await deleteFile(fileInfo.id)
         Message.success('删除成功')
         search()
-      }
+      },
     })
   } else if (mode === 'rename') {
     openFileRenameModal(fileInfo, search)
@@ -206,7 +214,7 @@ const handleMulDelete = () => {
       await deleteFile(selectedFileIds.value)
       Message.success('删除成功')
       search()
-    }
+    },
   })
 }
 
@@ -230,7 +238,7 @@ const handleUpload = (options: RequestOption) => {
   return {
     abort() {
       controller.abort()
-    }
+    },
   }
 }
 

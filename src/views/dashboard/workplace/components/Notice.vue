@@ -24,7 +24,7 @@
                 css: true,
               }"
             >
-            {{ item.title }}
+              {{ item.title }}
             </a-typography-paragraph>
           </a-link>
         </div>
@@ -68,6 +68,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
+:deep(.arco-typography) {
+  color: var(--color-text-2);
+}
+
 .item {
   display: flex;
   align-items: center;

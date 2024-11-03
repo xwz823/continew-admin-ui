@@ -25,8 +25,7 @@ const { width } = useWindowSize()
 
 const options: Options = {
   form: { size: 'large' },
-  col: { xs: 24, sm: 24, md: 24, lg: 24, xl: 24, xxl: 24 },
-  btns: { hide: true }
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
@@ -34,7 +33,7 @@ const columns: Columns = reactive([
     label: '昵称',
     field: 'nickname',
     type: 'input',
-    rules: [{ required: true, message: '请输入昵称' }]
+    rules: [{ required: true, message: '请输入昵称' }],
   },
   {
     label: '性别',
@@ -43,17 +42,17 @@ const columns: Columns = reactive([
     options: [
       { label: '男', value: 1 },
       { label: '女', value: 2 },
-      { label: '未知', value: 0, disabled: true }
+      { label: '未知', value: 0, disabled: true },
     ],
-    rules: [{ required: true, message: '请选择性别' }]
-  }
+    rules: [{ required: true, message: '请选择性别' }],
+  },
 ])
 
 const userStore = useUserStore()
 const userInfo = computed(() => userStore.userInfo)
 const { form, resetForm } = useForm({
   nickname: userInfo.value.nickname,
-  gender: userInfo.value.gender
+  gender: userInfo.value.gender,
 })
 
 const formRef = ref<InstanceType<typeof GiForm>>()

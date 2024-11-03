@@ -1,29 +1,33 @@
 <template>
-    <div ref="containerRef" class="detail">
-        <div class="detail_header">
-            <a-affix :target="(containerRef as HTMLElement)">
-                <a-page-header title="通知公告" :subtitle="type === 'edit' ? '修改' : '新增'" @back="onBack">
-                    <template #extra>
-                        <a-button type="primary" @click="onReleased">
-                          <template #icon>
-                            <icon-save v-if="type === 'edit'" />
-                            <icon-send v-else />
-                          </template>
-                          <template #default>
-                            {{ type === 'edit' ? '保存' : '发布' }}
-                          </template>
-                        </a-button>
-                    </template>
-                </a-page-header>
-            </a-affix>
-        </div>
-        <div class="detail_content" style="display: flex; flex-direction: column;">
-            <GiForm ref="formRef" v-model="form" :options="options" :columns="columns" />
-            <div style="flex: 1;">
-                <AiEditor v-model="form.content" />
-            </div>
-        </div>
+  <div ref="containerRef" class="detail">
+    <div class="detail_header">
+      <a-affix :target="(containerRef as HTMLElement)">
+        <a-page-header title="通知公告" :subtitle="type === 'edit' ? '修改' : '新增'" @back="onBack">
+          <template #extra>
+            <a-button type="primary" @click="onReleased">
+              <template #icon>
+                <icon-save v-if="type === 'edit'" />
+                <icon-send v-else />
+              </template>
+              <template #default>
+                {{ type === 'edit' ? '保存' : '发布' }}
+              </template>
+            </a-button>
+          </template>
+        </a-page-header>
+      </a-affix>
     </div>
+    <div class="detail_content" style="display: flex; flex-direction: column;">
+      <GiForm ref="formRef" v-model="form" :options="options" :columns="columns">
+        <template #noticeUsers>
+          <UserSelect v-model:value="form.noticeUsers" :multiple="true" class="w-full" />
+        </template>
+      </GiForm>
+      <div style="flex: 1;">
+        <AiEditor v-model="form.content" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="tsx">
@@ -46,12 +50,13 @@ const { form, resetForm } = useForm({
   type: '',
   effectiveTime: '',
   terminateTime: '',
-  content: ''
+  content: '',
+  noticeScope: 1,
 })
 const options: Options = {
   form: { size: 'large' },
-  col: { xs: 24, sm: 24, md: 12, lg: 12, xl: 12, xxl: 12 },
-  btns: { hide: true }
+  grid: { cols: 2 },
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
@@ -61,24 +66,24 @@ const columns: Columns = reactive([
     type: 'input',
     props: {
       maxLength: 150,
-      showWordLimit: true
+      showWordLimit: true,
     },
-    rules: [{ required: true, message: '请输入标题' }]
+    rules: [{ required: true, message: '请输入标题' }],
   },
   {
     label: '类型',
     field: 'type',
     type: 'select',
     options: notice_type,
-    rules: [{ required: true, message: '请输入类型' }]
+    rules: [{ required: true, message: '请输入类型' }],
   },
   {
     label: '生效时间',
     field: 'effectiveTime',
     type: 'date-picker',
     props: {
-      showTime: true
-    }
+      showTime: true,
+    },
 
   },
   {
@@ -86,9 +91,26 @@ const columns: Columns = reactive([
     field: 'terminateTime',
     type: 'date-picker',
     props: {
-      showTime: true
-    }
-  }
+      showTime: true,
+    },
+  },
+  {
+    label: '通知范围',
+    field: 'noticeScope',
+    type: 'radio-group',
+    options: [{ label: '所有人', value: 1 }, { label: '指定用户', value: 2 }],
+    rules: [{ required: true, message: '请选择通知范围' }],
+  },
+  {
+    label: '指定用户',
+    field: 'noticeUsers',
+    type: 'input',
+    hide: () => {
+      return form.noticeScope === 1
+    },
+    rules: [{ required: true, message: '请选择指定用户' }],
+  },
+
 ])
 // 修改
 const onUpdate = async (id: string) => {
@@ -103,6 +125,8 @@ const onReleased = async () => {
   const isInvalid = await formRef.value?.formRef?.validate()
   if (isInvalid) return false
   try {
+    // 通知范围 所有人 去除指定用户
+    form.noticeUsers = form.noticeScope === 1 ? null : form.noticeUsers
     if (type === 'edit') {
       await updateNotice(form, id as string)
       Message.success('修改成功')

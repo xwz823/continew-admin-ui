@@ -34,7 +34,7 @@ const totalData = ref<FileStatisticsResp>({
   size: 0,
   number: 0,
   unit: '',
-  data: []
+  data: [],
 })
 const chartData = ref<Array<{ name: string, value: number, size: string }>>([])
 const statisticValueStyle = { 'color': '#5856D6', 'font-size': '18px' }
@@ -44,7 +44,7 @@ const { option } = useChart(() => {
       left: 0,
       right: 0,
       top: 0,
-      bottom: 0
+      bottom: 0,
     },
     legend: {
       show: true,
@@ -53,14 +53,14 @@ const { option } = useChart(() => {
       itemWidth: 6,
       itemHeight: 6,
       textStyle: {
-        color: '#4E5969'
-      }
+        color: '#4E5969',
+      },
     },
     tooltip: {
       show: true,
       formatter(params) {
         return `总计：${params.value}<br>${params.data.size}`
-      }
+      },
     },
     series: [
       {
@@ -69,11 +69,11 @@ const { option } = useChart(() => {
         avoidLabelOverlap: true,
         label: {
           show: false,
-          position: 'center'
+          position: 'center',
         },
-        data: chartData.value
-      }
-    ]
+        data: chartData.value,
+      },
+    ],
   }
 })
 
@@ -89,14 +89,14 @@ const getStatisticsData = async () => {
       size: Number.parseFloat(formatSize[0]),
       number: resData.number ?? 0,
       unit: formatSize[1],
-      data: []
+      data: [],
     }
     resData.data?.forEach((fs: FileStatisticsResp) => {
       const matchedItem = FileTypeList.find((item) => item.value === fs.type)
       chartData.value.unshift({
         name: matchedItem ? matchedItem.name : '',
         value: fs.number,
-        size: formatFileSize(fs.size)
+        size: formatFileSize(fs.size),
       })
     })
   } finally {

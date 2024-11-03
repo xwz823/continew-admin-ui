@@ -30,12 +30,12 @@ const StatusCodeMessage: ICodeMessage = {
   501: '服务未实现(501)',
   502: '网络错误(502)',
   503: '服务不可用(503)',
-  504: '网络超时(504)'
+  504: '网络超时(504)',
 }
 
 const http: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_PREFIX ?? import.meta.env.VITE_API_BASE_URL,
-  timeout: 30 * 1000
+  timeout: 30 * 1000,
 })
 
 // 请求拦截器
@@ -53,7 +53,7 @@ http.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error)
-  }
+  },
 )
 
 // 响应拦截器
@@ -84,7 +84,7 @@ http.interceptors.response.use(
           const userStore = useUserStore()
           userStore.logoutCallBack()
           router.replace('/login')
-        }
+        },
       })
     } else {
       NProgress.done()
@@ -92,7 +92,7 @@ http.interceptors.response.use(
       if (msg.length <= 15) {
         messageErrorWrapper({
           content: msg || '服务器端错误',
-          duration: 5 * 1000
+          duration: 5 * 1000,
         })
       } else {
         notificationErrorWrapper(msg || '服务器端错误')
@@ -106,11 +106,10 @@ http.interceptors.response.use(
     response
     && messageErrorWrapper({
       content: StatusCodeMessage[response.status] || '服务器暂时未响应，请刷新页面并重试。若无法解决，请联系管理员',
-      duration: 5 * 1000
+      duration: 5 * 1000,
     })
-    console.log(response.status)
     return Promise.reject(error)
-  }
+  },
 )
 
 const request = <T = unknown>(config: AxiosRequestConfig): Promise<ApiRes<T>> => {
@@ -139,7 +138,7 @@ const get = <T = any>(url: string, params?: object, config?: AxiosRequestConfig)
     paramsSerializer: (obj) => {
       return qs.stringify(obj)
     },
-    ...config
+    ...config,
   })
 }
 
@@ -148,7 +147,7 @@ const post = <T = any>(url: string, params?: object, config?: AxiosRequestConfig
     method: 'post',
     url,
     data: params,
-    ...config
+    ...config,
   })
 }
 
@@ -157,7 +156,7 @@ const put = <T = any>(url: string, params?: object, config?: AxiosRequestConfig)
     method: 'put',
     url,
     data: params,
-    ...config
+    ...config,
   })
 }
 
@@ -166,7 +165,7 @@ const patch = <T = any>(url: string, params?: object, config?: AxiosRequestConfi
     method: 'patch',
     url,
     data: params,
-    ...config
+    ...config,
   })
 }
 
@@ -175,7 +174,7 @@ const del = <T = any>(url: string, params?: object, config?: AxiosRequestConfig)
     method: 'delete',
     url,
     data: params,
-    ...config
+    ...config,
   })
 }
 const download = (url: string, params?: object, config?: AxiosRequestConfig): Promise<AxiosResponse> => {
@@ -187,7 +186,7 @@ const download = (url: string, params?: object, config?: AxiosRequestConfig): Pr
     paramsSerializer: (obj) => {
       return qs.stringify(obj)
     },
-    ...config
+    ...config,
   })
 }
 export default { get, post, put, patch, del, request, requestNative, download }

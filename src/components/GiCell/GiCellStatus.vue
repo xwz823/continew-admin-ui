@@ -13,7 +13,7 @@
 defineOptions({ name: 'GiCellStatus' })
 
 const props = withDefaults(defineProps<Props>(), {
-  status: 1
+  status: 1,
 })
 
 interface Props {

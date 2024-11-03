@@ -23,15 +23,15 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
       icon: 'circle',
       itemWidth: 8,
       textStyle: {
-        color: isDark ? 'rgba(255,255,255,0.7)' : '#4E5969'
+        color: isDark ? 'rgba(255,255,255,0.7)' : '#4E5969',
       },
       itemStyle: {
-        borderWidth: 0
-      }
+        borderWidth: 0,
+      },
     },
     tooltip: {
       show: true,
-      trigger: 'item'
+      trigger: 'item',
     },
     series: [
       {
@@ -40,15 +40,15 @@ const { chartOption } = useChart((isDark: EChartsOption) => {
         center: ['50%', '42%'],
         label: {
           formatter: '{d}% ',
-          color: isDark ? 'rgba(255, 255, 255, 0.7)' : '#4E5969'
+          color: isDark ? 'rgba(255, 255, 255, 0.7)' : '#4E5969',
         },
         itemStyle: {
           borderColor: isDark ? '#000' : '#fff',
-          borderWidth: 1
+          borderWidth: 1,
         },
-        data: chartData.value
-      }
-    ]
+        data: chartData.value,
+      },
+    ],
   }
 })
 
@@ -64,8 +64,8 @@ const getChartData = async () => {
       chartData.value.push({
         ...item,
         itemStyle: {
-          color: data.length > 1 && index === data.length - 1 ? colors[colors.length - 1] : colors[index]
-        }
+          color: data.length > 1 && index === data.length - 1 ? colors[colors.length - 1] : colors[index],
+        },
       })
     })
   } finally {

@@ -73,7 +73,7 @@ watch(
   () => route.fullPath,
   () => {
     handleRouteChange()
-  }
+  },
 )
 
 // 点击页签

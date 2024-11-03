@@ -52,14 +52,14 @@ defineOptions({ name: 'Generator' })
 
 const queryForm = reactive({
   tableName: undefined,
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
   tableData: dataList,
   loading,
   pagination,
-  search
+  search,
 } = useTable((page) => listGenerator({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -67,14 +67,14 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '表名称', dataIndex: 'tableName', width: 225 },
   { title: '描述', dataIndex: 'comment', tooltip: true },
   { title: '存储引擎', dataIndex: 'engine', align: 'center' },
   { title: '字符集', dataIndex: 'charset' },
   { title: '创建时间', dataIndex: 'createTime', width: 180 },
-  { title: '操作', slotName: 'action', width: 180, align: 'center', fixed: !isMobile() ? 'right' : undefined }
+  { title: '操作', slotName: 'action', width: 180, align: 'center', fixed: !isMobile() ? 'right' : undefined },
 ]
 
 // 重置

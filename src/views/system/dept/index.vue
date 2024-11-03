@@ -81,14 +81,14 @@ const {
   tableData,
   loading,
   search,
-  handleDelete
+  handleDelete,
 } = useTable(() => listDept(queryForm), {
   immediate: true,
   onSuccess: () => {
     nextTick(() => {
       tableRef.value?.tableRef?.expandAll(true)
     })
-  }
+  },
 })
 
 // 过滤树
@@ -104,7 +104,7 @@ const searchData = (name: string) => {
         if (filterData.length) {
           result.push({
             ...item,
-            children: filterData
+            children: filterData,
           })
         }
       }
@@ -120,7 +120,7 @@ const dataList = computed(() => {
 })
 
 const columns: TableInstanceColumns[] = [
-  { title: '名称', dataIndex: 'name', width: 170, ellipsis: true, tooltip: true },
+  { title: '名称', dataIndex: 'name', minWidth: 170, ellipsis: true, tooltip: true },
   { title: '状态', slotName: 'status', align: 'center' },
   { title: '排序', dataIndex: 'sort', align: 'center', show: false },
   { title: '系统内置', slotName: 'isSystem', align: 'center', show: false },
@@ -135,8 +135,8 @@ const columns: TableInstanceColumns[] = [
     width: 180,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:dept:update', 'system:dept:delete', 'system:dept:add'])
-  }
+    show: has.hasPermOr(['system:dept:update', 'system:dept:delete', 'system:dept:add']),
+  },
 ]
 
 // 重置
@@ -148,7 +148,7 @@ const reset = () => {
 const onDelete = (record: DeptResp) => {
   return handleDelete(() => deleteDept(record.id), {
     content: `是否确定删除 [${record.name}]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

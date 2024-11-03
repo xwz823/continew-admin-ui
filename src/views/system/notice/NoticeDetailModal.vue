@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visible" :width="width >= 600 ? '70%' : '100%'" :footer="false" draggable @close="reset">
+  <a-modal v-model:visible="visible" :width="width >= 600 ? 'auto' : '100%'" :footer="false" draggable @close="reset">
     <a-typography :style="{ marginTop: '-40px', textAlign: 'center' }">
       <a-typography-title>
         {{ dataDetail?.title }}
@@ -41,18 +41,22 @@ import AiEditor from './components/detail/index.vue'
 import { type NoticeResp, getNotice } from '@/apis/system'
 
 const { width } = useWindowSize()
-const dataDetail = ref<NoticeResp>()
+const dataDetail = ref<NoticeResp>({
+  content: '',
+})
 const visible = ref(false)
 // 详情
 const onDetail = async (id: string) => {
-  const res = await getNotice(id)
-  dataDetail.value = res.data
+  const { data } = await getNotice(id)
+  dataDetail.value = data
   visible.value = true
 }
 
 // 重置
 const reset = () => {
-  dataDetail.value = {}
+  dataDetail.value = {
+    content: '',
+  }
 }
 
 defineExpose({ onDetail })

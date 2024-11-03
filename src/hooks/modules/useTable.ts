@@ -11,7 +11,7 @@ interface Options<T, U> {
   paginationOption?: paginationOptions
 }
 
-type PaginationParams = { page: number, size: number }
+interface PaginationParams { page: number, size: number }
 type Api<T> = (params: PaginationParams) => Promise<ApiRes<PageRes<T[]>>> | Promise<ApiRes<T[]>>
 
 export function useTable<T extends U, U = T>(api: Api<T>, options?: Options<T, U>) {
@@ -60,7 +60,7 @@ export function useTable<T extends U, U = T>(api: Api<T>, options?: Options<T, U
   // 删除
   const handleDelete = async <T>(
     deleteApi: () => Promise<ApiRes<T>>,
-    options?: { title?: string, content?: string, successTip?: string, showModal?: boolean }
+    options?: { title?: string, content?: string, successTip?: string, showModal?: boolean },
   ): Promise<boolean | undefined> => {
     const onDelete = async () => {
       try {
@@ -85,7 +85,7 @@ export function useTable<T extends U, U = T>(api: Api<T>, options?: Options<T, U
       okButtonProps: { status: 'danger' },
       hideCancel: false,
       maskClosable: false,
-      onBeforeOk: onDelete
+      onBeforeOk: onDelete,
     })
   }
 

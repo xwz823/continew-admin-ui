@@ -121,7 +121,7 @@
                 </template>
               </a-button>
             </div>
-            <a-button type="outline" class="add-button" style="width: 100%;" @click="onAddArgs">
+            <a-button type="primary" class="add-button" @click="onAddArgs">
               <template #icon>
                 <icon-plus />
               </template>
@@ -193,7 +193,7 @@ const { job_trigger_type_enum, job_task_type_enum, job_route_strategy_enum, job_
   'job_trigger_type_enum',
   'job_task_type_enum',
   'job_route_strategy_enum',
-  'job_block_strategy_enum'
+  'job_block_strategy_enum',
 )
 
 const dataId = ref()
@@ -212,7 +212,7 @@ const rules: FormInstance['rules'] = {
   executorTimeout: [{ required: true, message: '请输入超时时间' }],
   maxRetryTimes: [{ required: true, message: '请输入最大重试次数' }],
   retryInterval: [{ required: true, message: '请输入重试间隔' }],
-  parallelNum: [{ required: true, message: '请输入并行数' }]
+  parallelNum: [{ required: true, message: '请输入并行数' }],
 }
 
 const { form, resetForm } = useForm({
@@ -224,7 +224,7 @@ const { form, resetForm } = useForm({
   executorTimeout: 60,
   maxRetryTimes: 3,
   retryInterval: 1,
-  parallelNum: 1
+  parallelNum: 1,
 })
 
 const args = ref<any[]>([])
@@ -241,7 +241,7 @@ const getGroupList = async () => {
   const { data } = await listGroup()
   groupList.value = data?.map((item: string) => ({
     label: item,
-    value: item
+    value: item,
   }))
 }
 
@@ -358,7 +358,7 @@ fieldset legend {
 
 .add-button {
   align-self: flex-start;
-  width: 100px;
+  width: 100%;
 }
 
 :deep(.arco-input-append) {

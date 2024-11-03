@@ -1,16 +1,20 @@
 <template>
-  <a-modal v-model:visible="visible" title="任务日志详情" :body-style="{ maxHeight: '80vh', overflow: 'auto' }"
-    :width="width >= 1500 ? 1500 : '100%'" :footer="false" @close="closed">
+  <a-modal
+    v-model:visible="visible" title="任务日志详情" :body-style="{ maxHeight: '80vh', overflow: 'auto' }"
+    :width="width >= 1500 ? 1500 : '100%'" :footer="false" @close="closed"
+  >
     <div style="display: flex;">
       <div style="padding: 10px 10px;">
         <div class="job_list">
-          <div v-for="item in dataList" :key="item.id" :class="`job_list_item ${item.id === activeId ? 'active' : ''}`"
-            @click="onStartInfo(item)">
+          <div
+            v-for="item in dataList" :key="item.id" :class="`job_list_item ${item.id === activeId ? 'active' : ''}`"
+            @click="onStartInfo(item)"
+          >
             <div class="content">
               <span class="title">{{ item.clientInfo.split('@')[1] }}</span>
               <span class="status">
                 <a-tag bordered :color="statusList[item.taskStatus].color">{{ statusList[item.taskStatus].title
-                  }}</a-tag>
+                }}</a-tag>
               </span>
             </div>
           </div>
@@ -20,7 +24,7 @@
         <GiCodeView :code-json="content" />
       </div>
     </div>
-</a-modal>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
@@ -37,33 +41,33 @@ const statusList = {
   1: {
     title: '待处理',
     color: 'gray',
-    isRun: false
+    isRun: false,
   },
   2: {
     title: '运行中',
     color: 'cyan',
-    isRun: true
+    isRun: true,
   },
   3: {
     title: '成功',
     color: 'green',
-    isRun: false
+    isRun: false,
   },
   4: {
     title: '已失败',
     color: 'red',
-    isRun: false
+    isRun: false,
   },
   5: {
     title: '已停止',
     color: 'purple',
-    isRun: false
+    isRun: false,
   },
   6: {
     title: '已取消',
     color: 'orange',
-    isRun: false
-  }
+    isRun: false,
+  },
 }
 
 const visible = ref(false)
@@ -82,15 +86,6 @@ const formatLog = (log: any) => {
 const content = ref('')
 const setIntervalNode = ref<NodeJS.Timeout>()
 
-// 详情
-const onDetail = (record: JobLogResp) => {
-  visible.value = true
-  // 更新 queryForm
-  queryForm.jobId = record.jobId
-  queryForm.taskBatchId = record.id
-  getInstanceList()
-}
-
 // 日志输出
 const onLogDetail = async (record: JobInstanceResp) => {
   activeId.value = record?.id
@@ -102,7 +97,7 @@ const onLogDetail = async (record: JobInstanceResp) => {
       taskId: record.id,
       startId: 0,
       fromIndex: 0,
-      size: 50
+      size: 50,
     })
     if (res.data?.finished) {
       clearInterval(setIntervalNode.value)
@@ -135,6 +130,16 @@ const getInstanceList = async (query: JobInstanceQuery = { ...queryForm }) => {
     loading.value = false
   }
 }
+
+// 详情
+const onDetail = (record: JobLogResp) => {
+  visible.value = true
+  // 更新 queryForm
+  queryForm.jobId = record.jobId
+  queryForm.taskBatchId = record.id
+  getInstanceList()
+}
+
 const closed = () => {
   clearInterval(setIntervalNode.value)
 }

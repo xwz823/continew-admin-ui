@@ -1,6 +1,8 @@
 <template>
-  <a-form ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
-    :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin">
+  <a-form
+    ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
+    :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin"
+  >
     <a-form-item field="username" hide-label>
       <a-input v-model="form.username" placeholder="请输入用户名" allow-clear />
     </a-form-item>
@@ -40,7 +42,7 @@ import { encryptByRsa } from '@/utils/encrypt'
 const loginConfig = useStorage('login-config', {
   rememberMe: true,
   username: 'admin', // 演示默认值
-  password: 'admin123' // 演示默认值
+  password: 'admin123', // 演示默认值
   // username: debug ? 'admin' : '', // 演示默认值
   // password: debug ? 'admin123' : '', // 演示默认值
 })
@@ -51,12 +53,12 @@ const form = reactive({
   password: loginConfig.value.password,
   captcha: '',
   uuid: '',
-  expired: false
+  expired: false,
 })
 const rules: FormInstance['rules'] = {
   username: [{ required: true, message: '请输入用户名' }],
   password: [{ required: true, message: '请输入密码' }],
-  captcha: [{ required: true, message: '请输入验证码' }]
+  captcha: [{ required: true, message: '请输入验证码' }],
 }
 
 // 验证码过期定时器
@@ -107,15 +109,15 @@ const handleLogin = async () => {
       username: form.username,
       password: encryptByRsa(form.password) || '',
       captcha: form.captcha,
-      uuid: form.uuid
+      uuid: form.uuid,
     })
     tabsStore.reset()
     const { redirect, ...othersQuery } = router.currentRoute.value.query
     router.push({
       path: (redirect as string) || '/',
       query: {
-        ...othersQuery
-      }
+        ...othersQuery,
+      },
     })
     const { rememberMe } = loginConfig.value
     loginConfig.value.username = rememberMe ? form.username : ''

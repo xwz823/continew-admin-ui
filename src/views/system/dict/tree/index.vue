@@ -10,8 +10,13 @@
     </div>
     <div class="dict-tree__container">
       <div class="dict-tree__tree">
-        <a-tree :data="(treeData as unknown as TreeNodeData[])" :field-names="{ key: 'id' }" block-node
-          @select="select">
+        <a-tree
+          :data="(treeData as unknown as TreeNodeData[])"
+          :field-names="{ key: 'id' }"
+          block-node
+          :selected-keys="selectedKeys"
+          @select="select"
+        >
           <template #title="node">
             <a-typography-paragraph
               :ellipsis="{
@@ -33,10 +38,10 @@
           </template>
         </a-tree>
       </div>
-</div>
+    </div>
 
-  <DictAddModal ref="DictAddModalRef" @save-success="getTreeData" />
-</div>
+    <DictAddModal ref="DictAddModalRef" @save-success="getTreeData" />
+  </div>
 </template>
 
 <script setup lang="tsx">
@@ -52,24 +57,24 @@ interface Props {
   placeholder?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: '请输入关键词'
+  placeholder: '请输入关键词',
 })
 const emit = defineEmits<{
   (e: 'node-click', keys: Array<any>): void
 }>()
 
-const selectKey = ref()
+const selectedKeys = ref()
 // 选中节点
 const select = (keys: Array<any>) => {
-  if (selectKey.value === keys[0]) {
+  if (selectedKeys.value && selectedKeys.value[0] === keys[0]) {
     return
   }
-  selectKey.value = keys[0]
+  selectedKeys.value = keys
   emit('node-click', keys)
 }
 
 const queryForm = reactive<DictQuery>({
-  sort: ['createTime,asc']
+  sort: ['createTime,asc'],
 })
 
 interface TreeItem extends DictResp {
@@ -87,8 +92,11 @@ const getTreeData = async (query: DictQuery = { ...queryForm }) => {
       popupVisible: false,
       icon: () => {
         return null
-      }
+      },
     }))
+    await nextTick(() => {
+      select([treeData.value[0]?.id])
+    })
   } finally {
     loading.value = false
   }
@@ -122,13 +130,13 @@ const onMenuItemClick = (mode: string, node: DictResp) => {
           const res = await deleteDict(node.id)
           if (res.success) {
             Message.success('删除成功')
-            getTreeData()
+            await getTreeData()
           }
           return res.success
         } catch (error) {
           return false
         }
-      }
+      },
     })
   }
 }
@@ -174,6 +182,9 @@ onMounted(() => {
 :deep(.arco-tree-node-selected) {
   font-weight: bold;
   background-color: rgba(var(--primary-6), 0.1);
+  &:hover {
+    background-color: rgba(var(--primary-6), 0.1);
+  }
   .arco-typography {
     color: rgb(var(--primary-6));
   }

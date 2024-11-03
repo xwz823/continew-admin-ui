@@ -45,7 +45,7 @@
               css: true,
             }"
           >
-          {{ record.title }}
+            {{ record.title }}
           </a-typography-paragraph>
         </a-link>
       </template>
@@ -79,7 +79,7 @@ const { notice_type, notice_status_enum } = useDict('notice_type', 'notice_statu
 
 const router = useRouter()
 const queryForm = reactive<NoticeQuery>({
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
@@ -87,7 +87,7 @@ const {
   loading,
   pagination,
   search,
-  handleDelete
+  handleDelete,
 } = useTable((page) => listNotice({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -95,9 +95,9 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
-  { title: '标题', dataIndex: 'title', slotName: 'title', width: 200, ellipsis: true, tooltip: true },
+  { title: '标题', dataIndex: 'title', slotName: 'title', minWidth: 200, ellipsis: true, tooltip: true },
   { title: '类型', slotName: 'type', align: 'center' },
   { title: '状态', slotName: 'status', align: 'center' },
   { title: '生效时间', dataIndex: 'effectiveTime', width: 180 },
@@ -110,8 +110,8 @@ const columns: TableInstanceColumns[] = [
     width: 130,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:notice:update', 'system:notice:delete'])
-  }
+    show: has.hasPermOr(['system:notice:update', 'system:notice:delete']),
+  },
 ]
 
 // 重置
@@ -125,7 +125,7 @@ const reset = () => {
 const onDelete = (record: NoticeResp) => {
   return handleDelete(() => deleteNotice(record.id), {
     content: `是否确定删除公告 [${record.title}]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

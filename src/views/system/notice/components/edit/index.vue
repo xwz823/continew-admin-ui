@@ -1,25 +1,25 @@
 <!-- 未完善 -->
 <template>
-    <div ref="divRef" class="container">
-        <div class="aie-container">
-            <div class="aie-header-panel">
-                <div class="aie-container-header"></div>
+  <div ref="divRef" class="container">
+    <div class="aie-container">
+      <div class="aie-header-panel">
+        <div class="aie-container-header"></div>
+      </div>
+      <div class="aie-main">
+        <div class="aie-directory-content">
+          <div class="aie-directory">
+            <h5>目录</h5>
+            <div id="outline">
             </div>
-            <div class="aie-main">
-                <div class="aie-directory-content">
-                    <div class="aie-directory">
-                        <h5>目录</h5>
-                        <div id="outline">
-                        </div>
-                    </div>
-                </div>
-                <div class="aie-container-panel">
-                    <div class="aie-container-main"></div>
-                </div>
-            </div>
-            <div class="aie-container-footer"></div>
+          </div>
         </div>
+        <div class="aie-container-panel">
+          <div class="aie-container-main"></div>
+        </div>
+      </div>
+      <div class="aie-container-footer"></div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -72,7 +72,7 @@ const editorConfig = reactive<AiEditorOptions>({
   },
   onCreated: (editor: AiEditor) => {
     updateOutLine(editor)
-  }
+  },
 })
 watch(() => props.modelValue, (value) => {
   if (value !== aieditor.value?.getHtml()) {

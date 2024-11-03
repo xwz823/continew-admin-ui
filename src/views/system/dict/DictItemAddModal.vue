@@ -39,8 +39,7 @@ const formRef = ref<InstanceType<typeof GiForm>>()
 
 const options: Options = {
   form: { size: 'large' },
-  col: { xs: 24, sm: 24, md: 24, lg: 24, xl: 24, xxl: 24 },
-  btns: { hide: true }
+  btns: { hide: true },
 }
 
 const columns: Columns = reactive([
@@ -53,8 +52,8 @@ const columns: Columns = reactive([
     type: 'input-number',
     props: {
       min: 1,
-      mode: 'button'
-    }
+      mode: 'button',
+    },
   },
   {
     label: '描述',
@@ -62,8 +61,8 @@ const columns: Columns = reactive([
     type: 'textarea',
     props: {
       maxLength: 200,
-      autoSize: { minRows: 3, maxRows: 5 }
-    }
+      autoSize: { minRows: 3, maxRows: 5 },
+    },
   },
   {
     label: '状态',
@@ -74,15 +73,15 @@ const columns: Columns = reactive([
       checkedValue: 1,
       uncheckedValue: 2,
       checkedText: '启用',
-      uncheckedText: '禁用'
-    }
-  }
+      uncheckedText: '禁用',
+    },
+  },
 ])
 
 const { form, resetForm } = useForm({
   color: 'blue',
   sort: 999,
-  status: 1
+  status: 1,
 })
 
 // 重置

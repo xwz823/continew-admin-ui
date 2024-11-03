@@ -26,7 +26,7 @@ const getFileImg = computed<string>(() => {
     return props.data.url || ''
   }
   if (!Object.keys(FileIcon).includes(extension)) {
-    return FileIcon['other']
+    return FileIcon.other
   }
   return FileIcon[extension]
 })

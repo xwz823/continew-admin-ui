@@ -30,7 +30,7 @@ const queryParam = reactive({
   isRead: false,
   sort: ['createTime,desc'],
   page: 1,
-  size: 5
+  size: 5,
 })
 
 const messageList = ref<MessageResp[]>()

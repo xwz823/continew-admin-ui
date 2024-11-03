@@ -1,31 +1,45 @@
 <template>
   <a-card class="general-card" title="我的项目">
     <template #extra>
-      <a-link href="https://github.com/charles7c" target="_blank" rel="noopener">更多</a-link>
+      <a-dropdown>
+        <a-link>更多</a-link>
+        <template #content>
+          <a-doption>
+            <a-link href="https://gitee.com/charles7c" target="_blank" rel="noopener">Gitee</a-link>
+          </a-doption>
+          <a-doption>
+            <a-link href="https://gitcode.com/charles_7c" target="_blank" rel="noopener">GitCode</a-link>
+          </a-doption>
+          <a-doption>
+            <a-link href="https://github.com/charles7c" target="_blank" rel="noopener">GitHub</a-link>
+          </a-doption>
+        </template>
+      </a-dropdown>
     </template>
-    <a-row :gutter="16">
+    <a-row :gutter="[14, 14]">
       <a-col
         v-for="(item, index) in list"
         :key="index"
-        :xs="12"
-        :sm="12"
+        :xs="24"
+        :sm="24"
         :md="12"
         :lg="12"
         :xl="8"
         :xxl="8"
-        class="my-project-item"
       >
-        <a-card style="min-height: 204px; max-height: 204px" :bordered="true" hoverable>
+        <a-card :bordered="true" hoverable>
           <div class="badge badge-right" :style="`background-color: ${item.statusColor}`">{{ item.status }}</div>
-          <a :href="item.url" target="_blank">
-            <a-space direction="vertical">
+          <a-card-meta>
+            <template #title>
               <a-space>
-                <a-image :src="item.logo" width="30px" alt="logo" />
-                <a-typography-text bold>{{ item.name }}</a-typography-text>
+                <img :src="item.logo" width="35px" height="25px" alt="logo" />
+                <a-typography-text bold>{{ item.alias }}</a-typography-text>
               </a-space>
+            </template>
+            <template #description>
               <a-typography-paragraph
                 :ellipsis="{
-                  rows: 6,
+                  rows: 2,
                   showTooltip: true,
                   css: true,
                 }"
@@ -34,8 +48,26 @@
                   {{ item.desc }}
                 </a-typography-text>
               </a-typography-paragraph>
-            </a-space>
-          </a>
+            </template>
+            <template #avatar>
+              <a-avatar-group :size="32" :max-count="7">
+                <a-avatar
+                  v-for="(contributor, idx) in item.contributors"
+                  :key="idx"
+                  :title="contributor.name"
+                >
+                  <img :src="contributor.avatar" alt="avatar" />
+                </a-avatar>
+              </a-avatar-group>
+            </template>
+          </a-card-meta>
+          <template v-if="!loading && item.status !== '孵化'" #actions>
+            <a-tooltip content="点个 Star 吧">
+              <span class="icon-hover">
+                <a :href="item.url" target="_blank" rel="noopener"><IconThumbUp :size="20" /></a>
+              </span>
+            </a-tooltip>
+          </template>
         </a-card>
       </a-col>
     </a-row>
@@ -43,68 +75,119 @@
 </template>
 
 <script lang="ts" setup>
+import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
+import qs from 'query-string'
+
 const list = [
   {
-    name: 'ContiNew Admin',
-    desc: '🔥Almost最佳后端规范🔥持续迭代优化的前后端分离中后台管理系统框架，开箱即用，持续提供舒适的开发体验。当前采用技术栈：Spring Boot3（Java17）、Vue3 & Arco Design、TS、Vite5 、Sa-Token、MyBatisPlus、Redisson、JetCache、Jackson、SpringDoc、Crane4j、Liquibase、Hutool 等。',
+    alias: 'ContiNew Admin',
+    name: 'continew-admin',
+    owner: 'continew-org',
+    desc: '🔥Almost最佳后端规范🔥持续迭代优化的前后端分离中后台管理系统框架，开箱即用，持续提供舒适的开发体验。',
     logo: 'https://continew.top/logo.svg',
-    url: 'https://gitee.com/continew/continew-admin',
+    url: 'https://gitee.com/continew/continew-admin/stargazers',
     status: '迭代',
-    statusColor: 'rgb(var(--primary-6))'
+    statusColor: 'rgb(var(--primary-6))',
   },
   {
-    name: 'ContiNew Starter',
+    alias: 'ContiNew Starter',
+    name: 'continew-starter',
+    owner: 'continew-org',
     desc: '🔥高质量Starter🔥包含了一系列经过企业实践优化的依赖包（如 MyBatis-Plus、SaToken），可轻松集成到应用中，为开发人员减少手动引入依赖及配置的麻烦，为 Spring Boot Web 项目的灵活快速构建提供支持。',
     logo: 'https://continew.top/logo.svg',
-    url: 'https://gitee.com/continew/continew-starter',
+    url: 'https://gitee.com/continew/continew-starter/stargazers',
     status: '迭代',
-    statusColor: 'rgb(var(--primary-6))'
+    statusColor: 'rgb(var(--primary-6))',
   },
   {
-    name: 'ContiNew Admin UI',
+    alias: 'ContiNew Admin UI',
+    name: 'continew-admin-ui',
+    owner: 'continew-org',
     desc: '全新 3.x 版本，基于 Gi Demo 前端模板开发的 ContiNew Admin 前端适配项目。',
     logo: 'https://continew.top/logo.svg',
-    url: 'https://gitee.com/continew/continew-admin-ui',
+    url: 'https://gitee.com/continew/continew-admin-ui/stargazers',
     status: '迭代',
-    statusColor: 'rgb(var(--primary-6))'
+    statusColor: 'rgb(var(--primary-6))',
   },
   {
-    name: 'ContiNew Admin UI Arco',
+    alias: 'ContiNew Admin UI Arco',
+    name: 'continew-admin-ui-arco',
+    owner: 'continew-org',
     desc: '2.5 版本，基于 Arco Design Pro 前端模板开发的 ContiNew Admin 前端适配项目。',
     logo: 'https://continew.top/logo.svg',
-    url: 'https://gitee.com/continew/continew-admin-ui-arco',
+    url: 'https://gitee.com/continew/continew-admin-ui-arco/stargazers',
     status: '归档',
-    statusColor: 'rgb(var(--warning-6))'
+    statusColor: 'rgb(var(--warning-6))',
   },
   {
-    name: 'ContiNew Cloud',
-    desc: 'ContiNew Admin 微服务版本。',
+    alias: 'ContiNew Cloud',
+    name: 'continew-admin',
+    owner: 'continew',
+    desc: 'ContiNew Admin 微服务版本。基于 SpringBoot 3.x、Spring Cloud 2023 & Alibaba。',
     logo: 'https://continew.top/logo.svg',
     url: '#',
     status: '孵化',
-    statusColor: 'rgb(var(--danger-6))'
+    statusColor: 'rgb(var(--danger-6))',
   },
   {
+    alias: 'charles7c.github.io',
     name: 'charles7c.github.io',
-    desc: '基于 VitePress 构建的个人知识库/博客。扩展 VitePress 默认主题：增加ICP备案号、公安备案号显示，增加文章元数据信息（原创标识、作者、发布时间、分类、标签）显示，增加文末版权声明，增加 Gitalk 评论功能，主页美化、自动生成侧边栏、文章内支持 Mermaid 流程图、MD公式、MD脚注、增加我的标签、我的归档等独立页面，以及浏览器滚条等细节优化。查尔斯的个人技术知识库，记录 & 分享个人碎片化、结构化、体系化的技术知识内容。',
+    owner: 'charles7c',
+    desc: '基于 VitePress 构建的个人知识库/博客。扩展 VitePress 默认主题：增加ICP备案号、公安备案号显示，增加文章元数据信息（原创标识、作者、发布时间、分类、标签）显示，增加文末版权声明，增加 Gitalk 评论功能，主页美化、自动生成侧边栏、文章内支持 Mermaid 流程图、MD公式、MD脚注、增加我的标签、我的归档等独立页面，以及浏览器滚条等细节优化。',
     logo: 'https://blog.charles7c.top/logo.png',
-    url: 'https://github.com/Charles7c/charles7c.github.io',
+    url: 'https://github.com/Charles7c/charles7c.github.io/stargazers',
     status: '归档',
-    statusColor: 'rgb(var(--warning-6))'
-  }
+    statusColor: 'rgb(var(--warning-6))',
+  },
 ]
+
+const get = <T = unknown>(url: string, params?: object, config?: AxiosRequestConfig): Promise<ApiRes<T>> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .request<T>({
+        method: 'get',
+        url,
+        params,
+        paramsSerializer: (obj) => {
+          return qs.stringify(obj)
+        },
+        ...config,
+      })
+      .then((res: AxiosResponse) => resolve(res.data))
+      .catch((err: { msg: string }) => reject(err))
+  })
+}
+
+const loading = ref(false)
+// 查询数据
+const getDataList = async () => {
+  try {
+    loading.value = true
+    for (const item of list) {
+      const { data } = await get(`https://api.charles7c.top/git/repos/contributors/${item.owner}/${item.name}`)
+      item.contributors = data
+    }
+  } catch (err) {
+    // console.log(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  getDataList()
+})
 </script>
 
 <style scoped lang="less">
 :deep(.arco-card-body) {
-  min-height: 128px;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
   .badge {
     position: absolute;
-    font-size: 12px;
-    height: 18px;
-    line-height: 18px;
+    font-size: 10px;
+    height: 16px;
+    line-height: 16px;
     text-align: center;
     width: 74px;
     color: #fff;
@@ -115,8 +198,8 @@ const list = [
     -o-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
-    left: -18px;
-    top: 9px;
+    left: -20px;
+    top: 6px;
   }
   .badge-right {
     -moz-transform: rotate(45deg);
@@ -124,34 +207,29 @@ const list = [
     -o-transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
-    right: -18px;
-    top: 9px;
+    right: -20px;
+    top: 6px;
   }
 }
-.my-project {
-  &-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
 
-  &-title {
-    margin-top: 0 !important;
-    margin-bottom: 18px !important;
-  }
+.icon-hover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: rgba(var(--primary-6));
+  border-radius: 50%;
+  transition: all 0.1s;
+  animation: icon-hover-animated 1.2s ease-in-out infinite;
+}
+.icon-hover:hover {
+  background-color: rgb(var(--gray-2));
+}
 
-  &-list {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &-item {
-    // padding-right: 16px;
-    margin-bottom: 16px;
-
-    &:last-child {
-      padding-right: 0;
-    }
+@keyframes icon-hover-animated {
+  50% {
+    transform: scale(0.8);
   }
 }
 </style>

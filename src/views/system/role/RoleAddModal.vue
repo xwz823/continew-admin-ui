@@ -1,11 +1,11 @@
 <template>
   <a-modal
-      v-model:visible="visible"
-      :title="title"
-      :mask-closable="false"
-      :esc-to-close="true"
-      :width="width >= 600 ? 600 : '100%'"
-      @close="reset"
+    v-model:visible="visible"
+    :title="title"
+    :mask-closable="false"
+    :esc-to-close="true"
+    :width="width >= 600 ? 600 : '100%'"
+    @close="reset"
   >
     <a-steps :current="current" class="mb-15" @change="onChangeCurrent">
       <a-step>基础信息</a-step>
@@ -26,11 +26,11 @@
         </a-form-item>
         <a-form-item label="描述" field="description">
           <a-textarea
-              v-model.trim="form.description"
-              placeholder="请输入描述"
-              show-word-limit
-              :max-length="200"
-              :auto-size="{ minRows: 3, maxRows: 5 }"
+            v-model.trim="form.description"
+            placeholder="请输入描述"
+            show-word-limit
+            :max-length="200"
+            :auto-size="{ minRows: 3, maxRows: 5 }"
           />
         </a-form-item>
       </fieldset>
@@ -43,14 +43,14 @@
           </a-space>
           <template #extra>
             <a-tree
-                ref="menuTreeRef"
-                v-model:checked-keys="form.menuIds"
-                class="w-full"
-                :data="menuList"
-                :default-expand-all="isMenuExpanded"
-                :check-strictly="!form.menuCheckStrictly"
-                :virtual-list-props="{ height: 400 }"
-                checkable
+              ref="menuTreeRef"
+              v-model:checked-keys="form.menuIds"
+              class="w-full"
+              :data="menuList"
+              :default-expand-all="isMenuExpanded"
+              :check-strictly="!form.menuCheckStrictly"
+              :virtual-list-props="{ height: 400 }"
+              checkable
             />
           </template>
         </a-form-item>
@@ -58,10 +58,10 @@
       <fieldset v-show="current === 3">
         <a-form-item hide-label field="dataScope">
           <a-select
-              v-model.trim="form.dataScope"
-              :options="data_scope_enum"
-              placeholder="请选择数据权限"
-              :disabled="form.isSystem"
+            v-model.trim="form.dataScope"
+            :options="data_scope_enum"
+            placeholder="请选择数据权限"
+            :disabled="form.isSystem"
           />
         </a-form-item>
         <a-form-item v-if="form.dataScope === 5" hide-label :disabled="form.isSystem">
@@ -72,14 +72,14 @@
           </a-space>
           <template #extra>
             <a-tree
-                ref="deptTreeRef"
-                v-model:checked-keys="form.deptIds"
-                class="w-full"
-                :data="deptList"
-                :default-expand-all="isDeptExpanded"
-                :check-strictly="!form.deptCheckStrictly"
-                :virtual-list-props="{ height: 350 }"
-                checkable
+              ref="deptTreeRef"
+              v-model:checked-keys="form.deptIds"
+              class="w-full"
+              :data="deptList"
+              :default-expand-all="isDeptExpanded"
+              :check-strictly="!form.deptCheckStrictly"
+              :virtual-list-props="{ height: 350 }"
+              checkable
             />
           </template>
         </a-form-item>
@@ -124,14 +124,14 @@ const formRef = ref<FormInstance>()
 const rules: FormInstance['rules'] = {
   name: [{ required: true, message: '请输入名称' }],
   code: [{ required: true, message: '请输入编码' }],
-  dataScope: [{ required: true, message: '请选择数据权限' }]
+  dataScope: [{ required: true, message: '请选择数据权限' }],
 }
 
 const { form, resetForm } = useForm({
   menuCheckStrictly: true,
   deptCheckStrictly: true,
   sort: 999,
-  dataScope: 4
+  dataScope: 4,
 })
 
 const menuTreeRef = ref()
@@ -209,7 +209,7 @@ const getMenuAllCheckedKeys = () => {
   // 获取半选中的菜单
   const halfCheckedNodes = menuTreeRef.value?.getHalfCheckedNodes()
   const halfCheckedKeys = halfCheckedNodes.map((item: TreeNodeData) => item.key)
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
+  checkedKeys.unshift(...halfCheckedKeys)
   return checkedKeys
 }
 
@@ -224,8 +224,7 @@ const getDeptAllCheckedKeys = () => {
   // 获取半选中的部门
   const halfCheckedNodes = deptTreeRef.value?.getHalfCheckedNodes()
   const halfCheckedKeys = halfCheckedNodes.map((item: TreeNodeData) => item.key)
-  // eslint-disable-next-line prefer-spread
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys)
+  checkedKeys.unshift(...halfCheckedKeys)
   return checkedKeys
 }
 
@@ -253,7 +252,7 @@ const save = async () => {
 const handleTreeAction = (type, action) => {
   const refMap = {
     menu: menuTreeRef,
-    dept: deptTreeRef
+    dept: deptTreeRef,
   }
   const ref = refMap[type]
   if (ref && action === 'expand') {

@@ -24,7 +24,7 @@ import Icon500 from '@/components/icons/Icon500.vue'
 defineOptions({ name: 'ErrorPage' })
 
 const props = withDefaults(defineProps<Props>(), {
-  code: 403
+  code: 403,
 })
 interface Props {
   code: number
@@ -32,7 +32,7 @@ interface Props {
 const IconMap: Record<number, Component> = {
   403: Icon403,
   404: Icon404,
-  500: Icon500
+  500: Icon500,
 }
 
 const router = useRouter()

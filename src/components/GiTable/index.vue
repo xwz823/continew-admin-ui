@@ -34,8 +34,10 @@
             </a-doption>
           </template>
         </a-dropdown>
-        <a-popover v-if="showSettingColumnBtn" trigger="click" position="br"
-          :content-style="{ minWidth: '120px', padding: '6px 8px 10px' }">
+        <a-popover
+          v-if="showSettingColumnBtn" trigger="click" position="br"
+          :content-style="{ minWidth: '120px', padding: '6px 8px 10px' }"
+        >
           <a-tooltip content="列设置">
             <a-button>
               <template #icon>
@@ -73,8 +75,16 @@
     </a-row>
     <div class="gi-table__body" :class="`gi-table__body-pagination-${attrs['page-position']}`">
       <div class="gi-table__container">
-        <a-table ref="tableRef" :stripe="stripe" :size="size" column-resizable :bordered="{ cell: isBordered }"
-          v-bind="{ ...attrs, columns: _columns }" :scrollbar="true">
+        <a-table
+          ref="tableRef"
+          :stripe="stripe"
+          :size="size"
+          column-resizable
+          :bordered="{ cell: isBordered }"
+          v-bind="{ ...attrs, columns: _columns }"
+          :scrollbar="true"
+          :data="data"
+        >
           <template v-for="key in Object.keys(slots)" :key="key" #[key]="scoped">
             <slot :key="key" :name="key" v-bind="scoped"></slot>
           </template>
@@ -84,19 +94,38 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import type { DropdownInstance, TableColumnData, TableInstance } from '@arco-design/web-vue'
+<script setup lang="ts" generic="T extends TableData">
+import type { DropdownInstance, TableColumnData, TableData, TableInstance } from '@arco-design/web-vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
 defineOptions({ name: 'GiTable', inheritAttrs: false })
 const props = withDefaults(defineProps<Props>(), {
   title: '',
+  data: () => [],
   disabledTools: () => [], // 禁止显示的工具
-  disabledColumnKeys: () => [] // 禁止控制显示隐藏的列
+  disabledColumnKeys: () => [], // 禁止控制显示隐藏的列
 })
 
 const emit = defineEmits<{
   (e: 'refresh'): void
+}>()
+
+defineSlots<{
+  'th': (props: { column: TableColumnData }) => void
+  'thead': () => void
+  'empty': (props: { column: TableColumnData }) => void
+  'summary-cell': (props: { column: TableColumnData, record: T, rowIndex: number }) => void
+  'pagination-right': () => void
+  'pagination-left': () => void
+  'td': (props: { column: TableColumnData, record: T, rowIndex: number }) => void
+  'tr': (props: { record: T, rowIndex: number }) => void
+  'tbody': () => void
+  'drag-handle-icon': () => void
+  'footer': () => void
+  'expand-row': (props: { record: T }) => void
+  'expand-icon': (props: { record: T, expanded?: boolean }) => void
+  'columns': () => void
+  [propsName: string]: (props: { key: string, record: T, column: TableColumnData, rowIndex: number }) => void
 }>()
 
 const attrs = useAttrs()
@@ -104,6 +133,7 @@ const slots = useSlots()
 
 interface Props {
   title?: string
+  data: T[]
   disabledTools?: string[]
   disabledColumnKeys?: string[]
 }
@@ -114,10 +144,10 @@ const size = ref<TableInstance['size']>('medium')
 const isBordered = ref(false)
 const isFullscreen = ref(false)
 
-type SizeItem = { label: string, value: TableInstance['size'] }
+interface SizeItem { label: string, value: TableInstance['size'] }
 const sizeList: SizeItem[] = [
   { label: '紧凑', value: 'small' },
-  { label: '默认', value: 'medium' }
+  { label: '默认', value: 'medium' },
 ]
 
 const handleSelect: DropdownInstance['onSelect'] = (value) => {
@@ -132,9 +162,9 @@ const showRefreshBtn = computed(() => !props.disabledTools.includes('refresh'))
 const showSizeBtn = computed(() => !props.disabledTools.includes('size'))
 const showFullscreenBtn = computed(() => !props.disabledTools.includes('fullscreen'))
 const showSettingColumnBtn = computed(
-  () => !props.disabledTools.includes('setting') && attrs?.columns && (attrs?.columns as TableColumnData[])?.length
+  () => !props.disabledTools.includes('setting') && attrs?.columns && (attrs?.columns as TableColumnData[])?.length,
 )
-type SettingColumnItem = { title: string, key: string, show: boolean, disabled: boolean }
+interface SettingColumnItem { title: string, key: string, show: boolean, disabled: boolean }
 const settingColumnList = ref<SettingColumnItem[]>([])
 
 // 重置配置列
@@ -148,8 +178,8 @@ const resetSettingColumns = () => {
         title: typeof item.title === 'string' ? item.title : '',
         show: item.show ?? true,
         disabled: props.disabledColumnKeys.includes(
-          item.dataIndex || (typeof item.title === 'string' ? item.title : '')
-        )
+          item.dataIndex || (typeof item.title === 'string' ? item.title : ''),
+        ),
       })
     })
   }
@@ -160,7 +190,7 @@ watch(
   () => {
     resetSettingColumns()
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 // 排序和过滤可显示的列数据
@@ -173,7 +203,7 @@ const _columns = computed(() => {
     .map((i) => i.key || (typeof i.title === 'string' ? i.title : ''))
   // 显示的columns数据
   const filterColumns = arr.filter((i) =>
-    showDataIndexs.includes(i.dataIndex || (typeof i.title === 'string' ? i.title : ''))
+    showDataIndexs.includes(i.dataIndex || (typeof i.title === 'string' ? i.title : '')),
   )
   const sortedColumns: TableColumnData[] = []
   settingColumnList.value.forEach((i) => {

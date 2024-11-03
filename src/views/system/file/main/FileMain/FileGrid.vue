@@ -53,7 +53,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   data: () => [], // 文件数据
   selectedFileIds: () => [], // 批量模式下选中的文件id数组
-  isBatchMode: false // 是否是批量模式
+  isBatchMode: false, // 是否是批量模式
 })
 
 const emit = defineEmits<{

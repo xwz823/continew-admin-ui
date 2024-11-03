@@ -94,7 +94,7 @@ const {
   tableData,
   loading,
   search,
-  handleDelete
+  handleDelete,
 } = useTable(() => listMenu(queryForm), { immediate: true })
 
 // 过滤树
@@ -110,7 +110,7 @@ const searchData = (title: string) => {
         if (filterData.length) {
           result.push({
             ...item,
-            children: filterData
+            children: filterData,
           })
         }
       }
@@ -126,14 +126,14 @@ const dataList = computed(() => {
 })
 
 const columns: TableInstanceColumns[] = [
-  { title: '菜单标题', dataIndex: 'title', slotName: 'title', width: 170, fixed: !isMobile() ? 'left' : undefined },
+  { title: '菜单标题', dataIndex: 'title', slotName: 'title', minWidth: 170, fixed: !isMobile() ? 'left' : undefined },
   { title: '类型', slotName: 'type', align: 'center' },
   { title: '状态', slotName: 'status', align: 'center' },
   { title: '排序', dataIndex: 'sort', align: 'center', show: false },
   { title: '路由地址', dataIndex: 'path', ellipsis: true, tooltip: true },
   { title: '组件名称', dataIndex: 'name', ellipsis: true, tooltip: true },
-  { title: '组件路径', dataIndex: 'component', width: 180, ellipsis: true, tooltip: true },
-  { title: '权限标识', dataIndex: 'permission', width: 180, ellipsis: true, tooltip: true },
+  { title: '组件路径', dataIndex: 'component', minWidth: 180, ellipsis: true, tooltip: true },
+  { title: '权限标识', dataIndex: 'permission', minWidth: 180, ellipsis: true, tooltip: true },
   { title: '外链', slotName: 'isExternal', align: 'center' },
   { title: '隐藏', slotName: 'isHidden', align: 'center' },
   { title: '缓存', slotName: 'isCache', align: 'center' },
@@ -147,8 +147,8 @@ const columns: TableInstanceColumns[] = [
     width: 180,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:menu:update', 'system:menu:delete', 'system:menu:add'])
-  }
+    show: has.hasPermOr(['system:menu:update', 'system:menu:delete', 'system:menu:add']),
+  },
 ]
 
 // 重置
@@ -160,7 +160,7 @@ const reset = () => {
 const onDelete = (record: MenuResp) => {
   return handleDelete(() => deleteMenu(record.id), {
     content: `是否确定删除 [${record.title}]？`,
-    showModal: true
+    showModal: true,
   })
 }
 

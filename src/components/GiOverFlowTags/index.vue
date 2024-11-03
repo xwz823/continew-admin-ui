@@ -22,7 +22,7 @@
 defineOptions({ name: 'GiOverFlowTags' })
 
 withDefaults(defineProps<Props>(), {
-  data: () => []
+  data: () => [],
 })
 interface Props {
   data: string[]

@@ -16,7 +16,7 @@
 defineOptions({ name: 'GiCellGender' })
 
 const props = withDefaults(defineProps<Props>(), {
-  gender: 1
+  gender: 1,
 })
 
 interface Props {

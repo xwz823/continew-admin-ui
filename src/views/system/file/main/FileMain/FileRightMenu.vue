@@ -18,7 +18,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  shadow: true
+  shadow: true,
 })
 
 const emit = defineEmits<{

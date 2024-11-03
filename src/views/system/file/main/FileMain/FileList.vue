@@ -79,7 +79,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   data: () => [], // 文件数据
   selectedFileIds: () => [],
-  isBatchMode: false // 是否是批量模式
+  isBatchMode: false, // 是否是批量模式
 })
 
 const emit = defineEmits<{
@@ -95,7 +95,7 @@ const getFileName = (item: FileItem) => {
 
 const rowSelection: TableRowSelection = reactive({
   type: 'checkbox',
-  showCheckedAll: true
+  showCheckedAll: true,
 })
 
 // 多选

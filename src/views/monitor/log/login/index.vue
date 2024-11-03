@@ -57,16 +57,16 @@ const queryForm = reactive<LogQuery>({
   module: '登录',
   createTime: [
     dayjs().subtract(6, 'day').startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
   ],
-  sort: ['createTime,desc']
+  sort: ['createTime,desc'],
 })
 
 const {
   tableData: dataList,
   loading,
   pagination,
-  search
+  search,
 } = useTable((page) => listLog({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
@@ -74,7 +74,7 @@ const columns: TableInstanceColumns[] = [
     title: '序号',
     width: 66,
     align: 'center',
-    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize)
+    render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '登录时间', dataIndex: 'createTime', width: 180 },
   { title: '用户昵称', dataIndex: 'createUserString', ellipsis: true, tooltip: true },
@@ -87,23 +87,23 @@ const columns: TableInstanceColumns[] = [
       filters: [
         {
           text: '成功',
-          value: '1'
+          value: '1',
         },
         {
           text: '失败',
-          value: '2'
-        }
+          value: '2',
+        },
       ],
       filter: () => {
         return true
       },
-      alignLeft: true
-    }
+      alignLeft: true,
+    },
   },
   { title: '登录 IP', dataIndex: 'ip', ellipsis: true, tooltip: true },
   { title: '登录地点', dataIndex: 'address', ellipsis: true, tooltip: true },
   { title: '浏览器', dataIndex: 'browser', ellipsis: true, tooltip: true },
-  { title: '终端系统', dataIndex: 'os', ellipsis: true, tooltip: true }
+  { title: '终端系统', dataIndex: 'os', ellipsis: true, tooltip: true },
 ]
 
 // 重置
@@ -112,7 +112,7 @@ const reset = () => {
   queryForm.createUserString = undefined
   queryForm.createTime = [
     dayjs().subtract(6, 'day').startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+    dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
   ]
   queryForm.status = undefined
   search()

@@ -10,7 +10,7 @@
 import { useAppStore } from '@/stores'
 
 const props = withDefaults(defineProps<Props>(), {
-  collapsed: false
+  collapsed: false,
 })
 const appStore = useAppStore()
 const title = computed(() => appStore.getTitle())
