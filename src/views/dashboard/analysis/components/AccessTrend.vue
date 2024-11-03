@@ -2,7 +2,7 @@
   <a-spin :loading="loading" style="width: 100%">
     <a-card class="general-card" title="访问趋势">
       <template #extra>
-        <a-radio-group v-model:model-value="dateRange" type="button" size="small" @change="onChange as any">
+        <a-radio-group v-model:model-value="dateRange" type="button" size="small" @change="onChange as any" >
           <a-radio :value="7">近7天</a-radio>
           <a-radio :value="30">近30天</a-radio>
         </a-radio-group>
