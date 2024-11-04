@@ -1,13 +1,14 @@
 <template>
-  <VCharts v-if="renderChart" :option="option" :autoresize="autoResize" :style="{ width, height }" ref="chart" />
+  <VCharts ref="chart" :option="option" :autoresize="autoResize" :style="{ width, height }" />
 </template>
 
 <script lang="ts" setup>
-import { registerMap } from 'echarts/core';
-import { nextTick, ref } from 'vue'
+import { registerMap } from 'echarts/core'
+import { ref } from 'vue'
 import VCharts from 'vue-echarts'
 import worldMap from './world.json'
 import chinaMap from './china.json'
+
 defineProps({
   option: {
     type: Object,
@@ -28,16 +29,13 @@ defineProps({
     default: '100%',
   },
 })
+
 registerMap('world', worldMap)
 registerMap('china', chinaMap)
-const renderChart = ref(false)
+
 const chart = ref(null)
 defineExpose({
-  chart
-})
-// wait container expand
-nextTick(() => {
-  renderChart.value = true
+  chart,
 })
 </script>
 
