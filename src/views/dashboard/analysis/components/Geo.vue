@@ -30,6 +30,8 @@ import type { EChartsOption } from 'echarts'
 import { getAnalysisGeo as getData } from '@/apis/common/dashboard'
 import { useChart } from '@/hooks'
 
+const Chart = defineAsyncComponent(() => import('@/components/Chart/index.vue'))
+
 const chartRef = useTemplateRef('chartRef')
 const chartData = ref([])
 const totalValue = ref(0)

@@ -4,7 +4,6 @@
 
 <script lang="ts" setup>
 import { registerMap } from 'echarts/core'
-import { ref } from 'vue'
 import VCharts from 'vue-echarts'
 import worldMap from './world.json'
 import chinaMap from './china.json'

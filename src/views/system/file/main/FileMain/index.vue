@@ -99,8 +99,10 @@ import { type FileItem, type FileQuery, deleteFile, listFile, uploadFile } from 
 import { ImageTypes, OfficeTypes } from '@/constant/file'
 import 'viewerjs/dist/viewer.css'
 import { downloadByUrl } from '@/utils/downloadFile'
-import FilePreview from '@/components/FilePreview/index.vue'
+
 import type { ExcelConfig } from '@/components/FilePreview/type'
+
+const FilePreview = defineAsyncComponent(() => import('@/components/FilePreview/index.vue'))
 
 const FileList = defineAsyncComponent(() => import('./FileList.vue'))
 const route = useRoute()

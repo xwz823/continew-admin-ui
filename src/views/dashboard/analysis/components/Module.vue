@@ -13,6 +13,8 @@ import type { EChartsOption } from 'echarts'
 import { useChart } from '@/hooks'
 import { type DashboardChartCommonResp, getAnalysisModule as getData } from '@/apis/common'
 
+const Chart = defineAsyncComponent(() => import('@/components/Chart/index.vue'))
+
 const yAxis = ref<string[]>([])
 const chartData = ref([])
 const { chartOption } = useChart((isDark: EChartsOption) => {
