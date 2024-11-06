@@ -80,6 +80,7 @@ onMounted(() => {
   margin-bottom: 4px;
   .item-content {
     flex: 1;
+    justify-content: flex-start;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -126,7 +126,7 @@ const dataList = computed(() => {
 })
 
 const columns: TableInstanceColumns[] = [
-  { title: '菜单标题', dataIndex: 'title', slotName: 'title', minWidth: 170, fixed: !isMobile() ? 'left' : undefined },
+  { title: '菜单标题', dataIndex: 'title', slotName: 'title', width: 170, fixed: !isMobile() ? 'left' : undefined },
   { title: '类型', slotName: 'type', align: 'center' },
   { title: '状态', slotName: 'status', align: 'center' },
   { title: '排序', dataIndex: 'sort', align: 'center', show: false },

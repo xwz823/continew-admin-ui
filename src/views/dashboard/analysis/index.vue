@@ -38,7 +38,6 @@ import Module from './components/Module.vue'
 import AccessTimeslot from '@/views/dashboard/analysis/components/AccessTimeslot.vue'
 
 defineOptions({ name: 'Analysis' })
-// const AccessTimeslot = defineAsyncComponent(() => import('./components/AccessTimeslot.vue'))
 </script>
 
 <style lang="scss" scoped></style>
