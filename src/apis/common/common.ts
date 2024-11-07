@@ -18,6 +18,11 @@ export function listMenuTree(query: { description: string }) {
   return http.get<TreeNodeData[]>(`${BASE_URL}/tree/menu`, query)
 }
 
+/** @desc 查询用户列表 */
+export function listUserDict(query?: { status: number }) {
+  return http.get<LabelValueState[]>(`${BASE_URL}/dict/user`, query)
+}
+
 /** @desc 查询角色列表 */
 export function listRoleDict(query?: { name: string, status: number }) {
   return http.get<LabelValueState[]>(`${BASE_URL}/dict/role`, query)

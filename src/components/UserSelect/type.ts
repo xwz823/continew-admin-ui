@@ -1,7 +1,8 @@
 export interface UserSelectPropType {
   multiple: boolean
-  value: string | string[]
+  value?: string[]
 }
+
 export interface UserItem {
   id: string
   nickname: string

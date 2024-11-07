@@ -9,6 +9,8 @@ const BASE_URL = '/system/user'
 export function listUser(query: T.UserPageQuery) {
   return http.get<PageRes<T.UserResp[]>>(`${BASE_URL}`, query)
 }
+
+/** @desc 查询所有用户列表 */
 export function listAllUser(query: Partial<T.UserPageQuery>) {
   return http.get<T.UserResp[]>(`${BASE_URL}/list`, query)
 }

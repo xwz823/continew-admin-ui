@@ -3,11 +3,10 @@
     <div style="display: flex;">
       <a-select
         v-model="selectedUsers"
-        :allow-clear="true"
-        :multiple="props.multiple"
+        :options="userList"
         :max-tag-count="4"
-        :field-names="{ value: 'id', label: 'nickname' }"
-        :options="options"
+        :multiple="props.multiple"
+        :allow-clear="true"
         @change="handleSelectChange"
       />
       <a-tooltip content="选择用户">
@@ -39,7 +38,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import UserSelectContent from './component/UserSelectContent.vue'
-import { type UserResp, listAllUser } from '@/apis'
+import { listUserDict } from '@/apis'
 import type { UserSelectPropType } from '@/components/UserSelect/type'
 
 const props = withDefaults(defineProps<UserSelectPropType>(), {
@@ -49,11 +48,11 @@ const props = withDefaults(defineProps<UserSelectPropType>(), {
 
 const emit = defineEmits(['update:value'])
 
-const visible = ref<boolean>(false) // 控制弹窗显示的状态
 const { width } = useWindowSize() // 获取窗口的宽度，用于设置弹窗宽度
-const options = ref<UserResp[]>([]) // 保存用户选项列表
+const visible = ref<boolean>(false) // 控制弹窗显示的状态
+const userList = ref([]) // 保存用户选项列表
 const userSelectContentRef = ref() // 引用 UserSelectContent 组件实例
-const selectedUsers = ref<string[]>([]) // 保存已选择的用户
+const selectedUsers = ref([]) // 保存已选择的用户
 // 打开用户选择弹窗
 const onOpen = () => {
   visible.value = true
@@ -85,15 +84,10 @@ const handleModalOk = () => {
 
 // 组件挂载后初始化用户列表
 onMounted(async () => {
-  const { data } = await listAllUser({}) // 获取所有用户
-  options.value = data.map((user) => {
-    user.id = String(user.id)
-    user.disabled = false // 初始化时设置用户未被禁用
-    return user
-  })
-
+  const { data } = await listUserDict() // 获取所有用户
+  userList.value = data
   // 初始化选择的用户
-  selectedUsers.value = Array.isArray(props.value) ? props.value : props.value.split(',')
+  selectedUsers.value = Array.isArray(props.value) ? props.value : props.value?.split(',')
 })
 </script>
 
