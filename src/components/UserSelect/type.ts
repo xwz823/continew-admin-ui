@@ -1,6 +1,6 @@
 export interface UserSelectPropType {
   multiple: boolean
-  value?: string[]
+  value: string[] | string
 }
 
 export interface UserItem {

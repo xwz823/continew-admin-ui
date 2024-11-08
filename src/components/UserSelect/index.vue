@@ -40,19 +40,19 @@ import { useWindowSize } from '@vueuse/core'
 import UserSelectContent from './component/UserSelectContent.vue'
 import { listUserDict } from '@/apis'
 import type { UserSelectPropType } from '@/components/UserSelect/type'
+import type { LabelValueState } from '@/types/global'
 
 const props = withDefaults(defineProps<UserSelectPropType>(), {
   multiple: false, // 是否支持多选
-  value: '',
+  value: [], // 单选时默认值为空数组
 })
-
 const emit = defineEmits(['update:value'])
-
 const { width } = useWindowSize() // 获取窗口的宽度，用于设置弹窗宽度
 const visible = ref<boolean>(false) // 控制弹窗显示的状态
-const userList = ref([]) // 保存用户选项列表
+const userList = ref<LabelValueState[]>([]) // 保存用户选项列表
 const userSelectContentRef = ref() // 引用 UserSelectContent 组件实例
-const selectedUsers = ref([]) // 保存已选择的用户
+const selectedUsers = ref<string[]>([]) // 保存已选择的用户
+
 // 打开用户选择弹窗
 const onOpen = () => {
   visible.value = true
@@ -66,7 +66,13 @@ const emitDataChange = () => {
 
 // 处理用户选择变更事件
 const handleSelectChange = (value: any) => {
-  selectedUsers.value = props.multiple ? value : [...value]
+  if (props.multiple) {
+    // 多选模式下，selectedUsers 应该是一个数组
+    selectedUsers.value = value
+  } else {
+    // 单选模式下，selectedUsers 只应保存一个值
+    selectedUsers.value = value ? [value] : []
+  }
   emitDataChange() // 每次选择变化时发出更新事件
 }
 
@@ -90,15 +96,3 @@ onMounted(async () => {
   selectedUsers.value = Array.isArray(props.value) ? props.value : props.value?.split(',')
 })
 </script>
-
-<style scoped>
-:deep(.arco-input-append) {
-  padding: 0;
-
-  .arco-btn {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border: 1px solid transparent;
-  }
-}
-</style>

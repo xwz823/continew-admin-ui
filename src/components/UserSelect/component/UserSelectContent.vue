@@ -9,6 +9,7 @@
           :columns="tableColumns"
           :loading="loading"
           :scroll="{ x: '100%', y: '100%', minWidth: 1000 }"
+          style="max-height: 600px"
           :pagination="pagination"
           :disabled-tools="['size', 'fullscreen', 'setting', 'refresh']"
           :row-selection="{ type: props.multiple ? 'checkbox' : 'radio', showCheckedAll: true }"
@@ -30,7 +31,9 @@
                   @change="search"
                 />
                 <a-button @click="reset">
-                  <template #icon><icon-refresh /></template>
+                  <template #icon>
+                    <icon-refresh />
+                  </template>
                   <template #default>重置</template>
                 </a-button>
               </a-space>
@@ -59,7 +62,7 @@
 
       <a-col :span="24" :md="6" class="section">
         <a-card title="已选用户">
-          <a-table :columns="rightColumn" :data="selectedData">
+          <a-table :columns="rightColumn" :data="selectedData" :pagination="paginationOptions">
             <template #nickname="{ record }">
               {{ record.nickname }}({{ record.username }})
             </template>
@@ -78,9 +81,9 @@
 <script setup lang="ts">
 import type { TreeNodeData } from '@arco-design/web-vue'
 import { useDept } from '@/hooks/app'
-import { useTable } from '@/hooks'
-import { type UserQuery, listAllUser, listUser } from '@/apis'
-import type { UserItem, UserSelectPropType } from '@/components/UserSelect/type'
+import { type Options, useTable } from '@/hooks'
+import { type UserQuery, type UserResp, listAllUser, listUser } from '@/apis'
+import type { UserSelectPropType } from '@/components/UserSelect/type'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { isMobile } from '@/utils'
 
@@ -127,6 +130,11 @@ const rightColumn = [
 const queryForm = reactive<UserQuery>({
   sort: ['t1.createTime,desc'],
 })
+// 定义分页器参数
+const paginationOptions: Options = {
+  defaultPageSize: 10,
+  defaultSizeOptions: [10, 20, 30, 40, 50],
+}
 
 // 用户列表
 const { tableData: dataList, loading, pagination, search } = useTable(
@@ -157,64 +165,91 @@ const filterDeptOptions = (searchKey: string, nodeData: TreeNodeData) => {
   return false
 }
 
-const selectedKeys = ref<string[]>([])
-const selectedData = ref<any[]>([])
+const allUsers = ref<UserResp[]>() // 用于存储所有用户信息
+const selectedKeys = ref<string[]>([]) // 使用 Array 来存储选中的 id
+const selectedData = ref<Set<UserResp>>(new Set()) // 使用 Set 来存储选中的用户对象
+
 const emitSelectedUsers = () => {
   emit('update:selectedUsers', selectedKeys.value)
 }
 // 行选择事件
-const onRowSelect = (rowKeys: string[], rowKey: string, record: UserItem) => {
-  selectedData.value = props.multiple
-    ? rowKeys.includes(rowKey)
-      ? [...selectedData.value, record]
-      : selectedData.value.filter((item) => item.id !== rowKey)
-    : [record]
-  selectedKeys.value = selectedData.value.map((item) => item.id)
+const onRowSelect = (rowKeys: string[], rowKey: string, record: UserResp) => {
+  if (props.multiple) {
+    // 多选
+    if (rowKeys.includes(rowKey)) {
+      // 包含 选中
+      selectedData.value.add(record)
+      selectedKeys.value?.push(rowKey)
+    } else {
+      // 不包含 去除
+      selectedData.value.delete(record)
+      selectedKeys.value?.splice(selectedKeys.value?.indexOf(rowKey), 1)
+    }
+  } else {
+    // 单选
+    selectedData.value.clear()
+    selectedKeys.value = []
+    if (rowKeys.includes(rowKey)) {
+      // 包含 选中
+      selectedData.value.add(record)
+      selectedKeys.value?.push(rowKey)
+    }
+  }
   emitSelectedUsers()
 }
 
 // 全选事件
 const onTableSelectAll = (checked: boolean) => {
-  selectedData.value = checked
-    ? [...selectedData.value, ...dataList.value.filter((item) => !selectedKeys.value.includes(item.id))]
-    : []
-  selectedKeys.value = selectedData.value.map((item) => item.id)
+  if (checked) {
+    // 选中
+    dataList.value.forEach((item) => {
+      selectedData.value.add(item)
+      selectedKeys.value?.push(item.id)
+    })
+  } else {
+    // 取消选中
+    dataList.value.forEach((item) => {
+      selectedData.value.delete(item)
+      selectedKeys.value?.splice(selectedKeys.value?.indexOf(item.id), 1)
+    })
+  }
+
   emitSelectedUsers()
 }
 
 // 从选中列表中移除用户
-const handleDeleteSelectUser = (user: UserItem) => {
-  selectedData.value = selectedData.value.filter((item) => item.id !== user.id)
-  selectedKeys.value = selectedData.value.map((item) => item.id)
+const handleDeleteSelectUser = (user: UserResp) => {
+  selectedData.value.delete(user)
+  selectedKeys.value?.splice(selectedKeys.value?.indexOf(user.id), 1)
   emitSelectedUsers()
 }
 
 // 清空所有选中数据
 const onClearSelected = () => {
-  selectedData.value = []
+  selectedData.value.clear()
   selectedKeys.value = []
   emitSelectedUsers()
 }
 
 // 初始化函数
-const init = (selectUsers: string[]) => {
+const init = async (selectUsers: string[]) => {
   getDeptList()
   search()
+  // 获取所有用户数据
+  const { data } = await listAllUser({})
+  allUsers.value = data
+
+  // 过滤已选择的用户
   if (selectUsers && selectUsers.length > 0) {
-    // admin的id是number 不是string 类型 所以处理一下
-    listAllUser({ userIds: selectUsers }).then((dataList) => {
-      selectedData.value = dataList.data.map((data) => {
-        return { ...data, id: data.id }
-      })
-    })
+    if (props.multiple) {
+      selectedData.value = new Set(allUsers.value.filter((item) => selectUsers.includes(item.id)))
+      selectedKeys.value = Array.from(selectedData.value).map((user) => user.id)
+    } else {
+      selectedData.value = new Set(allUsers.value.filter((item) => selectUsers[0] === item.id))
+      selectedKeys.value = Array.from(selectedData.value).map((user) => user.id)
+    }
   }
 }
-
-watch(() => props.selectedUsers, (newValue) => {
-  const newSelectedKeys = Array.isArray(newValue) ? newValue : [newValue]
-  selectedKeys.value = newSelectedKeys.filter(Boolean)
-  selectedData.value = dataList.value.filter((item) => selectedKeys.value.includes(item.id))
-}, { immediate: true })
 
 defineExpose({ init, onClearSelected })
 </script>
