@@ -109,7 +109,7 @@ import { DisEnableStatusList } from '@/constant/common'
 defineOptions({ name: 'SystemUser' })
 
 const queryForm = reactive<UserQuery>({
-  sort: ['t1.createTime,desc'],
+  sort: ['t1.createTime,desc', 't1.id,desc'],
 })
 const {
   tableData: dataList,

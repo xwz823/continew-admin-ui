@@ -29,11 +29,13 @@ export function updateRole(data: any, id: string) {
 export function deleteRole(ids: string | Array<string>) {
   return http.del(`${BASE_URL}/${ids}`)
 }
-/** @desc 获取角色绑定的用户列表 */
+
+/** @desc 查询角色关联用户 */
 export function listRoleUsers(id: string) {
-  return http.get(`${BASE_URL}/listRoleUsers/${id}`)
+  return http.get(`${BASE_URL}/${id}/user`)
 }
 
-export function bindUsers(id: string, userIds: Array<string>) {
-  return http.post(`${BASE_URL}/bindUsers/${id}`, userIds)
+/** @desc 分配角色给用户 */
+export function assignToUsers(id: string, userIds: Array<string>) {
+  return http.post(`${BASE_URL}/${id}/user`, userIds)
 }
