@@ -70,13 +70,14 @@
                 删除
               </a-link>
               <a-dropdown>
-                <a-button v-if="has.hasPermOr(['system:user:resetPwd'])" type="text" size="mini">
+                <a-button v-if="has.hasPermOr(['system:user:resetPwd', 'system:user:updateRole'])" type="text" size="mini">
                   <template #icon>
                     <icon-more :size="16" />
                   </template>
                 </a-button>
                 <template #content>
                   <a-doption v-permission="['system:user:resetPwd']" @click="onResetPwd(record)">重置密码</a-doption>
+                  <a-doption v-permission="['system:user:updateRole']" @click="onUpdateRole(record)">分配角色</a-doption>
                 </template>
               </a-dropdown>
             </a-space>
@@ -89,6 +90,7 @@
     <UserImportDrawer ref="UserImportDrawerRef" @save-success="search" />
     <UserDetailDrawer ref="UserDetailDrawerRef" />
     <UserResetPwdModal ref="UserResetPwdModalRef" />
+    <UserUpdateRoleModal ref="UserUpdateRoleModalRef" @save-success="search" />
   </div>
 </template>
 
@@ -98,6 +100,7 @@ import UserAddDrawer from './UserAddDrawer.vue'
 import UserImportDrawer from './UserImportDrawer.vue'
 import UserDetailDrawer from './UserDetailDrawer.vue'
 import UserResetPwdModal from './UserResetPwdModal.vue'
+import UserUpdateRoleModal from './UserUpdateRoleModal.vue'
 import { type UserQuery, type UserResp, deleteUser, exportUser, listUser } from '@/apis/system'
 import type { Columns, Options } from '@/components/GiForm'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
@@ -251,6 +254,12 @@ const UserResetPwdModalRef = ref<InstanceType<typeof UserResetPwdModal>>()
 // 重置密码
 const onResetPwd = (record: UserResp) => {
   UserResetPwdModalRef.value?.onReset(record.id)
+}
+
+const UserUpdateRoleModalRef = ref<InstanceType<typeof UserUpdateRoleModal>>()
+// 分配角色
+const onUpdateRole = (record: UserResp) => {
+  UserUpdateRoleModalRef.value?.onOpen(record.id)
 }
 </script>
 
