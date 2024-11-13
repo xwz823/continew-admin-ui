@@ -10,29 +10,7 @@
   >
     <a-tabs v-model:active-key="activeKey">
       <a-tab-pane key="1" title="生成配置">
-        <a-form ref="formRef" :model="form" :rules="rules" class="gen-config" size="large">
-          <a-form-item label="作者名称" field="author">
-            <a-input v-model="form.author" placeholder="请输入作者名称" />
-          </a-form-item>
-          <a-form-item label="业务名称" field="businessName">
-            <a-input v-model="form.businessName" placeholder="自定义业务名称，例如：用户" />
-          </a-form-item>
-          <a-form-item label="所属模块" field="moduleName">
-            <a-input v-model="form.moduleName" placeholder="项目模块名称，例如：continew-admin-system" />
-          </a-form-item>
-          <a-form-item label="模块包名" field="packageName">
-            <a-input v-model="form.packageName" placeholder="项目模块包名，例如：top.continew.admin.system" />
-          </a-form-item>
-          <a-form-item label="去表前缀" field="tablePrefix">
-            <a-input v-model="form.tablePrefix" placeholder="数据库表前缀，例如：sys_" />
-          </a-form-item>
-          <a-form-item label="是否覆盖" field="isOverride">
-            <a-radio-group v-model="form.isOverride" type="button">
-              <a-radio :value="true">是</a-radio>
-              <a-radio :value="false">否</a-radio>
-            </a-radio-group>
-          </a-form-item>
-        </a-form>
+        <GiForm ref="formRef" v-model="form" :options="options" :columns="formColumns" />
       </a-tab-pane>
       <a-tab-pane key="2" title="字段配置">
         <GiTable
@@ -141,11 +119,12 @@
 </template>
 
 <script setup lang="ts">
-import { type FormInstance, Message } from '@arco-design/web-vue'
+import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import { type FieldConfigResp, type GeneratorConfigResp, getGenConfig, listFieldConfig, listFieldConfigDict, saveGenConfig } from '@/apis/tool'
 import type { LabelValueState } from '@/types/global'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
+import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import { useForm } from '@/hooks'
 import { useDict } from '@/hooks/app'
 
@@ -154,6 +133,68 @@ const emit = defineEmits<{
 }>()
 const { width } = useWindowSize()
 const { form_type_enum, query_type_enum } = useDict('form_type_enum', 'query_type_enum')
+
+const options: Options = {
+  form: { size: 'large' },
+  grid: { cols: 2 },
+  btns: { hide: true },
+}
+const formColumns: Columns = reactive([
+  {
+    label: '作者名称',
+    field: 'author',
+    type: 'input',
+    props: {
+      placeholder: '请输入作者名称',
+    },
+    rules: [{ required: true, message: '请输入作者名称' }],
+  },
+  {
+    label: '业务名称',
+    field: 'businessName',
+    type: 'input',
+    props: {
+      placeholder: '自定义业务名称，例如：用户',
+    },
+    rules: [{ required: true, message: '请输入业务名称' }],
+  },
+  {
+    label: '所属模块',
+    field: 'moduleName',
+    type: 'input',
+    props: {
+      placeholder: '项目模块名称，例如：continew-system',
+    },
+    rules: [{ required: true, message: '请输入所属模块' }],
+  },
+  {
+    label: '模块包名',
+    field: 'packageName',
+    type: 'input',
+    props: {
+      placeholder: '项目模块包名，例如：top.continew.admin.system',
+    },
+    rules: [{ required: true, message: '请输入模块包名' }],
+  },
+  {
+    label: '去表前缀',
+    field: 'tablePrefix',
+    type: 'input',
+    props: {
+      placeholder: '数据库表前缀，例如：sys_',
+      width: '200',
+    },
+  },
+  {
+    label: '是否覆盖',
+    field: 'isOverride',
+    type: 'radio-group',
+    options: [{ label: '是', value: true }, { label: '否', value: false }],
+    props: {
+      type: 'button',
+    },
+  },
+])
 
 // Table 字段配置
 const columns: TableInstanceColumns[] = [
@@ -185,22 +226,14 @@ const getDataList = async (tableName: string, requireSync: boolean) => {
   }
 }
 
-// Form 生成配置
-const formRef = ref<FormInstance>()
-const rules: FormInstance['rules'] = {
-  author: [{ required: true, message: '请输入作者名称' }],
-  moduleName: [{ required: true, message: '请输入所属模块' }],
-  packageName: [{ required: true, message: '请输入模块包名' }],
-  businessName: [{ required: true, message: '请输入业务名称' }],
-}
-
+const formRef = ref<InstanceType<typeof GiForm>>()
 const { form, resetForm } = useForm({
   isOverride: false,
 })
 
 // 重置
 const reset = () => {
-  formRef.value?.resetFields()
+  formRef.value?.formRef?.resetFields()
   resetForm()
 }
 
@@ -214,8 +247,8 @@ const onConfig = async (tableName: string, comment: string) => {
   // 查询字段配置
   await getDataList(tableName, false)
   // 查询生成配置
-  const res = await getGenConfig(tableName)
-  Object.assign(form, res.data)
+  const { data } = await getGenConfig(tableName)
+  Object.assign(form, data)
   form.isOverride = false
 }
 
@@ -233,7 +266,7 @@ const activeKey = ref('1')
 // 保存
 const save = async () => {
   try {
-    const isInvalid = await formRef.value?.validate()
+    const isInvalid = await formRef.value?.formRef?.validate()
     if (isInvalid) {
       activeKey.value = '1'
       return false

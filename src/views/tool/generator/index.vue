@@ -25,8 +25,8 @@
         <a-space>
           <a-link @click="onConfig(record.tableName, record.comment)">配置</a-link>
           <a-link
-            :title="record.isConfiged ? '生成' : '请先进行生成配置'"
-            :disabled="!record.isConfiged"
+            :title="record.createTime ? '生成' : '请先进行生成配置'"
+            :disabled="!record.createTime"
             @click="onPreview(record.tableName)"
           >
             生成
@@ -42,17 +42,16 @@
 
 <script setup lang="ts">
 import GenConfigDrawer from './GenConfigDrawer.vue'
-
-import { generate, listGenerator } from '@/apis/tool'
+import { generate, listGenConfig } from '@/apis/tool'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useTable } from '@/hooks'
 import { isMobile } from '@/utils'
 
 defineOptions({ name: 'Generator' })
 const GenPreviewModal = defineAsyncComponent(() => import('./GenPreviewModal.vue'))
+
 const queryForm = reactive({
   tableName: undefined,
-  sort: ['createTime,desc'],
 })
 
 const {
@@ -60,7 +59,7 @@ const {
   loading,
   pagination,
   search,
-} = useTable((page) => listGenerator({ ...queryForm, ...page }), { immediate: true })
+} = useTable((page) => listGenConfig({ ...queryForm, ...page }), { immediate: true })
 
 const columns: TableInstanceColumns[] = [
   {
@@ -69,11 +68,14 @@ const columns: TableInstanceColumns[] = [
     align: 'center',
     render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
-  { title: '表名称', dataIndex: 'tableName', width: 225 },
-  { title: '描述', dataIndex: 'comment', tooltip: true },
-  { title: '存储引擎', dataIndex: 'engine', align: 'center' },
-  { title: '字符集', dataIndex: 'charset' },
-  { title: '创建时间', dataIndex: 'createTime', width: 180 },
+  { title: '表名称', dataIndex: 'tableName', minWidth: 225, ellipsis: true, tooltip: true },
+  { title: '描述', dataIndex: 'comment', ellipsis: true, tooltip: true },
+  { title: '类名前缀', dataIndex: 'classNamePrefix', ellipsis: true, tooltip: true },
+  { title: '作者名称', dataIndex: 'author' },
+  { title: '所属模块', dataIndex: 'moduleName', ellipsis: true, tooltip: true },
+  { title: '模块包名', dataIndex: 'packageName', ellipsis: true, tooltip: true },
+  { title: '配置时间', dataIndex: 'createTime', width: 180 },
+  { title: '修改时间', dataIndex: 'updateTime', width: 180 },
   { title: '操作', slotName: 'action', width: 180, align: 'center', fixed: !isMobile() ? 'right' : undefined },
 ]
 

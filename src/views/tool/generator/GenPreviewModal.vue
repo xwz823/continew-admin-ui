@@ -134,8 +134,8 @@ const selectedKeys = ref()
 const onPreview = async (tableName: string) => {
   treeData.value = []
   previewTableName.value = tableName
-  const res = await genPreview(tableName)
-  genPreviewList.value = res.data
+  const { data } = await genPreview(tableName)
+  genPreviewList.value = data
   for (const genPreview of genPreviewList.value) {
     assembleTree(genPreview)
   }

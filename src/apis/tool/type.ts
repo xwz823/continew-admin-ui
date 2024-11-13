@@ -1,17 +1,21 @@
 /** 工具代码生成类型 */
-export interface TableResp {
+export interface GenConfigResp {
   tableName: string
-  comment?: string
-  engine: string
-  charset: string
+  comment: string
+  moduleName: string
+  packageName: string
+  businessName: string
+  author: string
+  tablePrefix: string
+  isOverride: boolean
   createTime?: string
-  isConfiged: boolean
-  disabled: boolean
+  updateTime?: string
+  classNamePrefix?: string
 }
-export interface TableQuery {
+export interface GenConfigQuery {
   tableName?: string
 }
-export interface TablePageQuery extends PageQuery, TableQuery {}
+export interface GenConfigPageQuery extends PageQuery, GenConfigQuery {}
 
 export interface FieldConfigResp {
   tableName: string
@@ -29,17 +33,6 @@ export interface FieldConfigResp {
   queryType: string
   dictCode: string
   createTime?: string
-}
-export interface GenConfigResp {
-  tableName: string
-  moduleName: string
-  packageName: string
-  businessName: string
-  author: string
-  tablePrefix: string
-  isOverride: boolean
-  createTime?: string
-  updateTime?: string
 }
 export interface GeneratorConfigResp {
   genConfig: GenConfigResp
