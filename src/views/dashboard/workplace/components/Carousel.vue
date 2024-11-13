@@ -22,11 +22,11 @@
 <script lang="ts" setup>
 const images = [
   {
-    src: `https://continew.top/qrcode-text.png?${new Date().getTime()}`,
+    src: `https://continew.top/qrcode-text.jpg?${new Date().getTime()}`,
     url: 'https://continew.top/about/intro.html',
   },
   {
-    src: `https://continew.top/sponsor.png?${new Date().getTime()}`,
+    src: `https://continew.top/sponsor.jpg?${new Date().getTime()}`,
     url: 'https://continew.top/sponsor.html',
   },
 ]

@@ -99,8 +99,10 @@ import { useDownload, useForm } from '@/hooks'
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
 const { width } = useWindowSize()
 
+const visible = ref(false)
 const formRef = ref<FormInstance>()
 const uploadFile = ref([])
 
@@ -127,12 +129,6 @@ const reset = () => {
   dataResult.value.importKey = ''
   uploadFile.value = []
   resetForm()
-}
-
-const visible = ref(false)
-const onImport = () => {
-  reset()
-  visible.value = true
 }
 
 // 下载模板
@@ -181,7 +177,13 @@ const save = async () => {
   }
 }
 
-defineExpose({ onImport })
+// 打开
+const onOpen = () => {
+  reset()
+  visible.value = true
+}
+
+defineExpose({ onOpen })
 </script>
 
 <style lang="scss" scoped>

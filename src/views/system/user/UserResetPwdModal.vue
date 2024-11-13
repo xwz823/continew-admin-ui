@@ -24,7 +24,9 @@ import { encryptByRsa } from '@/utils/encrypt'
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
 const dataId = ref('')
+const visible = ref(false)
 const formRef = ref<InstanceType<typeof GiForm>>()
 
 const options: Options = {
@@ -44,14 +46,6 @@ const reset = () => {
   resetForm()
 }
 
-const visible = ref(false)
-// 重置
-const onReset = (id: string) => {
-  reset()
-  dataId.value = id
-  visible.value = true
-}
-
 // 保存
 const save = async () => {
   try {
@@ -66,5 +60,14 @@ const save = async () => {
   }
 }
 
-defineExpose({ onReset })
+// 打开
+const onOpen = (id: string) => {
+  reset()
+  dataId.value = id
+  visible.value = true
+}
+
+defineExpose({ onOpen })
 </script>
+
+<style lang="scss" scoped></style>

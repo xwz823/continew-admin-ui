@@ -7,7 +7,7 @@
     </a-row>
     <a-row align="stretch" :gutter="14" class="h-full page_content">
       <a-col :xs="0" :sm="0" :md="6" :lg="5" :xl="5" :xxl="4" class="h-full ov-hidden">
-        <DeptTree placeholder="请输入名称" @node-click="handleSelectDept" />
+        <DeptTree @node-click="handleSelectDept" />
       </a-col>
       <a-col :xs="24" :sm="24" :md="18" :lg="19" :xl="19" :xxl="20" class="h-full ov-hidden">
         <GiTable
@@ -64,7 +64,7 @@
                 v-permission="['system:user:delete']"
                 status="danger"
                 :title="record.isSystem ? '系统内置数据不能删除' : '删除'"
-                :disabled="record.disabled"
+                :disabled="record.isSystem"
                 @click="onDelete(record)"
               >
                 删除
@@ -111,23 +111,11 @@ import { DisEnableStatusList } from '@/constant/common'
 
 defineOptions({ name: 'SystemUser' })
 
-const queryForm = reactive<UserQuery>({
-  sort: ['t1.createTime,desc', 't1.id,desc'],
-})
-const {
-  tableData: dataList,
-  loading,
-  pagination,
-  search,
-  handleDelete,
-} = useTable((page) => listUser({ ...queryForm, ...page }), { immediate: false })
-
 const options: Options = reactive({
   form: { layout: 'inline' },
   grid: { cols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 } },
   fold: { enable: true, index: 1, defaultCollapsed: true },
 })
-
 const queryFormColumns: Columns = reactive([
   {
     type: 'input',
@@ -159,7 +147,17 @@ const queryFormColumns: Columns = reactive([
     },
   },
 ])
+const queryForm = reactive<UserQuery>({
+  sort: ['t1.createTime,desc', 't1.id,desc'],
+})
 
+const {
+  tableData: dataList,
+  loading,
+  pagination,
+  search,
+  handleDelete,
+} = useTable((page) => listUser({ ...queryForm, ...page }), { immediate: false })
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -178,13 +176,13 @@ const columns: TableInstanceColumns[] = [
     fixed: !isMobile() ? 'left' : undefined,
   },
   { title: '用户名', dataIndex: 'username', slotName: 'username', minWidth: 140, ellipsis: true, tooltip: true },
-  { title: '状态', slotName: 'status', align: 'center' },
-  { title: '性别', slotName: 'gender', align: 'center' },
-  { title: '所属部门', dataIndex: 'deptName', ellipsis: true, tooltip: true, minWidth: 180 },
-  { title: '角色', dataIndex: 'roleNames', minWidth: 160, slotName: 'roleNames' },
+  { title: '状态', dataIndex: 'status', slotName: 'status', align: 'center' },
+  { title: '性别', dataIndex: 'gender', slotName: 'gender', align: 'center' },
+  { title: '所属部门', dataIndex: 'deptName', minWidth: 180, ellipsis: true, tooltip: true },
+  { title: '角色', dataIndex: 'roleNames', slotName: 'roleNames', minWidth: 165 },
   { title: '手机号', dataIndex: 'phone', minWidth: 170, ellipsis: true, tooltip: true },
   { title: '邮箱', dataIndex: 'email', minWidth: 170, ellipsis: true, tooltip: true },
-  { title: '系统内置', slotName: 'isSystem', width: 100, align: 'center', show: false },
+  { title: '系统内置', dataIndex: 'isSystem', slotName: 'isSystem', width: 100, align: 'center', show: false },
   { title: '描述', dataIndex: 'description', minWidth: 130, ellipsis: true, tooltip: true },
   { title: '创建人', dataIndex: 'createUserString', width: 140, ellipsis: true, tooltip: true, show: false },
   { title: '创建时间', dataIndex: 'createTime', width: 180 },
@@ -211,7 +209,7 @@ const reset = () => {
 // 删除
 const onDelete = (record: UserResp) => {
   return handleDelete(() => deleteUser(record.id), {
-    content: `是否确定删除 [${record.nickname}(${record.username})]？`,
+    content: `是否确定删除用户「${record.nickname}(${record.username})」？`,
     showModal: true,
   })
 }
@@ -227,16 +225,16 @@ const handleSelectDept = (keys: Array<any>) => {
   search()
 }
 
+const UserImportDrawerRef = ref<InstanceType<typeof UserImportDrawer>>()
+// 导入
+const onImport = () => {
+  UserImportDrawerRef.value?.onOpen()
+}
+
 const UserAddDrawerRef = ref<InstanceType<typeof UserAddDrawer>>()
 // 新增
 const onAdd = () => {
   UserAddDrawerRef.value?.onAdd()
-}
-
-const UserImportDrawerRef = ref<InstanceType<typeof UserImportDrawer>>()
-// 导入
-const onImport = () => {
-  UserImportDrawerRef.value?.onImport()
 }
 
 // 修改
@@ -247,13 +245,13 @@ const onUpdate = (record: UserResp) => {
 const UserDetailDrawerRef = ref<InstanceType<typeof UserDetailDrawer>>()
 // 详情
 const onDetail = (record: UserResp) => {
-  UserDetailDrawerRef.value?.onDetail(record.id)
+  UserDetailDrawerRef.value?.onOpen(record.id)
 }
 
 const UserResetPwdModalRef = ref<InstanceType<typeof UserResetPwdModal>>()
 // 重置密码
 const onResetPwd = (record: UserResp) => {
-  UserResetPwdModalRef.value?.onReset(record.id)
+  UserResetPwdModalRef.value?.onOpen(record.id)
 }
 
 const UserUpdateRoleModalRef = ref<InstanceType<typeof UserUpdateRoleModal>>()

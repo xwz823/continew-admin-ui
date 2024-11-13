@@ -81,10 +81,12 @@ const onOpen = async (id: string) => {
   if (!roleList.value.length) {
     await getRoleList()
   }
-  const res = await getUser(id)
-  Object.assign(form, res.data)
+  const { data } = await getUser(id)
+  Object.assign(form, data)
   visible.value = true
 }
 
 defineExpose({ onOpen })
 </script>
+
+<style lang="scss" scoped></style>
