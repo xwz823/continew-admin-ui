@@ -25,7 +25,7 @@
   </a-spin>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { EChartsOption } from 'echarts'
 import { getAnalysisGeo as getData } from '@/apis/common/dashboard'
 import { useChart } from '@/hooks'

@@ -9,7 +9,7 @@
   </a-menu>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { DictResp } from '@/apis/system'
 
 interface Props {

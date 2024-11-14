@@ -63,7 +63,7 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 const list = [
   {
     alias: 'ContiNew Admin',

@@ -9,7 +9,7 @@
   <a-tag v-else :color="dictItem.extend">{{ dictItem.label }}</a-tag>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { LabelValueState } from '@/types/global'
 import type { GiCellTagType } from '@/components/GiCell/type'
 

@@ -24,7 +24,7 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 const router = useRouter()
 
 const links = [

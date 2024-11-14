@@ -31,7 +31,7 @@
 <script lang="ts">
 </script>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { Message } from '@arco-design/web-vue'
 import CronGeneratorInput from '@/components/GenCron/CronForm/index.vue'
 

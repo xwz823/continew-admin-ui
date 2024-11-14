@@ -58,13 +58,13 @@
           </template>
           <template #action="{ record }">
             <a-space>
-              <a-link v-permission="['system:user:list']" @click="onDetail(record)">详情</a-link>
-              <a-link v-permission="['system:user:update']" @click="onUpdate(record)">修改</a-link>
+              <a-link v-permission="['system:user:list']" title="详情" @click="onDetail(record)">详情</a-link>
+              <a-link v-permission="['system:user:update']" title="修改" @click="onUpdate(record)">修改</a-link>
               <a-link
                 v-permission="['system:user:delete']"
                 status="danger"
-                :title="record.isSystem ? '系统内置数据不能删除' : '删除'"
                 :disabled="record.isSystem"
+                :title="record.isSystem ? '系统内置数据不能删除' : '删除'"
                 @click="onDelete(record)"
               >
                 删除
@@ -76,8 +76,8 @@
                   </template>
                 </a-button>
                 <template #content>
-                  <a-doption v-permission="['system:user:resetPwd']" @click="onResetPwd(record)">重置密码</a-doption>
-                  <a-doption v-permission="['system:user:updateRole']" @click="onUpdateRole(record)">分配角色</a-doption>
+                  <a-doption v-permission="['system:user:resetPwd']" title="重置密码" @click="onResetPwd(record)">重置密码</a-doption>
+                  <a-doption v-permission="['system:user:updateRole']" title="分配角色" @click="onUpdateRole(record)">分配角色</a-doption>
                 </template>
               </a-dropdown>
             </a-space>

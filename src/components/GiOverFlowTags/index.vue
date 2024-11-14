@@ -18,7 +18,7 @@
   </a-overflow-list>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 defineOptions({ name: 'GiOverFlowTags' })
 
 withDefaults(defineProps<Props>(), {

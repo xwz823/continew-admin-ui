@@ -2,7 +2,7 @@
   <GiSvgIcon :name="props.icon" :size="18" />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 interface Props {
   icon?: string
 }

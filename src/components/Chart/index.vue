@@ -2,7 +2,7 @@
   <VCharts ref="chart" :option="option" :autoresize="autoResize" :style="{ width, height }" />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { registerMap } from 'echarts/core'
 import VCharts from 'vue-echarts'
 import worldMap from './world.json'

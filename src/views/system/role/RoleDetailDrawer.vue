@@ -51,7 +51,7 @@
   </a-drawer>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import { type RoleDetailResp, getRole } from '@/apis/system'
 import { useDept, useDict, useMenu } from '@/hooks/app'

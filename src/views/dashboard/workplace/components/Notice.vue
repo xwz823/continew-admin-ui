@@ -35,7 +35,7 @@
   <NoticeDetailModal ref="NoticeDetailModalRef" />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { type DashboardNoticeResp, listDashboardNotice } from '@/apis'
 import { useDict } from '@/hooks/app'
 import NoticeDetailModal from '@/views/system/notice/NoticeDetailModal.vue'

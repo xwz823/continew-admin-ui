@@ -13,7 +13,7 @@
   </a-modal>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'

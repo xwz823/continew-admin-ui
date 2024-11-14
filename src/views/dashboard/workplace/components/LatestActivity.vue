@@ -103,7 +103,7 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'

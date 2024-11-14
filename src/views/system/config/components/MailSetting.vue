@@ -56,7 +56,7 @@
   </a-space>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import { type FormInstance, Message, Modal } from '@arco-design/web-vue'
 import {

@@ -113,7 +113,7 @@
   </a-form>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { type FileItem, type FormInstance, Message, Modal, type RequestOption } from '@arco-design/web-vue'
 import {
   type OptionResp,

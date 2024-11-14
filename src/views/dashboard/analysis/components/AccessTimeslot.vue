@@ -6,7 +6,7 @@
   </a-spin>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { type EChartsOption, graphic } from 'echarts'
 import { useChart } from '@/hooks'
 import { type DashboardChartCommonResp, getAnalysisTimeslot as getData } from '@/apis/common'

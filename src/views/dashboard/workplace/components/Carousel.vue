@@ -19,7 +19,7 @@
   </a-carousel>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 const images = [
   {
     src: `https://continew.top/qrcode-text.jpg?${new Date().getTime()}`,

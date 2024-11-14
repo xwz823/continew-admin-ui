@@ -14,7 +14,7 @@
   </a-drawer>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import { type AppDetailResp, getApp } from '@/apis/open/app'
 import { useDict } from '@/hooks/app'

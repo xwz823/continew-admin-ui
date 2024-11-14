@@ -178,11 +178,6 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.captcha-container {
-  position: relative;
-  display: inline-block;
-}
-
 .overlay {
   position: absolute;
   top: 0;

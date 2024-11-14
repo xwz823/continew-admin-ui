@@ -9,7 +9,7 @@
   />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import CodeMirror from 'vue-codemirror6'
 import { javascript } from '@codemirror/lang-javascript'
 import { vue } from '@codemirror/lang-vue'

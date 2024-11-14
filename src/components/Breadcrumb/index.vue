@@ -12,7 +12,7 @@
   </a-breadcrumb>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { RouteLocationMatched } from 'vue-router'
 import { findTree } from 'xe-utils'
 import { useRouteStore } from '@/stores'

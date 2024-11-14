@@ -67,7 +67,7 @@
   </a-drawer>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { type LogDetailResp, getLog } from '@/apis/monitor'
 
 const dataId = ref('')

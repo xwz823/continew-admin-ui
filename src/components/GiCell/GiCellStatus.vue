@@ -9,7 +9,7 @@
   </span>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 defineOptions({ name: 'GiCellStatus' })
 
 const props = withDefaults(defineProps<Props>(), {

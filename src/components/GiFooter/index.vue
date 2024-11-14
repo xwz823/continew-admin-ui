@@ -2,7 +2,7 @@
   <div class="gi-footer">{{ appStore.getCopyright() }}{{ appStore.getForRecord() ? ` · ${appStore.getForRecord()}` : '' }}</div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useAppStore } from '@/stores'
 
 defineOptions({ name: 'GiFooter' })

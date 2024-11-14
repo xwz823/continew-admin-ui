@@ -34,7 +34,7 @@
   <VerifyModel ref="verifyModelRef" />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { ModeItem } from '../type'
 import VerifyModel from '../components/VerifyModel.vue'
 import { useUserStore } from '@/stores'
