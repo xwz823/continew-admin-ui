@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, toRefs } from 'vue'
 import { generate, getRgbStr } from '@arco-design/color'
-import { type BasicConfig, listOptionDict } from '@/apis'
+import { type BasicConfig, listSiteOptionDict } from '@/apis'
 import defaultSettings from '@/config/setting.json'
 
 const storeSetup = () => {
@@ -58,9 +58,7 @@ const storeSetup = () => {
   const siteConfig = reactive({}) as BasicConfig
   // 初始化系统配置
   const initSiteConfig = () => {
-    listOptionDict({
-      category: 'SITE',
-    }).then((res) => {
+    listSiteOptionDict().then((res) => {
       const resMap = new Map()
       res.data.forEach((item) => {
         resMap.set(item.label, item.value)
