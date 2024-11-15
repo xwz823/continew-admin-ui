@@ -82,8 +82,8 @@ http.interceptors.response.use(
         async onOk() {
           NProgress.done()
           const userStore = useUserStore()
-          userStore.logoutCallBack()
-          router.replace('/login')
+          await userStore.logoutCallBack()
+          await router.replace('/login')
         },
       })
     } else {

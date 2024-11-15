@@ -472,8 +472,7 @@ const onOauth = async (source: string) => {
           margin-right: 10px;
         }
 
-        .mode:hover,
-        .mode svg:hover {
+        .mode:hover {
           background: rgba(var(--primary-6), 0.05);
           border: 1px solid rgb(var(--primary-3));
           color: rgb(var(--arcoblue-6));
