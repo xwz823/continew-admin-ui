@@ -60,7 +60,7 @@
       <a-col :span="24" :md="6" class="section">
         <a-card>
           <template #title>已选择: {{ selectedKeys.length }}</template>
-          <a-table :columns="selectedColumns" :data="selectedData" :pagination="paginationOptions">
+          <a-table :columns="selectedColumns" :data="[...selectedData.values()]" :pagination="paginationOptions">
             <template #nickname="{ record }">
               {{ record.nickname }}({{ record.username }})
             </template>
@@ -154,7 +154,7 @@ const reset = () => {
 // 选中用户 ID
 const selectedKeys = ref<string[]>([])
 // 选中用户信息
-const selectedData = ref<UserResp[]>([])
+const selectedData = ref<Map<string, UserResp>>(new Map())
 
 const emitSelectUser = () => {
   emit('select-user', selectedKeys.value)
@@ -163,24 +163,21 @@ const emitSelectUser = () => {
 // 单选
 const onSelect = (rowKeys: string[], rowKey: string, record: UserResp) => {
   if (props.multiple) {
-    // 多选
     if (rowKeys.includes(rowKey)) {
-      // 包含 选中
-      selectedData.value.push(record)
-      selectedKeys.value?.push(rowKey)
+      // 选中时，添加到 Map
+      selectedData.value.set(rowKey, record)
+      selectedKeys.value = Array.from(selectedData.value.keys())
     } else {
-      // 不包含 去除
-      selectedData.value = selectedData.value.filter((item) => item.id !== rowKey)
-      selectedKeys.value?.splice(selectedKeys.value?.indexOf(rowKey), 1)
+      // 取消选中时，从 Map 移除
+      selectedData.value.delete(rowKey)
+      selectedKeys.value = Array.from(selectedData.value.keys())
     }
   } else {
-    // 单选
-    selectedData.value = []
+    selectedData.value.clear()
     selectedKeys.value = []
     if (rowKeys.includes(rowKey)) {
-      // 包含 选中
-      selectedData.value.push(record)
-      selectedKeys.value?.push(rowKey)
+      selectedData.value.set(rowKey, record)
+      selectedKeys.value = [rowKey]
     }
   }
   emitSelectUser()
@@ -189,31 +186,31 @@ const onSelect = (rowKeys: string[], rowKey: string, record: UserResp) => {
 // 全选
 const onSelectAll = (checked: boolean) => {
   if (checked) {
-    // 选中
+    // 全选时，将所有数据添加到 Map
     dataList.value.forEach((item) => {
-      selectedData.value.push(item)
-      selectedKeys.value?.push(item.id)
+      selectedData.value.set(item.id, item)
     })
+    selectedKeys.value = Array.from(selectedData.value.keys())
   } else {
-    // 取消选中
+    // 取消全选时，清空 Map
     dataList.value.forEach((item) => {
-      selectedData.value = selectedData.value.filter((i) => i.id !== item.id)
-      selectedKeys.value?.splice(selectedKeys.value?.indexOf(item.id), 1)
+      selectedData.value.delete(item.id)
     })
+    selectedKeys.value = Array.from(selectedData.value.keys())
   }
   emitSelectUser()
 }
 
 // 从选中列表中移除用户
 const handleDeleteSelectedUser = (user: UserResp) => {
-  selectedData.value = selectedData.value.filter((i) => i.id !== user.id)
-  selectedKeys.value?.splice(selectedKeys.value?.indexOf(user.id), 1)
+  selectedData.value.delete(user.id)
+  selectedKeys.value = Array.from(selectedData.value.keys())
   emitSelectUser()
 }
 
 // 清空所有选中数据
 const onClearSelected = () => {
-  selectedData.value = []
+  selectedData.value.clear()
   selectedKeys.value = []
   emitSelectUser()
 }
@@ -234,11 +231,19 @@ onMounted(async () => {
   if (props.value && props.value.length > 0) {
     const { data } = await listAllUser({ userIds: props.value })
     if (props.multiple) {
-      selectedData.value = data.filter((item) => props.value.includes(item.id))
-      selectedKeys.value = Array.from(selectedData.value).map((user) => user.id)
+      // 使用 Map 存储用户，避免重复
+      data.forEach((item) => {
+        if (props.value.includes(item.id)) {
+          selectedData.value.set(item.id, item)
+        }
+      })
+      selectedKeys.value = Array.from(selectedData.value.keys())
     } else {
-      selectedData.value = data.filter((item) => props.value[0] === item.id)
-      selectedKeys.value = Array.from(selectedData.value).map((user) => user.id)
+      const user = data.find((item) => props.value[0] === item.id)
+      if (user) {
+        selectedData.value.set(user.id, user)
+        selectedKeys.value = [user.id]
+      }
     }
   }
 })

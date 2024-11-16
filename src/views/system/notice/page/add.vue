@@ -201,7 +201,7 @@ onMounted(async () => {
   }
   // 获取所有用户
   const { data } = await listUserDict()
-  userList.value = data
+  userList.value = data.map((item) => ({ ...item, value: `${item.value}` }))
 })
 </script>
 
