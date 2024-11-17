@@ -43,8 +43,7 @@ export interface UserQuery {
   userIds?: Array<string>
 }
 
-export interface UserPageQuery extends UserQuery, PageQuery {
-}
+export interface UserPageQuery extends UserQuery, PageQuery {}
 
 /** 系统角色类型 */
 export interface RoleResp {
@@ -62,23 +61,11 @@ export interface RoleResp {
   disabled: boolean
 }
 
-export interface RoleDetailResp {
-  id: string
-  name: string
-  code: string
-  sort: number
-  description: string
+export type RoleDetailResp = RoleResp & {
   menuIds: Array<number>
-  dataScope: number
   deptIds: Array<number>
-  isSystem: boolean
   menuCheckStrictly: boolean
   deptCheckStrictly: boolean
-  createUserString: string
-  createTime: string
-  updateUserString: string
-  updateTime: string
-  disabled: boolean
 }
 
 export interface RoleQuery {
@@ -86,8 +73,7 @@ export interface RoleQuery {
   sort: Array<string>
 }
 
-export interface RolePageQuery extends RoleQuery, PageQuery {
-}
+export interface RolePageQuery extends RoleQuery, PageQuery {}
 
 /** 系统菜单类型 */
 export interface MenuResp {

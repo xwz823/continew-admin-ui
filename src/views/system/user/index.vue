@@ -70,7 +70,7 @@
                 删除
               </a-link>
               <a-dropdown>
-                <a-button v-if="has.hasPermOr(['system:user:resetPwd', 'system:user:updateRole'])" type="text" size="mini">
+                <a-button v-if="has.hasPermOr(['system:user:resetPwd', 'system:user:updateRole'])" type="text" size="mini" title="更多">
                   <template #icon>
                     <icon-more :size="16" />
                   </template>

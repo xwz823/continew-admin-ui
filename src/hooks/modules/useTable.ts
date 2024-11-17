@@ -68,7 +68,7 @@ export function useTable<T extends U, U = T>(api: Api<T>, options?: Options<T, U
         if (res.success) {
           Message.success(options?.successTip || '删除成功')
           selectedKeys.value = []
-          getTableData()
+          await getTableData()
         }
         return res.success
       } catch (error) {
