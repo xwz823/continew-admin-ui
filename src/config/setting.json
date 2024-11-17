@@ -2,7 +2,7 @@
   "theme": "light",
   "themeColor": "#165DFF",
   "tab": true,
-  "tabMode": "card",
+  "tabMode": "card-gutter",
   "animate": false,
   "animateMode": "zoom-fade",
   "menuCollapse": true,

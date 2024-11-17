@@ -58,7 +58,7 @@
           </template>
           <template #action="{ record }">
             <a-space>
-              <a-link v-permission="['system:user:list']" title="详情" @click="onDetail(record)">详情</a-link>
+              <a-link v-permission="['system:user:detail']" title="详情" @click="onDetail(record)">详情</a-link>
               <a-link v-permission="['system:user:update']" title="修改" @click="onUpdate(record)">修改</a-link>
               <a-link
                 v-permission="['system:user:delete']"
@@ -101,7 +101,7 @@ import UserImportDrawer from './UserImportDrawer.vue'
 import UserDetailDrawer from './UserDetailDrawer.vue'
 import UserResetPwdModal from './UserResetPwdModal.vue'
 import UserUpdateRoleModal from './UserUpdateRoleModal.vue'
-import { type UserQuery, type UserResp, deleteUser, exportUser, listUser } from '@/apis/system'
+import { type UserQuery, type UserResp, deleteUser, exportUser, listUser } from '@/apis/system/user'
 import type { Columns, Options } from '@/components/GiForm'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useDownload, useTable } from '@/hooks'
@@ -148,7 +148,7 @@ const queryFormColumns: Columns = reactive([
   },
 ])
 const queryForm = reactive<UserQuery>({
-  sort: ['t1.createTime,desc', 't1.id,desc'],
+  sort: ['t1.id,desc'],
 })
 
 const {
@@ -190,11 +190,18 @@ const columns: TableInstanceColumns[] = [
   { title: '修改时间', dataIndex: 'updateTime', width: 180, show: false },
   {
     title: '操作',
+    dataIndex: 'action',
     slotName: 'action',
     width: 190,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:user:update', 'system:user:delete', 'system:user:resetPwd']),
+    show: has.hasPermOr([
+      'system:user:detail',
+      'system:user:update',
+      'system:user:delete',
+      'system:user:resetPwd',
+      'system:user:updateRole',
+    ]),
   },
 ]
 

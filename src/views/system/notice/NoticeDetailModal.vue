@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
-import AiEditor from './components/detail/index.vue'
+import AiEditor from './detail/components/index.vue'
 import { type NoticeResp, getNotice } from '@/apis/system'
 
 const { width } = useWindowSize()

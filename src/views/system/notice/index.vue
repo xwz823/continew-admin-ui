@@ -35,20 +35,6 @@
           <template #default>新增</template>
         </a-button>
       </template>
-      <template #title="{ record }">
-        <a-link @click="onDetail(record)">
-          <a-typography-paragraph
-            class="link-text"
-            :ellipsis="{
-              rows: 1,
-              showTooltip: true,
-              css: true,
-            }"
-          >
-            {{ record.title }}
-          </a-typography-paragraph>
-        </a-link>
-      </template>
       <template #type="{ record }">
         <GiCellTag :value="record.type" :dict="notice_type" />
       </template>
@@ -57,8 +43,9 @@
       </template>
       <template #action="{ record }">
         <a-space>
-          <a-link v-permission="['system:notice:update']" @click="onUpdate(record)">修改</a-link>
-          <a-link v-permission="['system:notice:delete']" status="danger" @click="onDelete(record)"> 删除 </a-link>
+          <a-link v-permission="['system:notice:detail']" title="详情" @click="onDetail(record)">详情</a-link>
+          <a-link v-permission="['system:notice:update']" title="修改" @click="onUpdate(record)">修改</a-link>
+          <a-link v-permission="['system:notice:delete']" status="danger" title="删除" @click="onDelete(record)"> 删除 </a-link>
         </a-space>
       </template>
     </GiTable>
@@ -79,7 +66,7 @@ const { notice_type, notice_status_enum } = useDict('notice_type', 'notice_statu
 
 const router = useRouter()
 const queryForm = reactive<NoticeQuery>({
-  sort: ['createTime,desc'],
+  sort: ['id,desc'],
 })
 
 const {
@@ -89,7 +76,6 @@ const {
   search,
   handleDelete,
 } = useTable((page) => listNotice({ ...queryForm, ...page }), { immediate: true })
-
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -98,19 +84,20 @@ const columns: TableInstanceColumns[] = [
     render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
   { title: '标题', dataIndex: 'title', slotName: 'title', minWidth: 200, ellipsis: true, tooltip: true },
-  { title: '类型', slotName: 'type', align: 'center' },
-  { title: '状态', slotName: 'status', align: 'center' },
+  { title: '类型', dataIndex: 'type', slotName: 'type', align: 'center' },
+  { title: '状态', dataIndex: 'status', slotName: 'status', align: 'center' },
   { title: '生效时间', dataIndex: 'effectiveTime', width: 180 },
   { title: '终止时间', dataIndex: 'terminateTime', width: 180 },
   { title: '创建人', dataIndex: 'createUserString', show: false, ellipsis: true, tooltip: true },
   { title: '创建时间', dataIndex: 'createTime', width: 180 },
   {
     title: '操作',
+    dataIndex: 'action',
     slotName: 'action',
-    width: 130,
+    width: 160,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:notice:update', 'system:notice:delete']),
+    show: has.hasPermOr(['system:notice:detail', 'system:notice:update', 'system:notice:delete']),
   },
 ]
 
@@ -124,7 +111,7 @@ const reset = () => {
 // 删除
 const onDelete = (record: NoticeResp) => {
   return handleDelete(() => deleteNotice(record.id), {
-    content: `是否确定删除公告 [${record.title}]？`,
+    content: `是否确定删除公告「${record.title}」？`,
     showModal: true,
   })
 }

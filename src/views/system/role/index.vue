@@ -1,8 +1,8 @@
 <template>
   <div class="table-page">
     <GiTable
-      row-key="id"
       title="角色管理"
+      row-key="id"
       :data="dataList"
       :columns="columns"
       :loading="loading"
@@ -27,20 +27,6 @@
           <template #default>新增</template>
         </a-button>
       </template>
-      <template #name="{ record }">
-        <a-link @click="onDetail(record)">
-          <a-typography-paragraph
-            class="link-text"
-            :ellipsis="{
-              rows: 1,
-              showTooltip: true,
-              css: true,
-            }"
-          >
-            {{ record.name }}
-          </a-typography-paragraph>
-        </a-link>
-      </template>
       <template #dataScope="{ record }">
         <GiCellTag :value="record.dataScope" :dict="data_scope_enum" />
       </template>
@@ -50,13 +36,14 @@
       </template>
       <template #action="{ record }">
         <a-space>
-          <a-link v-permission="['system:role:update']" @click="onUpdate(record)">修改</a-link>
-          <a-link v-permission="['system:role:assign']" @click="onAssign(record)">分配</a-link>
+          <a-link v-permission="['system:role:detail']" title="详情" @click="onDetail(record)">详情</a-link>
+          <a-link v-permission="['system:role:update']" title="修改" @click="onUpdate(record)">修改</a-link>
+          <a-link v-permission="['system:role:assign']" title="分配" @click="onAssign(record)">分配</a-link>
           <a-link
             v-permission="['system:role:delete']"
             status="danger"
-            :title="record.isSystem ? '系统内置数据不能删除' : undefined"
-            :disabled="record.disabled"
+            :disabled="record.isSystem"
+            :title="record.isSystem ? '系统内置数据不能删除' : '删除'"
             @click="onDelete(record)"
           >
             删除
@@ -73,11 +60,11 @@
 </template>
 
 <script setup lang="ts">
+import RoleAddModal from './RoleAddModal.vue'
 import RoleUpdateDrawer from './RoleUpdateDrawer.vue'
 import RoleDetailDrawer from './RoleDetailDrawer.vue'
-import RoleAddModal from './RoleAddModal.vue'
 import RoleAssignModal from './RoleAssignModal.vue'
-import { type RoleQuery, type RoleResp, deleteRole, listRole } from '@/apis/system'
+import { type RoleQuery, type RoleResp, deleteRole, listRole } from '@/apis/system/role'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useTable } from '@/hooks'
 import { useDict } from '@/hooks/app'
@@ -89,7 +76,7 @@ defineOptions({ name: 'SystemRole' })
 const { data_scope_enum } = useDict('data_scope_enum')
 
 const queryForm = reactive<RoleQuery>({
-  sort: ['createTime,desc'],
+  sort: ['id,desc'],
 })
 
 const {
@@ -99,7 +86,6 @@ const {
   search,
   handleDelete,
 } = useTable((page) => listRole({ ...queryForm, ...page }), { immediate: true })
-
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -111,7 +97,7 @@ const columns: TableInstanceColumns[] = [
   { title: '编码', dataIndex: 'code', ellipsis: true, tooltip: true },
   { title: '数据权限', dataIndex: 'dataScope', slotName: 'dataScope', ellipsis: true, tooltip: true },
   { title: '排序', dataIndex: 'sort', align: 'center', show: false },
-  { title: '系统内置', slotName: 'isSystem', align: 'center', show: false },
+  { title: '系统内置', dataIndex: 'isSystem', slotName: 'isSystem', align: 'center', show: false },
   { title: '描述', dataIndex: 'description', ellipsis: true, tooltip: true },
   { title: '创建人', dataIndex: 'createUserString', ellipsis: true, tooltip: true, show: false },
   { title: '创建时间', dataIndex: 'createTime', width: 180 },
@@ -119,11 +105,17 @@ const columns: TableInstanceColumns[] = [
   { title: '修改时间', dataIndex: 'updateTime', width: 180, show: false },
   {
     title: '操作',
+    dataIndex: 'action',
     slotName: 'action',
     width: 200,
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
-    show: has.hasPermOr(['system:role:update', 'system:role:delete']),
+    show: has.hasPermOr([
+      'system:role:detail',
+      'system:role:update',
+      'system:role:delete',
+      'system:role:assign',
+    ]),
   },
 ]
 
@@ -135,25 +127,28 @@ const reset = () => {
 
 // 删除
 const onDelete = (record: RoleResp) => {
-  return handleDelete(() => deleteRole(record.id), { content: `是否确定删除 [${record.name}]？`, showModal: true })
+  return handleDelete(() => deleteRole(record.id), {
+    content: `是否确定删除角色「${record.name}(${record.code})」？`,
+    showModal: true,
+  })
 }
 
-const RoleUpdateDrawerRef = ref<InstanceType<typeof RoleUpdateDrawer>>()
 const RoleAddModalRef = ref<InstanceType<typeof RoleAddModal>>()
 // 新增
 const onAdd = () => {
-  RoleAddModalRef.value?.onAdd()
+  RoleAddModalRef.value?.onOpen()
 }
 
+const RoleUpdateDrawerRef = ref<InstanceType<typeof RoleUpdateDrawer>>()
 // 修改
 const onUpdate = (record: RoleResp) => {
-  RoleUpdateDrawerRef.value?.onUpdate(record.id)
+  RoleUpdateDrawerRef.value?.onOpen(record.id)
 }
 
 const RoleDetailDrawerRef = ref<InstanceType<typeof RoleDetailDrawer>>()
 // 详情
 const onDetail = (record: RoleResp) => {
-  RoleDetailDrawerRef.value?.onDetail(record.id)
+  RoleDetailDrawerRef.value?.onOpen(record.id)
 }
 
 const RoleAssignModalRef = ref<InstanceType<typeof RoleAssignModal>>()

@@ -7,7 +7,7 @@
     </a-row>
     <a-row align="stretch" :gutter="14" class="h-full page_content">
       <a-col :xs="0" :sm="8" :md="7" :lg="6" :xl="5" :xxl="4" flex="260px" class="h-full ov-hidden">
-        <DictTree placeholder="请输入名称/编码/描述" @node-click="handleSelectDict" />
+        <DictTree @node-click="handleSelectDict" />
       </a-col>
       <a-col :xs="24" :sm="16" :md="17" :lg="18" :xl="19" :xxl="20" flex="1" class="h-full ov-hidden">
         <GiTable
@@ -44,10 +44,11 @@
           </template>
           <template #action="{ record }">
             <a-space>
-              <a-link v-permission="['system:dict:item:update']" @click="onUpdate(record)">修改</a-link>
+              <a-link v-permission="['system:dict:item:update']" title="修改" @click="onUpdate(record)">修改</a-link>
               <a-link
                 v-permission="['system:dict:item:delete']"
                 status="danger"
+                title="删除"
                 @click="onDelete(record)"
               >
                 删除
@@ -65,7 +66,7 @@
 <script setup lang="ts">
 import DictTree from './tree/index.vue'
 import DictItemAddModal from './DictItemAddModal.vue'
-import { type DictItemQuery, type DictItemResp, deleteDictItem, listDictItem } from '@/apis/system'
+import { type DictItemQuery, type DictItemResp, deleteDictItem, listDictItem } from '@/apis/system/dict'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useTable } from '@/hooks'
 import { isMobile } from '@/utils'
@@ -85,7 +86,6 @@ const {
   search,
   handleDelete,
 } = useTable((page) => listDictItem({ ...queryForm, ...page }), { immediate: false })
-
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -95,7 +95,7 @@ const columns: TableInstanceColumns[] = [
   },
   { title: '标签', dataIndex: 'label', slotName: 'label', minWidth: 100, align: 'center' },
   { title: '值', dataIndex: 'value', minWidth: 100, align: 'center', ellipsis: true, tooltip: true },
-  { title: '状态', slotName: 'status', align: 'center' },
+  { title: '状态', dataIndex: 'status', slotName: 'status', align: 'center' },
   {
     title: '排序',
     dataIndex: 'sort',
@@ -111,6 +111,7 @@ const columns: TableInstanceColumns[] = [
   { title: '修改时间', dataIndex: 'updateTime', width: 180, show: false },
   {
     title: '操作',
+    dataIndex: 'action',
     slotName: 'action',
     width: 130,
     align: 'center',

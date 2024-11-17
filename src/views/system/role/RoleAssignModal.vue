@@ -4,7 +4,7 @@
     title="分配角色"
     :mask-closable="false"
     :esc-to-close="false"
-    :width="width >= 1350 ? 1350 : '100%'"
+    :width="width >= 1100 ? 1100 : '100%'"
     draggable
     @before-ok="save"
     @close="reset"
@@ -14,15 +14,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { assignToUsers, listRoleUsers } from '@/apis/system'
+import { assignToUsers, listRoleUsers } from '@/apis/system/role'
 
 const { width } = useWindowSize()
-const visible = ref(false)
+
 const dataId = ref('')
+const visible = ref(false)
 const selectedUsers = ref<string[]>([])
+
+// 用户选择回调
+const onSelectUser = (value: string[]) => {
+  selectedUsers.value = value
+}
 
 const UserSelectRef = ref()
 // 重置
@@ -49,11 +54,6 @@ const save = async () => {
   }
 }
 
-// 用户选择回调
-const onSelectUser = (value: string[]) => {
-  selectedUsers.value = value
-}
-
 // 打开
 const onOpen = async (id: string) => {
   dataId.value = id
@@ -63,9 +63,7 @@ const onOpen = async (id: string) => {
   visible.value = true
 }
 
-defineExpose({
-  onOpen,
-})
+defineExpose({ onOpen })
 </script>
 
 <style lang="scss" scoped></style>

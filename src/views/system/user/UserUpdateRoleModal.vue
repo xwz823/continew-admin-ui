@@ -4,7 +4,7 @@
     title="分配角色"
     :mask-closable="false"
     :esc-to-close="false"
-    :width="width >= 500 ? 500 : '100%'"
+    :width="width >= 600 ? 600 : '100%'"
     draggable
     @before-ok="save"
     @close="reset"

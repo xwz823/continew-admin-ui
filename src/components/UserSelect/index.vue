@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <a-row :gutter="16">
-      <a-col :span="24" :md="18">
+      <a-col :span="24" :md="17">
         <GiTable
           v-model:selectedKeys="selectedKeys"
           row-key="id"
           :data="dataList"
           :columns="listColumns"
           :loading="loading"
-          :scroll="{ x: '100%', y: '100%', minWidth: 900 }"
+          :scroll="{ x: '100%', y: '100%', minWidth: 500 }"
           style="max-height: 600px"
           :pagination="pagination"
           :disabled-tools="['size', 'fullscreen', 'setting', 'refresh']"
@@ -57,7 +57,7 @@
           </template>
         </GiTable>
       </a-col>
-      <a-col :span="24" :md="6" class="section">
+      <a-col :span="24" :md="7" class="section">
         <a-card>
           <template #title>已选择: {{ selectedKeys.length }}</template>
           <a-table :columns="selectedColumns" :data="[...selectedData.values()]" :pagination="paginationOptions">

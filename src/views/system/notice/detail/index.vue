@@ -37,10 +37,10 @@
   </div>
 </template>
 
-<script setup lang="tsx">
-import AiEditor from '../components/detail/index.vue'
+<script setup lang="ts">
+import AiEditor from './components/index.vue'
 import { useTabsStore } from '@/stores'
-import { getNotice } from '@/apis/system'
+import { getNotice } from '@/apis/system/notice'
 import { useForm } from '@/hooks'
 
 const containerRef = ref<HTMLElement | null>()

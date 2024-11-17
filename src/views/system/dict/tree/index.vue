@@ -1,15 +1,15 @@
 <template>
-  <div class="dict-tree">
-    <div class="dict-tree__search">
-      <a-input v-model="inputValue" :placeholder="props.placeholder" allow-clear>
+  <div class="container">
+    <div class="search">
+      <a-input v-model="searchKey" placeholder="请输入关键词" allow-clear>
         <template #prefix><icon-search /></template>
       </a-input>
       <a-button v-permission="['system:dict:add']" type="primary" @click="onAdd">
         <template #icon><icon-plus /></template>
       </a-button>
     </div>
-    <div class="dict-tree__container">
-      <div class="dict-tree__tree">
+    <div class="tree-wrapper">
+      <div class="tree">
         <a-tree
           :data="(treeData as unknown as TreeNodeData[])"
           :field-names="{ key: 'id' }"
@@ -44,21 +44,15 @@
   </div>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 import { Message, Modal } from '@arco-design/web-vue'
 import type { TreeNodeData } from '@arco-design/web-vue'
 import { mapTree } from 'xe-utils'
 import DictAddModal from './DictAddModal.vue'
 import RightMenu from './RightMenu.vue'
-import { type DictQuery, type DictResp, deleteDict, listDict } from '@/apis/system'
+import { type DictResp, deleteDict, listDict } from '@/apis/system/dict'
 import has from '@/utils/has'
 
-interface Props {
-  placeholder?: string
-}
-const props = withDefaults(defineProps<Props>(), {
-  placeholder: '请输入关键词',
-})
 const emit = defineEmits<{
   (e: 'node-click', keys: Array<any>): void
 }>()
@@ -73,21 +67,17 @@ const select = (keys: Array<any>) => {
   emit('node-click', keys)
 }
 
-const queryForm = reactive<DictQuery>({
-  sort: ['createTime,asc'],
-})
-
 interface TreeItem extends DictResp {
   popupVisible: boolean
 }
-const treeData = ref<TreeItem[]>([])
+const dataList = ref<TreeItem[]>([])
 const loading = ref(false)
 // 查询树列表
-const getTreeData = async (query: DictQuery = { ...queryForm }) => {
+const getTreeData = async () => {
   try {
     loading.value = true
-    const { data } = await listDict(query)
-    treeData.value = mapTree(data, (i) => ({
+    const { data } = await listDict()
+    dataList.value = mapTree(data, (i) => ({
       ...i,
       popupVisible: false,
       icon: () => {
@@ -95,18 +85,31 @@ const getTreeData = async (query: DictQuery = { ...queryForm }) => {
       },
     }))
     await nextTick(() => {
-      select([treeData.value[0]?.id])
+      select([dataList.value[0]?.id])
     })
   } finally {
     loading.value = false
   }
 }
 
-// 树查询
-const inputValue = ref('')
-watch(inputValue, (val) => {
-  queryForm.description = val
-  getTreeData()
+// 过滤树
+const searchKey = ref('')
+const search = (keyword: string) => {
+  const loop = (data: TreeItem[]) => {
+    const result = [] as TreeItem[]
+    data.forEach((item: TreeItem) => {
+      if (item.name?.toLowerCase().includes(keyword) || item.code?.toLowerCase().includes(keyword)) {
+        result.push({ ...item })
+      }
+    })
+    return result
+  }
+  return loop(dataList.value)
+}
+
+const treeData = computed(() => {
+  if (!searchKey.value) return dataList.value
+  return search(searchKey.value.toLowerCase())
 })
 
 const DictAddModalRef = ref<InstanceType<typeof DictAddModal>>()
@@ -190,7 +193,7 @@ onMounted(() => {
   }
 }
 
-.dict-tree {
+.container {
   flex: 1;
   overflow: hidden;
   position: relative;
@@ -199,32 +202,31 @@ onMounted(() => {
   box-sizing: border-box;
   height: 100%;
 
-  &__search {
+  .search {
     display: flex;
     justify-content: start;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
     .arco-btn {
       margin-left: 8px;
       padding: 0 15px;
     }
   }
 
-  &__container {
+  .tree-wrapper {
     flex: 1;
     overflow: hidden;
     background-color: var(--color-bg-1);
     position: relative;
     height: 100%;
     margin-bottom:10px;
-  }
-
-  &__tree {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: auto
+    .tree {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow: auto
+    }
   }
 }
 </style>

@@ -46,7 +46,7 @@
       title="用户选择"
       :mask-closable="false"
       :esc-to-close="false"
-      :width="width >= 1350 ? 1350 : '100%'"
+      :width="width >= 1100 ? 1100 : '100%'"
       draggable
       @close="reset"
     >
@@ -55,11 +55,10 @@
   </div>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { ref } from 'vue'
-import AiEditor from '../components/edit/index.vue'
+import AiEditor from './components/index.vue'
 import { useTabsStore } from '@/stores'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import { addNotice, getNotice, updateNotice } from '@/apis/system'

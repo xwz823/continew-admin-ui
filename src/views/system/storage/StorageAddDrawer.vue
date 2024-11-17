@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { type FormInstance, Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { addStorage, getStorage, updateStorage } from '@/apis/system'
+import { addStorage, getStorage, updateStorage } from '@/apis/system/storage'
 import { useForm } from '@/hooks'
 import { useDict } from '@/hooks/app'
 import { encryptByRsa } from '@/utils/encrypt'
@@ -103,13 +103,15 @@ import { isIPv4 } from '@/utils/validate'
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
 const { width } = useWindowSize()
-const { storage_type_enum } = useDict('storage_type_enum')
 
 const dataId = ref('')
+const visible = ref(false)
 const isUpdate = computed(() => !!dataId.value)
 const title = computed(() => (isUpdate.value ? '修改存储' : '新增存储'))
 const formRef = ref<FormInstance>()
+const { storage_type_enum } = useDict('storage_type_enum')
 
 const rules: FormInstance['rules'] = {
   name: [{ required: true, message: '请输入名称' }],
@@ -152,23 +154,6 @@ const reset = () => {
   resetForm()
 }
 
-const visible = ref(false)
-// 新增
-const onAdd = () => {
-  reset()
-  dataId.value = ''
-  visible.value = true
-}
-
-// 修改
-const onUpdate = async (id: string) => {
-  reset()
-  dataId.value = id
-  const res = await getStorage(id)
-  Object.assign(form, res.data)
-  visible.value = true
-}
-
 // 保存
 const save = async () => {
   try {
@@ -191,6 +176,22 @@ const save = async () => {
   } catch (error) {
     return false
   }
+}
+
+// 新增
+const onAdd = () => {
+  reset()
+  dataId.value = ''
+  visible.value = true
+}
+
+// 修改
+const onUpdate = async (id: string) => {
+  reset()
+  dataId.value = id
+  const { data } = await getStorage(id)
+  Object.assign(form, data)
+  visible.value = true
 }
 
 defineExpose({ onAdd, onUpdate })

@@ -1,8 +1,8 @@
 <template>
   <div class="table-page">
     <GiTable
-      row-key="id"
       title="存储管理"
+      row-key="id"
       :data="dataList"
       :columns="columns"
       :loading="loading"
@@ -51,12 +51,12 @@
       </template>
       <template #action="{ record }">
         <a-space>
-          <a-link v-permission="['system:storage:update']" @click="onUpdate(record)">修改</a-link>
+          <a-link v-permission="['system:storage:update']" title="修改" @click="onUpdate(record)">修改</a-link>
           <a-link
             v-permission="['system:storage:delete']"
             status="danger"
-            :title="record.isDefault ? '默认存储不能删除' : undefined"
-            :disabled="record.disabled"
+            :disabled="record.isDefault"
+            :title="record.isDefault ? '默认存储不能删除' : '删除'"
             @click="onDelete(record)"
           >
             删除
@@ -71,13 +71,13 @@
 
 <script setup lang="ts">
 import StorageAddDrawer from './StorageAddDrawer.vue'
-import { type StorageQuery, type StorageResp, deleteStorage, listStorage } from '@/apis/system'
+import { type StorageQuery, type StorageResp, deleteStorage, listStorage } from '@/apis/system/storage'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
+import { DisEnableStatusList } from '@/constant/common'
 import { useTable } from '@/hooks'
 import { useDict } from '@/hooks/app'
 import { isMobile } from '@/utils'
 import has from '@/utils/has'
-import { DisEnableStatusList } from '@/constant/common'
 
 defineOptions({ name: 'SystemStorage' })
 
@@ -94,7 +94,6 @@ const {
   search,
   handleDelete,
 } = useTable((page) => listStorage({ ...queryForm, ...page }), { immediate: true })
-
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -104,8 +103,8 @@ const columns: TableInstanceColumns[] = [
   },
   { title: '名称', dataIndex: 'name', slotName: 'name', width: 140, ellipsis: true, tooltip: true },
   { title: '编码', dataIndex: 'code', ellipsis: true, tooltip: true },
-  { title: '状态', slotName: 'status', align: 'center' },
-  { title: '类型', slotName: 'type', align: 'center' },
+  { title: '状态', dataIndex: 'status', slotName: 'status', align: 'center' },
+  { title: '类型', dataIndex: 'type', slotName: 'type', align: 'center' },
   { title: '访问密钥', dataIndex: 'accessKey', ellipsis: true, tooltip: true },
   { title: '终端节点', dataIndex: 'endpoint', ellipsis: true, tooltip: true },
   { title: '桶名称', dataIndex: 'bucketName', ellipsis: true, tooltip: true },
@@ -117,6 +116,7 @@ const columns: TableInstanceColumns[] = [
   { title: '修改时间', dataIndex: 'updateTime', width: 180, show: false },
   {
     title: '操作',
+    dataIndex: 'action',
     slotName: 'action',
     width: 130,
     align: 'center',
@@ -134,7 +134,10 @@ const reset = () => {
 
 // 删除
 const onDelete = (record: StorageResp) => {
-  return handleDelete(() => deleteStorage(record.id), { content: `是否确定删除存储 [${record.name}]？`, showModal: true })
+  return handleDelete(() => deleteStorage(record.id), {
+    content: `是否确定删除存储「${record.name}」？`,
+    showModal: true,
+  })
 }
 
 const StorageAddDrawerRef = ref<InstanceType<typeof StorageAddDrawer>>()

@@ -1,9 +1,10 @@
 <template>
   <a-modal
     v-model:visible="visible"
-    :title="title"
+    title="新增角色"
     :mask-closable="false"
     :esc-to-close="true"
+    draggable
     :width="width >= 600 ? 600 : '100%'"
     @close="reset"
   >
@@ -12,14 +13,13 @@
       <a-step>功能权限</a-step>
       <a-step>数据权限</a-step>
     </a-steps>
-
     <a-form ref="formRef" :model="form" :rules="rules" size="large" auto-label-width>
       <fieldset v-show="current === 1">
         <a-form-item label="名称" field="name">
           <a-input v-model.trim="form.name" placeholder="请输入名称" />
         </a-form-item>
         <a-form-item label="编码" field="code">
-          <a-input v-model.trim="form.code" placeholder="请输入编码" :disabled="isUpdate" />
+          <a-input v-model.trim="form.code" placeholder="请输入编码" />
         </a-form-item>
         <a-form-item label="排序" field="sort">
           <a-input-number v-model="form.sort" placeholder="请输入排序" :min="1" mode="button" />
@@ -104,22 +104,22 @@
 <script setup lang="ts">
 import { type FormInstance, Message, type TreeNodeData } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { addRole, getRole, updateRole } from '@/apis/system'
+import { addRole } from '@/apis/system/role'
 import { useForm } from '@/hooks'
 import { useDept, useDict, useMenu } from '@/hooks/app'
 
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
 const { width } = useWindowSize()
+
+const dataId = ref('')
+const visible = ref(false)
+const formRef = ref<FormInstance>()
 const { data_scope_enum } = useDict('data_scope_enum')
 const { deptList, getDeptList } = useDept()
 const { menuList, getMenuList } = useMenu()
-const current = ref<number>(1)
-const dataId = ref('')
-const isUpdate = computed(() => !!dataId.value)
-const title = computed(() => (isUpdate.value ? '修改角色' : '新增角色'))
-const formRef = ref<FormInstance>()
 
 const rules: FormInstance['rules'] = {
   name: [{ required: true, message: '请输入名称' }],
@@ -140,6 +140,7 @@ const isMenuExpanded = ref(false)
 const isDeptExpanded = ref(true)
 const isMenuCheckAll = ref(false)
 const isDeptCheckAll = ref(false)
+const current = ref<number>(1)
 // 重置
 const reset = () => {
   isMenuExpanded.value = false
@@ -148,24 +149,11 @@ const reset = () => {
   isDeptCheckAll.value = false
   menuTreeRef.value?.expandAll(isMenuExpanded.value)
   deptTreeRef.value?.expandAll(isDeptExpanded.value)
-  formRef.value?.resetFields()
   current.value = 1
+  formRef.value?.resetFields()
   resetForm()
 }
 
-const visible = ref(false)
-// 新增
-const onAdd = () => {
-  if (!menuList.value.length) {
-    getMenuList()
-  }
-  reset()
-  dataId.value = ''
-  visible.value = true
-  if (!deptList.value.length) {
-    getDeptList()
-  }
-}
 // 上一步
 const onPrev = () => {
   current.value = Math.max(1, current.value - 1)
@@ -185,20 +173,6 @@ const onNext = async () => {
 // 当前页
 const onChangeCurrent = (page: number) => {
   current.value = page
-}
-// 修改
-const onUpdate = async (id: string) => {
-  if (!menuList.value.length) {
-    await getMenuList()
-  }
-  if (!deptList.value.length) {
-    await getDeptList()
-  }
-  reset()
-  dataId.value = id
-  const res = await getRole(id)
-  Object.assign(form, res.data)
-  visible.value = true
 }
 
 // 获取所有选中的菜单
@@ -228,27 +202,7 @@ const getDeptAllCheckedKeys = () => {
   return checkedKeys
 }
 
-// 保存
-const save = async () => {
-  try {
-    const isInvalid = await formRef.value?.validate()
-    if (isInvalid) return false
-    form.menuIds = getMenuAllCheckedKeys()
-    form.deptIds = getDeptAllCheckedKeys()
-    if (isUpdate.value) {
-      await updateRole(form, dataId.value)
-      Message.success('修改成功')
-    } else {
-      await addRole(form)
-      Message.success('新增成功')
-    }
-    emit('save-success')
-    return true
-  } catch (error) {
-    return false
-  }
-}
-
+// 操作树
 const handleTreeAction = (type, action) => {
   const refMap = {
     menu: menuTreeRef,
@@ -266,14 +220,44 @@ const handleTreeAction = (type, action) => {
 const onExpanded = (type) => handleTreeAction(type, 'expand')
 const onCheckAll = (type) => handleTreeAction(type, 'check')
 
-// 确认时
+// 保存
+const save = async () => {
+  try {
+    const isInvalid = await formRef.value?.validate()
+    if (isInvalid) return false
+    form.menuIds = getMenuAllCheckedKeys()
+    form.deptIds = getDeptAllCheckedKeys()
+    await addRole(form)
+    Message.success('新增成功')
+    emit('save-success')
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
+// 确认
 const onClickOk = () => {
   if (unref(current) === 3) {
     save()
     visible.value = false
   }
 }
-defineExpose({ onAdd, onUpdate })
+
+// 打开
+const onOpen = async () => {
+  reset()
+  if (!menuList.value.length) {
+    await getMenuList()
+  }
+  if (!deptList.value.length) {
+    await getDeptList()
+  }
+  dataId.value = ''
+  visible.value = true
+}
+
+defineExpose({ onOpen })
 </script>
 
 <style lang="scss" scoped>

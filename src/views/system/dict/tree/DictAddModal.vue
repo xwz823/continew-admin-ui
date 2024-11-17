@@ -4,8 +4,7 @@
     :title="title"
     :mask-closable="false"
     :esc-to-close="false"
-    :modal-style="{ maxWidth: '520px' }"
-    width="90%"
+    :width="width >= 500 ? 500 : '100%'"
     draggable
     @before-ok="save"
     @close="reset"
@@ -16,14 +15,19 @@
 
 <script setup lang="ts">
 import { Message } from '@arco-design/web-vue'
-import { addDict, getDict, updateDict } from '@/apis/system'
-import { type Columns, GiForm } from '@/components/GiForm'
+import { useWindowSize } from '@vueuse/core'
+import { addDict, getDict, updateDict } from '@/apis/system/dict'
+import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import { useForm } from '@/hooks'
 
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
+const { width } = useWindowSize()
+
 const dataId = ref('')
+const visible = ref(false)
 const isUpdate = computed(() => !!dataId.value)
 const title = computed(() => (isUpdate.value ? '修改字典' : '新增字典'))
 const formRef = ref<InstanceType<typeof GiForm>>()
@@ -55,23 +59,6 @@ const reset = () => {
   resetForm()
 }
 
-const visible = ref(false)
-// 新增
-const onAdd = () => {
-  reset()
-  dataId.value = ''
-  visible.value = true
-}
-
-// 修改
-const onUpdate = async (id: string) => {
-  reset()
-  dataId.value = id
-  const res = await getDict(id)
-  Object.assign(form, res.data)
-  visible.value = true
-}
-
 // 保存
 const save = async () => {
   const isInvalid = await formRef.value?.formRef?.validate()
@@ -91,5 +78,23 @@ const save = async () => {
   }
 }
 
+// 新增
+const onAdd = () => {
+  reset()
+  dataId.value = ''
+  visible.value = true
+}
+
+// 修改
+const onUpdate = async (id: string) => {
+  reset()
+  dataId.value = id
+  const { data } = await getDict(id)
+  Object.assign(form, data)
+  visible.value = true
+}
+
 defineExpose({ onAdd, onUpdate })
 </script>
+
+<style lang="scss" scoped></style>

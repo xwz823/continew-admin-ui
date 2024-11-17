@@ -1,7 +1,7 @@
 <template>
   <a-modal
     v-model:visible="visible" :title="title" :mask-closable="false" :esc-to-close="false"
-    :width="width >= 500 ? 500 : '100%'" draggable @before-ok="save" @ok="saveAfter" @close="reset"
+    :width="width >= 600 ? 600 : '100%'" draggable @before-ok="save" @ok="saveAfter" @close="reset"
   >
     <GiForm ref="formRef" v-model="form" :options="options" :columns="columns">
       <template #captcha>

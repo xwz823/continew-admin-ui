@@ -4,9 +4,7 @@
     :title="title"
     :mask-closable="false"
     :esc-to-close="false"
-    :modal-style="{ maxWidth: '625px' }"
-    :body-style="{ maxHeight: '70vh' }"
-    width="90%"
+    :width="width >= 600 ? 600 : '100%'"
     draggable
     @before-ok="save"
     @close="reset"
@@ -118,8 +116,9 @@
 
 <script setup lang="ts">
 import { type FormInstance, Message, type TreeNodeData } from '@arco-design/web-vue'
+import { useWindowSize } from '@vueuse/core'
 import { mapTree } from 'xe-utils'
-import { type MenuResp, addMenu, getMenu, updateMenu } from '@/apis/system'
+import { type MenuResp, addMenu, getMenu, updateMenu } from '@/apis/system/menu'
 import { useForm } from '@/hooks'
 import { filterTree, transformPathToName } from '@/utils'
 
@@ -133,6 +132,61 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
+const { width } = useWindowSize()
+
+const dataId = ref('')
+const visible = ref(false)
+const isUpdate = computed(() => !!dataId.value)
+const title = computed(() => (isUpdate.value ? '修改菜单' : '新增菜单'))
+const formRef = ref<FormInstance>()
+
+const { form, resetForm } = useForm({
+  type: 1,
+  sort: 999,
+  isExternal: false,
+  isCache: false,
+  isHidden: false,
+  status: 1,
+})
+
+const componentName = computed(() => transformPathToName(form.path))
+
+const rules: FormInstance['rules'] = {
+  parentId: [{ required: true, message: '请选择上级菜单' }],
+  title: [{ required: true, message: '请输入菜单标题' }],
+  path: [{ required: true, message: '请输入路由地址' }],
+  name: [{ required: true, message: '请输入组件名称' }],
+  component: [{ required: true, message: '请输入组件路径' }],
+  permission: [{ required: true, message: '请输入权限标识' }],
+}
+// eslint-disable-next-line vue/return-in-computed-property
+const formRules = computed(() => {
+  if ([1, 2].includes(form.type)) {
+    const { title, name, path } = rules
+    return { title, name, path } as FormInstance['rules']
+  }
+  if (form.type === 3) {
+    const { parentId, title, permission } = rules
+    return { parentId, title, permission } as FormInstance['rules']
+  }
+})
+
+// 重置
+const reset = () => {
+  formRef.value?.resetFields()
+  resetForm()
+}
+
+// 设置建议组件名
+const inputComponentName = () => {
+  form.name = componentName.value
+}
+
+// 切换类型清除校验
+const onChangeType = () => {
+  formRef.value?.clearValidate()
+}
 
 // 转换为菜单树
 const menuSelectTree = computed(() => {
@@ -151,74 +205,6 @@ const filterOptions = (searchKey: string, nodeData: TreeNodeData) => {
     return nodeData.title.toLowerCase().includes(searchKey.toLowerCase())
   }
   return false
-}
-
-const dataId = ref('')
-const isUpdate = computed(() => !!dataId.value)
-const title = computed(() => (isUpdate.value ? '修改菜单' : '新增菜单'))
-const formRef = ref<FormInstance>()
-
-const rules: FormInstance['rules'] = {
-  parentId: [{ required: true, message: '请选择上级菜单' }],
-  title: [{ required: true, message: '请输入菜单标题' }],
-  path: [{ required: true, message: '请输入路由地址' }],
-  name: [{ required: true, message: '请输入组件名称' }],
-  component: [{ required: true, message: '请输入组件路径' }],
-  permission: [{ required: true, message: '请输入权限标识' }],
-}
-
-const { form, resetForm } = useForm({
-  type: 1,
-  sort: 999,
-  isExternal: false,
-  isCache: false,
-  isHidden: false,
-  status: 1,
-})
-const componentName = computed(() => transformPathToName(form.path))
-// eslint-disable-next-line vue/return-in-computed-property
-const formRules = computed(() => {
-  if ([1, 2].includes(form.type)) {
-    const { title, name, path } = rules
-    return { title, name, path } as FormInstance['rules']
-  }
-  if (form.type === 3) {
-    const { parentId, title, permission } = rules
-    return { parentId, title, permission } as FormInstance['rules']
-  }
-})
-// 设置建议组件名
-const inputComponentName = () => {
-  form.name = componentName.value
-}
-
-// 切换类型清除校验
-const onChangeType = () => {
-  formRef.value?.clearValidate()
-}
-
-// 重置
-const reset = () => {
-  formRef.value?.resetFields()
-  resetForm()
-}
-
-const visible = ref(false)
-// 新增
-const onAdd = (id?: string) => {
-  reset()
-  form.parentId = id
-  dataId.value = ''
-  visible.value = true
-}
-
-// 修改
-const onUpdate = async (id: string) => {
-  reset()
-  dataId.value = id
-  const res = await getMenu(id)
-  Object.assign(form, res.data)
-  visible.value = true
 }
 
 // 保存
@@ -240,5 +226,24 @@ const save = async () => {
   }
 }
 
+// 新增
+const onAdd = (id?: string) => {
+  reset()
+  form.parentId = id
+  dataId.value = ''
+  visible.value = true
+}
+
+// 修改
+const onUpdate = async (id: string) => {
+  reset()
+  dataId.value = id
+  const { data } = await getMenu(id)
+  Object.assign(form, data)
+  visible.value = true
+}
+
 defineExpose({ onAdd, onUpdate })
 </script>
+
+<style lang="scss" scoped></style>
