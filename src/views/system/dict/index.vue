@@ -129,7 +129,10 @@ const reset = () => {
 
 // 删除
 const onDelete = (record: DictItemResp) => {
-  return handleDelete(() => deleteDictItem(record.id), { content: `是否确定删除 [${record.label}]？`, showModal: true })
+  return handleDelete(() => deleteDictItem(record.id), {
+    content: `是否确定删除字典「${record.label}」？`,
+    showModal: true,
+  })
 }
 
 // 根据选中字典查询
@@ -150,7 +153,7 @@ const onUpdate = (record: DictItemResp) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .page_header {
   flex: 0 0 auto;
 }

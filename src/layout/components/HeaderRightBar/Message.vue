@@ -63,7 +63,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .message {
   height: auto;
   max-height: calc(100% - 51px);

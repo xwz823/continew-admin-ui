@@ -26,7 +26,7 @@ const toHome = () => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .system-logo {
   height: 56px;
   padding: 0 12px;

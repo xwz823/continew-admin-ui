@@ -1,8 +1,8 @@
 <template>
   <div class="table-page">
     <GiTable
-      row-key="id"
       title="在线用户"
+      row-key="id"
       :data="dataList"
       :columns="columns"
       :loading="loading"
@@ -21,7 +21,7 @@
           <template #default>重置</template>
         </a-button>
       </template>
-      <template #nickname="{ record }">{{ record.nickname }}（{{ record.username }}）</template>
+      <template #nickname="{ record }">{{ record.nickname }}({{ record.username }})</template>
       <template #action="{ record }">
         <a-space>
           <a-popconfirm
@@ -70,7 +70,6 @@ const {
   pagination,
   search,
 } = useTable((page) => listOnlineUser({ ...queryForm, ...page }), { immediate: true })
-
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -78,7 +77,7 @@ const columns: TableInstanceColumns[] = [
     align: 'center',
     render: ({ rowIndex }) => h('span', {}, rowIndex + 1 + (pagination.current - 1) * pagination.pageSize),
   },
-  { title: '用户昵称', slotName: 'nickname', ellipsis: true, tooltip: true },
+  { title: '用户昵称', dataIndex: 'nickname', slotName: 'nickname', ellipsis: true, tooltip: true },
   { title: '登录 IP', dataIndex: 'ip', ellipsis: true, tooltip: true },
   { title: '登录地点', dataIndex: 'address', ellipsis: true, tooltip: true },
   { title: '浏览器', dataIndex: 'browser', ellipsis: true, tooltip: true },
@@ -87,6 +86,7 @@ const columns: TableInstanceColumns[] = [
   { title: '最后活跃时间', dataIndex: 'lastActiveTime', width: 180 },
   {
     title: '操作',
+    dataIndex: 'action',
     slotName: 'action',
     align: 'center',
     fixed: !isMobile() ? 'right' : undefined,
@@ -110,4 +110,4 @@ const handleKickout = (token: string) => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

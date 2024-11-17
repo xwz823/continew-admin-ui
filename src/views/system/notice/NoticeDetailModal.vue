@@ -62,7 +62,7 @@ const reset = () => {
 defineExpose({ onDetail })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .arco-link {
   color: rgb(var(--gray-8));
 }

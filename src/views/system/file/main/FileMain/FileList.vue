@@ -115,7 +115,7 @@ const handleRightMenuClick = (mode: string, item: FileItem) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-table-td .arco-table-cell) {
   padding-top: 0;
   padding-bottom: 0;

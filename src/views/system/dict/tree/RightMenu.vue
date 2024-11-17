@@ -34,7 +34,7 @@ const onClick = (mode: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-menu-inner) {
   padding: 4px;
 

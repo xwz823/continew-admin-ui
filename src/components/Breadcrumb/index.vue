@@ -58,7 +58,7 @@ function handleLink(item: RouteLocationMatched) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .breadcrumb-item-title {
   transition: all 0.3s;
   cursor: pointer;

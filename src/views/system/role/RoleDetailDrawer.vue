@@ -87,7 +87,7 @@ const onOpen = async (id: string) => {
 defineExpose({ onOpen })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .permission :deep(.arco-descriptions-item-label-block) {
   padding-right: 0;
 }

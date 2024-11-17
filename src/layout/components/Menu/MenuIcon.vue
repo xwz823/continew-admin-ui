@@ -10,4 +10,4 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {})
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

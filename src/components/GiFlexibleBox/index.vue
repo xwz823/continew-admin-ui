@@ -29,7 +29,7 @@ const style = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .gi-flexible-box {
   transition: all 0.36s;
 }

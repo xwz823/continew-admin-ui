@@ -2,7 +2,7 @@
   <a-modal v-model:visible="visible" width="90%" :footer="false">
     <template #title>
       {{ `生成 ${previewTableName} 表预览` }}
-      <a-link style="margin-left: 10px" icon @click="onDownload">下载源码</a-link>
+      <a-link v-permission="['code:generator:generate']" style="margin-left: 10px" icon @click="onDownload">下载源码</a-link>
     </template>
     <div class="preview-content">
       <a-layout :has-sider="true">
@@ -50,11 +50,9 @@
               </a-typography-title>
             </template>
             <a-scrollbar style="height: 650px; overflow: auto">
-              <a-link style="position: absolute; right: 20px; z-index: 999" @click="onCopy">
-                <template #icon>
-                  <icon-copy size="large" />
-                </template>
-                复制
+              <a-link style="position: absolute; right: 20px; z-index: 999" title="复制" @click="onCopy">
+                <template #icon><icon-copy size="large" /></template>
+                <template #default>复制</template>
               </a-link>
               <GiCodeView
                 :type="'vue' === currentPreview?.fileName.split('.')[1] ? 'vue' : 'javascript'"
@@ -71,14 +69,13 @@
 <script setup lang="ts">
 import { Message, type TreeNodeData } from '@arco-design/web-vue'
 import { useClipboard } from '@vueuse/core'
-import { type GeneratePreviewResp, genPreview } from '@/apis/tool'
+import { type GeneratePreviewResp, genPreview } from '@/apis/code/generator'
 
-// 生成
 const emit = defineEmits<{ (e: 'generate', tableNames: string[]): void }>()
 const { copy, copied } = useClipboard()
-const currentPreview = ref<GeneratePreviewResp>()
-const genPreviewList = ref<GeneratePreviewResp[]>([])
 
+const genPreviewList = ref<GeneratePreviewResp[]>([])
+const currentPreview = ref<GeneratePreviewResp>()
 const visible = ref(false)
 const previewTableName = ref<string>('')
 const treeRef = ref()
@@ -129,9 +126,41 @@ const assembleTree = (genPreview: GeneratePreviewResp) => {
   tempChildren?.push({ title: genPreview.fileName, key: genPreview.fileName, children: new Array<TreeNodeData>() })
 }
 
+// 下载
+const onDownload = () => {
+  emit('generate', [previewTableName.value])
+}
+// 校验文件类型
+const checkFileType = (title: string, type: string) => {
+  return title.endsWith(type)
+}
+
+// 复制
+const onCopy = () => {
+  if (currentPreview.value) {
+    copy(currentPreview.value?.content)
+  }
+}
+watch(copied, () => {
+  if (copied.value) {
+    Message.success('复制成功')
+  }
+})
+
 const selectedKeys = ref()
+// 选择文件预览
+const onSelectPreview = (keys: (string | number)[]) => {
+  if (typeof keys[0] === 'string') {
+    currentPreview.value = genPreviewList.value.filter((p) => p.fileName === keys[0])[0]
+    selectedKeys.value = keys
+  } else {
+    const expandedKeys = treeRef.value.getExpandedNodes().map((node) => node.key)
+    treeRef.value.expandNode(keys[0], !expandedKeys.includes(keys[0]))
+  }
+}
+
 // 打开
-const onPreview = async (tableName: string) => {
+const onOpen = async (tableName: string) => {
   treeData.value = []
   previewTableName.value = tableName
   const { data } = await genPreview(tableName)
@@ -150,42 +179,10 @@ const onPreview = async (tableName: string) => {
   visible.value = true
 }
 
-// 选择文件预览
-const onSelectPreview = (keys: (string | number)[]) => {
-  if (typeof keys[0] === 'string') {
-    currentPreview.value = genPreviewList.value.filter((p) => p.fileName === keys[0])[0]
-    selectedKeys.value = keys
-  } else {
-    const expandedKeys = treeRef.value.getExpandedNodes().map((node) => node.key)
-    treeRef.value.expandNode(keys[0], !expandedKeys.includes(keys[0]))
-  }
-}
-
-// 复制
-const onCopy = () => {
-  if (currentPreview.value) {
-    copy(currentPreview.value?.content)
-  }
-}
-watch(copied, () => {
-  if (copied.value) {
-    Message.success('复制成功')
-  }
-})
-
-// 下载
-const onDownload = () => {
-  emit('generate', [previewTableName.value])
-}
-// 校验文件类型
-const checkFileType = (title: string, type: string) => {
-  return title.endsWith(type)
-}
-
-defineExpose({ onPreview })
+defineExpose({ onOpen })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 :deep(.arco-tree-show-line .arco-tree-node-is-leaf:not(.arco-tree-node-is-tail) .arco-tree-node-indent::after) {
   content: none;
 }

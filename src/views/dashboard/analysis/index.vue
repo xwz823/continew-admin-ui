@@ -40,4 +40,4 @@ import AccessTimeslot from '@/views/dashboard/analysis/components/AccessTimeslot
 defineOptions({ name: 'Analysis' })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

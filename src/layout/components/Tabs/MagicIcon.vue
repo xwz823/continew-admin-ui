@@ -9,7 +9,7 @@
 
 <script setup lang="ts"></script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .gi-more-icon-wrap {
   position: relative;
   box-sizing: border-box;

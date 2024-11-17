@@ -4,7 +4,7 @@ import type { LabelValueState } from '@/types/global'
 
 export type * from './type'
 
-const BASE_URL = '/generator'
+const BASE_URL = '/code/generator'
 
 /** @desc 查询代码生成列表 */
 export function listGenConfig(query: T.GenConfigPageQuery) {

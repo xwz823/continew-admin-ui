@@ -219,7 +219,7 @@ const _columns = computed(() => {
 defineExpose({ tableRef })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .gi-table {
   flex: 1;
   display: flex;

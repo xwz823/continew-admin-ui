@@ -222,7 +222,7 @@ const onOpen = async (id: string) => {
 defineExpose({ onOpen })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 fieldset {
   padding: 15px 15px 0 15px;
   margin-bottom: 15px;

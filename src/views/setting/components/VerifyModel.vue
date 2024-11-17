@@ -276,7 +276,7 @@ const open = (type: string) => {
 defineExpose({ open })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .captcha-btn {
   margin-left: 12px;
   min-width: 98px;

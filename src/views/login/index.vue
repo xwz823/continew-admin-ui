@@ -117,7 +117,7 @@ const onOauth = async (source: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @media screen and (max-width: 570px) {
   .pc {
     display: none !important;

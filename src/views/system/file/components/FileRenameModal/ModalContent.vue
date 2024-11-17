@@ -30,4 +30,4 @@ const form = reactive({
 defineExpose({ formRef })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

@@ -10,7 +10,7 @@ defineOptions({ name: 'GiFooter' })
 const appStore = useAppStore()
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .gi-footer {
   height: 40px;
   font-size: 13px;

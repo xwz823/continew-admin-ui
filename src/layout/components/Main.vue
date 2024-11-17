@@ -18,7 +18,7 @@ const appStore = useAppStore()
 const tabsStore = useTabsStore()
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .main {
   width: 100%;
   height: 100%;

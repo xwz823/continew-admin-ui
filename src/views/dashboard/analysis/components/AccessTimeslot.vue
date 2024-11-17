@@ -200,7 +200,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-card-body) {
   padding-bottom: 0;
 }

@@ -109,7 +109,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .statistic-space {
   display: flex;
   justify-content: center;

@@ -268,7 +268,7 @@ const onUpdateRole = (record: UserResp) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .page_header {
   flex: 0 0 auto;
 }

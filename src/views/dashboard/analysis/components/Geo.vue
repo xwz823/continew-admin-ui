@@ -93,7 +93,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .content {
   display: flex;
   align-items: center;

@@ -141,7 +141,7 @@ const changeColor = (colorObj: ColorObj) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-descriptions-item-label-block) {
   color: var(--color-text-1);
 }

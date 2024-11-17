@@ -4,9 +4,7 @@
     :title="title"
     :mask-closable="false"
     :esc-to-close="false"
-    :modal-style="{ maxWidth: '700px' }"
-    :body-style="{ maxHeight: width >= 700 ? '76vh' : '100vh' }"
-    :width="width >= 700 ? '90%' : '100%'"
+    :width="width >= 600 ? 600 : '100%'"
     @before-ok="save"
     @close="reset"
   >
@@ -172,6 +170,7 @@
         </a-row>
       </fieldset>
     </a-form>
+
     <CronGeneratorModal ref="genModal" @ok="(e) => form.triggerInterval = e" />
   </a-modal>
 </template>
@@ -179,7 +178,7 @@
 <script setup lang="ts">
 import { type ColProps, type FormInstance, Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { addJob, listGroup, updateJob } from '@/apis/schedule'
+import { addJob, listGroup, updateJob } from '@/apis/schedule/job'
 import { useForm } from '@/hooks'
 import { useDict } from '@/hooks/app'
 import CronGeneratorModal from '@/components/GenCron/CronModel/index.vue'
@@ -187,8 +186,18 @@ import CronGeneratorModal from '@/components/GenCron/CronModel/index.vue'
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
-const colProps: ColProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 12, xxl: 12 }
+
 const { width } = useWindowSize()
+
+const colProps: ColProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 12, xxl: 12 }
+
+const dataId = ref()
+const visible = ref(false)
+const isUpdate = computed(() => !!dataId.value)
+const title = computed(() => (isUpdate.value ? '修改任务' : '新增任务'))
+const formRef = ref<FormInstance>()
+const groupList = ref()
+const genModal = ref()
 const { job_trigger_type_enum, job_task_type_enum, job_route_strategy_enum, job_block_strategy_enum } = useDict(
   'job_trigger_type_enum',
   'job_task_type_enum',
@@ -196,11 +205,6 @@ const { job_trigger_type_enum, job_task_type_enum, job_route_strategy_enum, job_
   'job_block_strategy_enum',
 )
 
-const dataId = ref()
-const isUpdate = computed(() => !!dataId.value)
-const title = computed(() => (isUpdate.value ? '修改任务' : '新增任务'))
-const formRef = ref<FormInstance>()
-const genModal = ref()
 const rules: FormInstance['rules'] = {
   groupName: [{ required: true, message: '请选择任务组' }],
   jobName: [{ required: true, message: '请输入任务名称' }],
@@ -235,41 +239,31 @@ const reset = () => {
   resetForm()
 }
 
-const groupList = ref()
-// 查询任务组列表
-const getGroupList = async () => {
-  const { data } = await listGroup()
-  groupList.value = data?.map((item: string) => ({
-    label: item,
-    value: item,
-  }))
-}
-
-const visible = ref(false)
-// 新增
-const onAdd = () => {
-  reset()
-  getGroupList()
-  dataId.value = undefined
-  visible.value = true
-}
-
-// 修改
-const onUpdate = async (record: any) => {
-  await getGroupList()
-  reset()
-  dataId.value = record.id
-  Object.assign(form, record)
-  // 切片任务，解析 argsStr 并赋值给 args
-  if (form.taskType === 3 && form.argsStr) {
-    try {
-      const parsedArgs = JSON.parse(form.argsStr)
-      args.value = parsedArgs.map((arg: any) => ({ value: arg }))
-    } catch (error: any) {
-      Message.error(error)
-    }
+// 触发类型切换
+const triggerTypeChange = () => {
+  switch (form.triggerType) {
+    case 2:
+      form.triggerInterval = 60
+      break
+    case 3:
+      form.triggerInterval = ''
+      break
   }
-  visible.value = true
+}
+
+// 新增切片参数
+const onAddArgs = () => {
+  args.value.push({ value: '' })
+}
+
+// 删除切片参数
+const onDeleteArgs = (index) => {
+  args.value.splice(index, 1)
+}
+
+// 打开生成表达式
+const openGeneratorCron = (cron: string) => {
+  genModal.value.open(cron)
 }
 
 // 保存
@@ -295,30 +289,43 @@ const save = async () => {
   }
 }
 
-// 触发类型切换
-const triggerTypeChange = () => {
-  switch (form.triggerType) {
-    case 2:
-      form.triggerInterval = 60
-      break
-    case 3:
-      form.triggerInterval = ''
-      break
+// 查询任务组列表
+const getGroupList = async () => {
+  const { data } = await listGroup()
+  groupList.value = data?.map((item: string) => ({
+    label: item,
+    value: item,
+  }))
+}
+
+// 新增
+const onAdd = async () => {
+  reset()
+  dataId.value = undefined
+  if (!groupList.value.length) {
+    await getGroupList()
   }
+  visible.value = true
 }
 
-// 新增切片参数
-const onAddArgs = () => {
-  args.value.push({ value: '' })
-}
-// 删除切片参数
-const onDeleteArgs = (index) => {
-  args.value.splice(index, 1)
-}
-
-// 打开生成表达式
-const openGeneratorCron = (cron: string) => {
-  genModal.value.open(cron)
+// 修改
+const onUpdate = async (record: any) => {
+  reset()
+  dataId.value = record.id
+  if (!groupList.value.length) {
+    await getGroupList()
+  }
+  Object.assign(form, record)
+  // 切片任务，解析 argsStr 并赋值给 args
+  if (form.taskType === 3 && form.argsStr) {
+    try {
+      const parsedArgs = JSON.parse(form.argsStr)
+      args.value = parsedArgs.map((arg: any) => ({ value: arg }))
+    } catch (error: any) {
+      Message.error(error)
+    }
+  }
+  visible.value = true
 }
 
 defineExpose({ onAdd, onUpdate })

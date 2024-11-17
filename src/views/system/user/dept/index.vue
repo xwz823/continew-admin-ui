@@ -100,7 +100,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-tree-node-title-text) {
   width: 100%;
   white-space: nowrap;

@@ -84,7 +84,7 @@ const handleRightMenuClick = (mode: string, item: FileItem) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .file-grid {
   flex: 1;
   margin-top: 12px;

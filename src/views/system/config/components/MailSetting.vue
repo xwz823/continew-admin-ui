@@ -172,7 +172,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-form-item.arco-form-item-has-help) {
   margin-bottom: 5px;
 }

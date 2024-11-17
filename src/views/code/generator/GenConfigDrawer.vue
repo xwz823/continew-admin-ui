@@ -121,7 +121,7 @@
 <script setup lang="ts">
 import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
-import { type FieldConfigResp, type GeneratorConfigResp, getGenConfig, listFieldConfig, listFieldConfigDict, saveGenConfig } from '@/apis/tool'
+import { type FieldConfigResp, type GeneratorConfigResp, getGenConfig, listFieldConfig, listFieldConfigDict, saveGenConfig } from '@/apis/code/generator'
 import type { LabelValueState } from '@/types/global'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
@@ -131,8 +131,15 @@ import { useDict } from '@/hooks/app'
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
 const { width } = useWindowSize()
+
+const title = ref('')
+const visible = ref(false)
+const activeKey = ref('1')
+const formRef = ref<InstanceType<typeof GiForm>>()
 const { form_type_enum, query_type_enum } = useDict('form_type_enum', 'query_type_enum')
+const dictList = ref<LabelValueState[]>([])
 
 const options: Options = {
   form: { size: 'large' },
@@ -188,13 +195,29 @@ const formColumns: Columns = reactive([
   {
     label: '是否覆盖',
     field: 'isOverride',
-    type: 'radio-group',
-    options: [{ label: '是', value: true }, { label: '否', value: false }],
+    type: 'switch',
     props: {
-      type: 'button',
+      type: 'round',
+      checkedValue: 1,
+      uncheckedValue: 2,
+      checkedText: '是',
+      uncheckedText: '否',
     },
   },
 ])
+
+const dataList = ref<FieldConfigResp[]>([])
+const loading = ref(false)
+// 查询列表数据
+const getDataList = async (tableName: string, requireSync: boolean) => {
+  try {
+    loading.value = true
+    const { data } = await listFieldConfig(tableName, requireSync)
+    dataList.value = data
+  } finally {
+    loading.value = false
+  }
+}
 
 // Table 字段配置
 const columns: TableInstanceColumns[] = [
@@ -210,23 +233,6 @@ const columns: TableInstanceColumns[] = [
   { title: '关联字典', slotName: 'dictCode' },
 ]
 
-const dictList = ref<LabelValueState[]>([])
-const dataList = ref<FieldConfigResp[]>([])
-const loading = ref(false)
-// 查询列表数据
-const getDataList = async (tableName: string, requireSync: boolean) => {
-  try {
-    loading.value = true
-    const res = await listFieldConfig(tableName, requireSync)
-    dataList.value = res.data
-    const { data } = await listFieldConfigDict()
-    dictList.value = data
-  } finally {
-    loading.value = false
-  }
-}
-
-const formRef = ref<InstanceType<typeof GiForm>>()
 const { form, resetForm } = useForm({
   isOverride: false,
 })
@@ -235,21 +241,6 @@ const { form, resetForm } = useForm({
 const reset = () => {
   formRef.value?.formRef?.resetFields()
   resetForm()
-}
-
-const title = ref('')
-const visible = ref(false)
-// 配置
-const onConfig = async (tableName: string, comment: string) => {
-  comment = comment ? `（${comment}）` : ' '
-  title.value = `${tableName}${comment}配置`
-  visible.value = true
-  // 查询字段配置
-  await getDataList(tableName, false)
-  // 查询生成配置
-  const { data } = await getGenConfig(tableName)
-  Object.assign(form, data)
-  form.isOverride = false
 }
 
 // 同步
@@ -262,7 +253,6 @@ const handleChangeSort = (newDataList: FieldConfigResp[]) => {
   dataList.value = newDataList
 }
 
-const activeKey = ref('1')
 // 保存
 const save = async () => {
   try {
@@ -283,10 +273,25 @@ const save = async () => {
   }
 }
 
-defineExpose({ onConfig })
+// 打开
+const onOpen = async (tableName: string, comment: string) => {
+  reset()
+  comment = comment ? `（${comment}）` : ' '
+  title.value = `${tableName}${comment}配置`
+  // 查询生成配置
+  const { data } = await getGenConfig(tableName)
+  Object.assign(form, data)
+  visible.value = true
+  // 查询字段配置
+  await getDataList(tableName, false)
+  const res = await listFieldConfigDict()
+  dictList.value = res.data
+}
+
+defineExpose({ onOpen })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.gen-config.arco-form) {
   width: 50%;
 }

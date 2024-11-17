@@ -41,4 +41,4 @@ const onDetail = async (id: string) => {
 defineExpose({ onDetail })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

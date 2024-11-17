@@ -76,7 +76,7 @@ const title = computed(() => appStore.getTitle())
 const logo = computed(() => appStore.getLogo())
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @media screen and (max-width: 570px) {
     .pc {
         display: none !important;

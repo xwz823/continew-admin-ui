@@ -25,7 +25,7 @@ appStore.initTheme()
 appStore.initSiteConfig()
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .loading-icon {
   animation: arco-loading-circle 1s infinite cubic-bezier(0,0,1,1);
 }

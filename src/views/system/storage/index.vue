@@ -104,7 +104,7 @@ const columns: TableInstanceColumns[] = [
   { title: '名称', dataIndex: 'name', slotName: 'name', width: 140, ellipsis: true, tooltip: true },
   { title: '编码', dataIndex: 'code', ellipsis: true, tooltip: true },
   { title: '状态', dataIndex: 'status', slotName: 'status', align: 'center' },
-  { title: '类型', dataIndex: 'type', slotName: 'type', align: 'center' },
+  { title: '类型', dataIndex: 'type', slotName: 'type', align: 'center', ellipsis: true, tooltip: true },
   { title: '访问密钥', dataIndex: 'accessKey', ellipsis: true, tooltip: true },
   { title: '终端节点', dataIndex: 'endpoint', ellipsis: true, tooltip: true },
   { title: '桶名称', dataIndex: 'bucketName', ellipsis: true, tooltip: true },
@@ -152,4 +152,4 @@ const onUpdate = (record: StorageResp) => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

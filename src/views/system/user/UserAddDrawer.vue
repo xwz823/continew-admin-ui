@@ -226,4 +226,4 @@ const onUpdate = async (id: string) => {
 defineExpose({ onAdd, onUpdate })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

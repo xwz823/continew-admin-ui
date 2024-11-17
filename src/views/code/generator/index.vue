@@ -1,8 +1,8 @@
 <template>
   <div class="table-page">
     <GiTable
-      row-key="tableName"
       title="代码生成"
+      row-key="tableName"
       :data="dataList"
       :columns="columns"
       :loading="loading"
@@ -23,10 +23,11 @@
       </template>
       <template #action="{ record }">
         <a-space>
-          <a-link @click="onConfig(record.tableName, record.comment)">配置</a-link>
+          <a-link v-permission="['code:generator:config']" title="配置" @click="onConfig(record.tableName, record.comment)">配置</a-link>
           <a-link
-            :title="record.createTime ? '生成' : '请先进行生成配置'"
+            v-permission="['code:generator:preview']"
             :disabled="!record.createTime"
+            :title="record.createTime ? '生成' : '请先进行生成配置'"
             @click="onPreview(record.tableName)"
           >
             生成
@@ -42,12 +43,12 @@
 
 <script setup lang="ts">
 import GenConfigDrawer from './GenConfigDrawer.vue'
-import { generate, listGenConfig } from '@/apis/tool'
+import { generate, listGenConfig } from '@/apis/code/generator'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { useTable } from '@/hooks'
 import { isMobile } from '@/utils'
 
-defineOptions({ name: 'Generator' })
+defineOptions({ name: 'CodeGenerator' })
 const GenPreviewModal = defineAsyncComponent(() => import('./GenPreviewModal.vue'))
 
 const queryForm = reactive({
@@ -60,7 +61,6 @@ const {
   pagination,
   search,
 } = useTable((page) => listGenConfig({ ...queryForm, ...page }), { immediate: true })
-
 const columns: TableInstanceColumns[] = [
   {
     title: '序号',
@@ -76,7 +76,7 @@ const columns: TableInstanceColumns[] = [
   { title: '模块包名', dataIndex: 'packageName', ellipsis: true, tooltip: true },
   { title: '配置时间', dataIndex: 'createTime', width: 180 },
   { title: '修改时间', dataIndex: 'updateTime', width: 180 },
-  { title: '操作', slotName: 'action', width: 180, align: 'center', fixed: !isMobile() ? 'right' : undefined },
+  { title: '操作', dataIndex: 'action', slotName: 'action', width: 160, align: 'center', fixed: !isMobile() ? 'right' : undefined },
 ]
 
 // 重置
@@ -88,13 +88,13 @@ const reset = () => {
 const GenConfigDrawerRef = ref<InstanceType<typeof GenConfigDrawer>>()
 // 配置
 const onConfig = (tableName: string, comment: string) => {
-  GenConfigDrawerRef.value?.onConfig(tableName, comment)
+  GenConfigDrawerRef.value?.onOpen(tableName, comment)
 }
 
 const GenPreviewModalRef = ref<InstanceType<typeof GenPreviewModal>>()
 // 预览
 const onPreview = (tableName: string) => {
-  GenPreviewModalRef.value?.onPreview(tableName)
+  GenPreviewModalRef.value?.onOpen(tableName)
 }
 
 // 生成
@@ -123,4 +123,4 @@ const onGenerate = async (tableNames: Array<string>) => {
 }
 </script>
 
-<style></style>
+<style scoped lang="scss"></style>

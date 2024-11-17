@@ -133,7 +133,7 @@ const handleContextMenu = (e: MouseEvent, path: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 :deep(.arco-tabs-nav-tab) {
   .arco-tabs-tab {
     svg {

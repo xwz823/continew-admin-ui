@@ -54,4 +54,4 @@ const onOpen = async (id: string) => {
 defineExpose({ onOpen })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>

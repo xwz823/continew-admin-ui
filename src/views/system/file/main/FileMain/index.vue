@@ -260,7 +260,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .file-main {
   height: 100%;
   background: var(--color-bg-1);
