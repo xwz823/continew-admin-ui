@@ -2,15 +2,15 @@
   <div ref="containerRef" class="detail">
     <div class="detail_header">
       <a-affix :target="(containerRef as HTMLElement)">
-        <a-page-header title="通知公告" :subtitle="type === 'edit' ? '修改' : '新增'" @back="onBack">
+        <a-page-header title="通知公告" :subtitle="title" @back="onBack">
           <template #extra>
-            <a-button type="primary" @click="onReleased">
+            <a-button type="primary" @click="save">
               <template #icon>
-                <icon-save v-if="type === 'edit'" />
+                <icon-save v-if="isUpdate" />
                 <icon-send v-else />
               </template>
               <template #default>
-                {{ type === 'edit' ? '保存' : '发布' }}
+                {{ isUpdate ? '保存' : '发布' }}
               </template>
             </a-button>
           </template>
@@ -59,21 +59,32 @@
 import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import AiEditor from './components/index.vue'
-import { useTabsStore } from '@/stores'
+import { addNotice, getNotice, updateNotice } from '@/apis/system/notice'
+import { listUserDict } from '@/apis'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { addNotice, getNotice, updateNotice } from '@/apis/system'
+import type { LabelValueState } from '@/types/global'
+import { useTabsStore } from '@/stores'
 import { useForm } from '@/hooks'
 import { useDict } from '@/hooks/app'
-import { listUserDict } from '@/apis'
-import type { LabelValueState } from '@/types/global'
 
 const { width } = useWindowSize()
-const { notice_type } = useDict('notice_type')
-const containerRef = ref<HTMLElement | null>()
-const tabsStore = useTabsStore()
 const route = useRoute()
-const formRef = ref<InstanceType<typeof GiForm>>()
+const router = useRouter()
+const tabsStore = useTabsStore()
+
 const { id, type } = route.query
+const isUpdate = computed(() => type === 'update')
+const title = computed(() => (isUpdate.value ? '修改' : '新增'))
+const containerRef = ref<HTMLElement | null>()
+const formRef = ref<InstanceType<typeof GiForm>>()
+const { notice_type } = useDict('notice_type')
+
+const options: Options = {
+  form: { size: 'large' },
+  grid: { cols: 2 },
+  btns: { hide: true },
+}
+
 const { form, resetForm } = useForm({
   title: '',
   type: '',
@@ -82,11 +93,6 @@ const { form, resetForm } = useForm({
   content: '',
   noticeScope: 1,
 })
-const options: Options = {
-  form: { size: 'large' },
-  grid: { cols: 2 },
-  btns: { hide: true },
-}
 
 const columns: Columns = reactive([
   {
@@ -149,17 +155,18 @@ const onUpdate = async (id: string) => {
 
 // 返回
 const onBack = () => {
+  router.back()
   tabsStore.closeCurrent(route.path)
 }
 
-// 发布
-const onReleased = async () => {
+// 保存
+const save = async () => {
   const isInvalid = await formRef.value?.formRef?.validate()
   if (isInvalid) return false
   try {
     // 通知范围 所有人 去除指定用户
     form.noticeUsers = form.noticeScope === 1 ? null : form.noticeUsers
-    if (type === 'edit') {
+    if (isUpdate.value) {
       await updateNotice(form, id as string)
       Message.success('修改成功')
     } else {
@@ -194,9 +201,9 @@ const onSelectUser = (value: string[]) => {
 
 const userList = ref<LabelValueState[]>([])
 onMounted(async () => {
-  // 当id存在与type为edit时，执行修改操作
-  if (id && type === 'edit') {
-    onUpdate(id as string)
+  // 当id存在与type为update时，执行修改操作
+  if (id && isUpdate.value) {
+    await onUpdate(id as string)
   }
   // 获取所有用户
   const { data } = await listUserDict()

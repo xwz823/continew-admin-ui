@@ -39,15 +39,16 @@
 
 <script setup lang="ts">
 import AiEditor from './components/index.vue'
-import { useTabsStore } from '@/stores'
 import { getNotice } from '@/apis/system/notice'
+import { useTabsStore } from '@/stores'
 import { useForm } from '@/hooks'
 
-const containerRef = ref<HTMLElement | null>()
-const tabsStore = useTabsStore()
 const route = useRoute()
 const router = useRouter()
+const tabsStore = useTabsStore()
+
 const { id } = route.query
+const containerRef = ref<HTMLElement | null>()
 const { form, resetForm } = useForm({
   title: '',
   createUserString: '',
@@ -56,19 +57,21 @@ const { form, resetForm } = useForm({
   content: '',
 })
 
-// 修改
-const onDetail = async (id: string) => {
-  resetForm()
-  const res = await getNotice(id)
-  Object.assign(form, res.data)
-}
+// 回退
 const onBack = () => {
   router.back()
   tabsStore.closeCurrent(route.path)
 }
 
+// 打开
+const onOpen = async (id: string) => {
+  resetForm()
+  const { data } = await getNotice(id)
+  Object.assign(form, data)
+}
+
 onMounted(() => {
-  onDetail(id as string)
+  onOpen(id as string)
 })
 </script>
 

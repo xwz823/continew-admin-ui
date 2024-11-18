@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { Message } from '@arco-design/web-vue'
+import { useWindowSize } from '@vueuse/core'
 import { addDictItem, getDictItem, updateDictItem } from '@/apis/system/dict'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import { useForm } from '@/hooks'
@@ -30,6 +31,8 @@ import { useForm } from '@/hooks'
 const emit = defineEmits<{
   (e: 'save-success'): void
 }>()
+
+const { width } = useWindowSize()
 
 const dataId = ref('')
 const dictId = ref('')
@@ -42,6 +45,12 @@ const options: Options = {
   form: { size: 'large' },
   btns: { hide: true },
 }
+
+const { form, resetForm } = useForm({
+  color: 'blue',
+  sort: 999,
+  status: 1,
+})
 
 const columns: Columns = reactive([
   { label: '标签', field: 'label', type: 'input', rules: [{ required: true, message: '请输入标签' }] },
@@ -78,12 +87,6 @@ const columns: Columns = reactive([
     },
   },
 ])
-
-const { form, resetForm } = useForm({
-  color: 'blue',
-  sort: 999,
-  status: 1,
-})
 
 // 重置
 const reset = () => {

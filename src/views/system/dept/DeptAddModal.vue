@@ -55,6 +55,11 @@ const options: Options = {
   btns: { hide: true },
 }
 
+const { form, resetForm } = useForm({
+  sort: 999,
+  status: 1,
+})
+
 const columns: Columns = reactive([
   {
     label: '上级部门',
@@ -117,11 +122,6 @@ const columns: Columns = reactive([
     },
   },
 ])
-
-const { form, resetForm } = useForm({
-  sort: 999,
-  status: 1,
-})
 
 // 重置
 const reset = () => {

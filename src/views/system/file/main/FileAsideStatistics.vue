@@ -11,7 +11,7 @@
     </a-space>
     <div v-if="chartData.length > 0">
       <a-divider />
-      <VCharts :option="option" autoresize :style="{ height: '120px', width: '150px' }" />
+      <VCharts :option="chartOption" autoresize :style="{ height: '120px', width: '150px' }" />
     </div>
   </section>
 </template>
@@ -38,7 +38,7 @@ const totalData = ref<FileStatisticsResp>({
 })
 const chartData = ref<Array<{ name: string, value: number, size: string }>>([])
 const statisticValueStyle = { 'color': '#5856D6', 'font-size': '18px' }
-const { option } = useChart(() => {
+const { chartOption } = useChart(() => {
   return {
     grid: {
       left: 0,

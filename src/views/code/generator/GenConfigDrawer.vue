@@ -146,6 +146,9 @@ const options: Options = {
   grid: { cols: 2 },
   btns: { hide: true },
 }
+const { form, resetForm } = useForm({
+  isOverride: false,
+})
 const formColumns: Columns = reactive([
   {
     label: '作者名称',
@@ -198,8 +201,8 @@ const formColumns: Columns = reactive([
     type: 'switch',
     props: {
       type: 'round',
-      checkedValue: 1,
-      uncheckedValue: 2,
+      checkedValue: true,
+      uncheckedValue: false,
       checkedText: '是',
       uncheckedText: '否',
     },
@@ -232,10 +235,6 @@ const columns: TableInstanceColumns[] = [
   { title: '查询方式', slotName: 'queryType' },
   { title: '关联字典', slotName: 'dictCode' },
 ]
-
-const { form, resetForm } = useForm({
-  isOverride: false,
-})
 
 // 重置
 const reset = () => {
@@ -281,6 +280,7 @@ const onOpen = async (tableName: string, comment: string) => {
   // 查询生成配置
   const { data } = await getGenConfig(tableName)
   Object.assign(form, data)
+  form.isOverride = form.isOverride || false
   visible.value = true
   // 查询字段配置
   await getDataList(tableName, false)

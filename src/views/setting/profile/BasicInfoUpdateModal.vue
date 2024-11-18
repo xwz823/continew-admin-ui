@@ -17,16 +17,26 @@
 import { useWindowSize } from '@vueuse/core'
 import { Message } from '@arco-design/web-vue'
 import { updateUserBaseInfo } from '@/apis/system'
-import { type Columns, GiForm } from '@/components/GiForm'
+import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import { useForm } from '@/hooks'
 import { useUserStore } from '@/stores'
 
 const { width } = useWindowSize()
+const userStore = useUserStore()
+
+const userInfo = computed(() => userStore.userInfo)
+const visible = ref(false)
+const formRef = ref<InstanceType<typeof GiForm>>()
 
 const options: Options = {
   form: { size: 'large' },
   btns: { hide: true },
 }
+
+const { form, resetForm } = useForm({
+  nickname: userInfo.value.nickname,
+  gender: userInfo.value.gender,
+})
 
 const columns: Columns = reactive([
   {
@@ -48,25 +58,10 @@ const columns: Columns = reactive([
   },
 ])
 
-const userStore = useUserStore()
-const userInfo = computed(() => userStore.userInfo)
-const { form, resetForm } = useForm({
-  nickname: userInfo.value.nickname,
-  gender: userInfo.value.gender,
-})
-
-const formRef = ref<InstanceType<typeof GiForm>>()
 // 重置
 const reset = () => {
   formRef.value?.formRef?.resetFields()
   resetForm()
-}
-
-const visible = ref(false)
-// 修改
-const onUpdate = async () => {
-  reset()
-  visible.value = true
 }
 
 // 保存
@@ -82,6 +77,12 @@ const save = async () => {
   } catch (error) {
     return false
   }
+}
+
+// 修改
+const onUpdate = async () => {
+  reset()
+  visible.value = true
 }
 
 defineExpose({ onUpdate })

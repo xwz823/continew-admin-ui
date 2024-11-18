@@ -37,6 +37,10 @@ const options: Options = {
   btns: { hide: true },
 }
 
+const { form, resetForm } = useForm({
+  status: 1,
+})
+
 const columns: Columns = reactive([
   {
     label: '名称',
@@ -46,7 +50,7 @@ const columns: Columns = reactive([
   },
   {
     label: '失效时间',
-    field: 'expirationTime',
+    field: 'expireTime',
     type: 'date-picker',
     props: {
       placeholder: '请选择失效时间',
@@ -75,10 +79,6 @@ const columns: Columns = reactive([
     },
   },
 ])
-
-const { form, resetForm } = useForm({
-  status: 1,
-})
 
 // 重置
 const reset = () => {

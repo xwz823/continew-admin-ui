@@ -36,6 +36,8 @@ const options: Options = {
   btns: { hide: true },
 }
 
+const { form, resetForm } = useForm({})
+
 const columns: Columns = reactive([
   {
     label: '角色',
@@ -51,8 +53,6 @@ const columns: Columns = reactive([
     rules: [{ required: true, message: '请选择角色' }],
   },
 ])
-
-const { form, resetForm } = useForm({})
 
 // 重置
 const reset = () => {

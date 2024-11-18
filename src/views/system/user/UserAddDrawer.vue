@@ -42,6 +42,11 @@ const options: Options = {
   btns: { hide: true },
 }
 
+const { form, resetForm } = useForm({
+  gender: 1 as Gender,
+  status: 1 as Status,
+})
+
 const columns: Columns = reactive([
   {
     label: '用户名',
@@ -159,11 +164,6 @@ const columns: Columns = reactive([
     },
   },
 ])
-
-const { form, resetForm } = useForm({
-  gender: 1 as Gender,
-  status: 1 as Status,
-})
 
 // 重置
 const reset = () => {

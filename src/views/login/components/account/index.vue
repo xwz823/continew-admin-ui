@@ -113,7 +113,7 @@ const handleLogin = async () => {
     })
     tabsStore.reset()
     const { redirect, ...othersQuery } = router.currentRoute.value.query
-    router.push({
+    await router.push({
       path: (redirect as string) || '/',
       query: {
         ...othersQuery,

@@ -123,7 +123,7 @@ const onAdd = () => {
 
 // 修改
 const onUpdate = (record: NoticeResp) => {
-  router.push({ path: '/system/notice/add', query: { id: record.id, type: 'edit' } })
+  router.push({ path: '/system/notice/add', query: { id: record.id, type: 'update' } })
 }
 
 // 详情

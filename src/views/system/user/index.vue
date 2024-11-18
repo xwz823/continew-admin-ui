@@ -101,13 +101,13 @@ import UserImportDrawer from './UserImportDrawer.vue'
 import UserDetailDrawer from './UserDetailDrawer.vue'
 import UserResetPwdModal from './UserResetPwdModal.vue'
 import UserUpdateRoleModal from './UserUpdateRoleModal.vue'
-import { type UserQuery, type UserResp, deleteUser, exportUser, listUser } from '@/apis/system/user'
+import { type UserResp, deleteUser, exportUser, listUser } from '@/apis/system/user'
 import type { Columns, Options } from '@/components/GiForm'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
-import { useDownload, useTable } from '@/hooks'
+import { DisEnableStatusList } from '@/constant/common'
+import { useDownload, useForm, useTable } from '@/hooks'
 import { isMobile } from '@/utils'
 import has from '@/utils/has'
-import { DisEnableStatusList } from '@/constant/common'
 
 defineOptions({ name: 'SystemUser' })
 
@@ -115,6 +115,9 @@ const options: Options = reactive({
   form: { layout: 'inline' },
   grid: { cols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 } },
   fold: { enable: true, index: 1, defaultCollapsed: true },
+})
+const { form: queryForm, resetForm } = useForm({
+  sort: ['t1.id,desc'],
 })
 const queryFormColumns: Columns = reactive([
   {
@@ -147,9 +150,6 @@ const queryFormColumns: Columns = reactive([
     },
   },
 ])
-const queryForm = reactive<UserQuery>({
-  sort: ['t1.id,desc'],
-})
 
 const {
   tableData: dataList,
@@ -207,9 +207,7 @@ const columns: TableInstanceColumns[] = [
 
 // 重置
 const reset = () => {
-  queryForm.description = undefined
-  queryForm.status = undefined
-  queryForm.createTime = []
+  resetForm()
   search()
 }
 
