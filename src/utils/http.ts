@@ -1,16 +1,12 @@
 import axios from 'axios'
 import qs from 'query-string'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import NProgress from 'nprogress'
 import { useUserStore } from '@/stores'
 import { getToken } from '@/utils/auth'
 import modalErrorWrapper from '@/utils/modal-error-wrapper'
 import messageErrorWrapper from '@/utils/message-error-wrapper'
 import notificationErrorWrapper from '@/utils/notification-error-wrapper'
-import 'nprogress/nprogress.css'
 import router from '@/router'
-
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 interface ICodeMessage {
   [propName: number]: string
@@ -41,7 +37,6 @@ const http: AxiosInstance = axios.create({
 // 请求拦截器
 http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    NProgress.start() // 进度条
     const token = getToken()
     if (token) {
       if (!config.headers) {
@@ -62,12 +57,10 @@ http.interceptors.response.use(
     const { data } = response
     const { success, code, msg } = data
     if (response.request.responseType === 'blob') {
-      NProgress.done()
       return response
     }
     // 成功
     if (success) {
-      NProgress.done()
       return response
     }
 
@@ -80,14 +73,12 @@ http.interceptors.response.use(
         escToClose: false,
         okText: '重新登录',
         async onOk() {
-          NProgress.done()
           const userStore = useUserStore()
           await userStore.logoutCallBack()
           await router.replace('/login')
         },
       })
     } else {
-      NProgress.done()
       // 如果错误信息长度过长，使用 Notification 进行提示
       if (msg.length <= 15) {
         messageErrorWrapper({
@@ -101,7 +92,6 @@ http.interceptors.response.use(
     return Promise.reject(new Error(msg || '服务器端错误'))
   },
   (error) => {
-    NProgress.done()
     const response = Object.assign({}, error.response)
     response
     && messageErrorWrapper({

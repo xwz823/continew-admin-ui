@@ -1,8 +1,12 @@
 import { Button, Message, Notification, Space } from '@arco-design/web-vue'
+import NProgress from 'nprogress'
 import router from '@/router'
 import { useRouteStore, useUserStore } from '@/stores'
 import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
+import 'nprogress/nprogress.css'
+
+NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 // 版本更新
 let versionTag: string | null = null // 版本标识
@@ -68,12 +72,13 @@ export const resetHasRouteFlag = () => {
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const routeStore = useRouteStore()
-
+  NProgress.start()
   // 判断该用户是否登录
   if (getToken()) {
     if (to.path === '/login') {
       // 如果已经登录，并准备进入 Login 页面，则重定向到主页
       next()
+      NProgress.done()
     } else {
       if (!hasRouteFlag) {
         try {
@@ -81,6 +86,7 @@ router.beforeEach(async (to, from, next) => {
           if (userStore.userInfo.pwdExpired && to.path !== '/pwdExpired') {
             Message.warning('密码已过期，请修改密码')
             next('/pwdExpired')
+            NProgress.done()
           }
           const accessRoutes = await routeStore.generateRoutes()
           accessRoutes.forEach((route) => {
@@ -92,13 +98,16 @@ router.beforeEach(async (to, from, next) => {
           // 确保添加路由已完成
           // 设置 replace: true, 因此导航将不会留下历史记录
           next({ ...to, replace: true })
+          NProgress.done()
         } catch (error: any) {
           // 过程中发生任何错误，都直接重置 Token，并重定向到登录页面
           await userStore.logoutCallBack()
           next(`/login?redirect=${to.path}`)
+          NProgress.done()
         }
       } else {
         next()
+        NProgress.done()
       }
     }
   } else {
@@ -106,9 +115,11 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.includes(to.path)) {
       // 如果在免登录的白名单中，则直接进入
       next()
+      NProgress.done()
     } else {
       // 其他没有访问权限的页面将被重定向到登录页面
       next('/login')
+      NProgress.done()
     }
   }
 
