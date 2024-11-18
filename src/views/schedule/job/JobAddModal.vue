@@ -4,6 +4,7 @@
     :title="title"
     :mask-closable="false"
     :esc-to-close="false"
+    :body-style="{ maxHeight: width >= 700 ? '76vh' : '100vh' }"
     :width="width >= 700 ? 700 : '100%'"
     @before-ok="save"
     @close="reset"
