@@ -32,7 +32,7 @@ const links = [
   { text: '角色管理', icon: 'user-group', path: '/system/role' },
   { text: '菜单管理', icon: 'menu', path: '/system/menu' },
   { text: '文件管理', icon: 'file', path: '/system/file' },
-  { text: '代码生成', icon: 'code', path: '/tool/generator' },
+  { text: '代码生成', icon: 'code', path: '/code/generator' },
   { text: '系统日志', icon: 'history', path: '/monitor/log' },
 ]
 </script>
