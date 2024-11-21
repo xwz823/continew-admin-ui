@@ -1,6 +1,14 @@
 <template>
-  <a-form ref="formRef" :model="form" :rules="rules" size="large" layout="vertical" :disabled="!isUpdate" class="form">
-    <a-list class="list-layout" :bordered="false" :loading="loading">
+  <a-spin :loading="loading">
+    <a-form
+      ref="formRef"
+      :model="form"
+      :rules="rules"
+      size="large"
+      layout="vertical"
+      :disabled="!isUpdate"
+      class="form"
+    >
       <a-form-item class="image-item" field="SITE_LOGO" hide-label>
         {{ siteConfig.SITE_LOGO.name }}
         <template #extra>
@@ -65,52 +73,51 @@
         </template>
       </a-form-item>
       <a-form-item class="input-item" field="SITE_TITLE" :label="siteConfig.SITE_TITLE.name">
-        <a-input v-model.trim="form.SITE_TITLE" placeholder="请输入系统标题" :max-length="18" show-word-limit />
+        <a-input v-model.trim="form.SITE_TITLE" class="input-width" placeholder="请输入系统标题" :max-length="18" show-word-limit />
       </a-form-item>
       <a-form-item class="input-item" field="SITE_DESCRIPTION" :label="siteConfig.SITE_DESCRIPTION.name">
         <a-textarea
           v-model.trim="form.SITE_DESCRIPTION"
+          class="input-width"
           placeholder="请输入系统描述"
           :auto-size="{ minRows: 1, maxRows: 3 }"
         />
       </a-form-item>
       <a-form-item class="input-item" field="SITE_COPYRIGHT" :label="siteConfig.SITE_COPYRIGHT.name">
-        <a-input v-model.trim="form.SITE_COPYRIGHT" placeholder="请输入版权信息" />
+        <a-input v-model.trim="form.SITE_COPYRIGHT" class="input-width" placeholder="请输入版权信息" />
       </a-form-item>
-      <a-form-item class="input-item" field="SITE_BEIAN" :label="siteConfig.SITE_BEIAN.name">
-        <a-input v-model.trim="form.SITE_BEIAN" placeholder="请输入备案号" :max-length="30" show-word-limit style="width: 100%;" />
+      <a-form-item field="SITE_BEIAN" :label="siteConfig.SITE_BEIAN.name">
+        <a-input v-model.trim="form.SITE_BEIAN" class="input-width" placeholder="请输入备案号" :max-length="30" show-word-limit />
       </a-form-item>
-      <div style="margin-top: 20px">
-        <a-space>
-          <a-button v-if="!isUpdate" v-permission="['system:config:update']" type="primary" @click="onUpdate">
-            <template #icon>
-              <icon-edit />
-            </template>修改
-          </a-button>
-          <a-button v-if="!isUpdate" v-permission="['system:config:reset']" @click="onResetValue">
-            <template #icon>
-              <icon-undo />
-            </template>恢复默认
-          </a-button>
-          <a-button v-if="isUpdate" type="primary" @click="handleSave">
-            <template #icon>
-              <icon-save />
-            </template>保存
-          </a-button>
-          <a-button v-if="isUpdate" @click="reset">
-            <template #icon>
-              <icon-refresh />
-            </template>重置
-          </a-button>
-          <a-button v-if="isUpdate" @click="handleCancel">
-            <template #icon>
-              <icon-undo />
-            </template>取消
-          </a-button>
-        </a-space>
-      </div>
-    </a-list>
-  </a-form>
+      <a-space style="margin-bottom: 16px">
+        <a-button v-if="!isUpdate" v-permission="['system:config:update']" type="primary" @click="onUpdate">
+          <template #icon>
+            <icon-edit />
+          </template>修改
+        </a-button>
+        <a-button v-if="!isUpdate" v-permission="['system:config:reset']" @click="onResetValue">
+          <template #icon>
+            <icon-undo />
+          </template>恢复默认
+        </a-button>
+        <a-button v-if="isUpdate" type="primary" @click="handleSave">
+          <template #icon>
+            <icon-save />
+          </template>保存
+        </a-button>
+        <a-button v-if="isUpdate" @click="reset">
+          <template #icon>
+            <icon-refresh />
+          </template>重置
+        </a-button>
+        <a-button v-if="isUpdate" @click="handleCancel">
+          <template #icon>
+            <icon-undo />
+          </template>取消
+        </a-button>
+      </a-space>
+    </a-form>
+  </a-spin>
 </template>
 
 <script setup lang="ts">
@@ -306,18 +313,23 @@ onMounted(() => {
   line-height: 46px;
 }
 
+.input-width {
+  width: 500px;
+}
+
 .arco-form .image-item,
 .input-item {
+  margin-bottom: 5px;
+}
+
+:deep(.arco-form-item-layout-vertical > .arco-form-item-label-col) {
   margin-bottom: 0;
 }
 
-:deep(.arco-list-medium .arco-list-content-wrapper .arco-list-content > .arco-list-item) {
-  padding: 13px;
-  border-bottom: 1px solid var(--color-fill-3);
-}
-
-:deep(.arco-form-item-wrapper-col) {
-  width: 100%;
-  max-width: 500px;
+// responsive
+.mobile {
+  .input-width {
+    width: 100%;
+  }
 }
 </style>

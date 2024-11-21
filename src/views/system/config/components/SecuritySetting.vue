@@ -1,107 +1,111 @@
 <template>
-  <a-space wrap :size="30">
+  <a-spin :loading="loading">
     <a-form
-      ref="formRef" :model="form" :rules="rules" auto-label-width label-align="left"
-      :layout="width >= 500 ? 'horizontal' : 'vertical'" :disabled="!isUpdate" scroll-to-first-error
+      ref="formRef"
+      :model="form"
+      :rules="rules"
+      auto-label-width
+      label-align="left"
+      :layout="width >= 500 ? 'horizontal' : 'vertical'"
+      :disabled="!isUpdate"
+      scroll-to-first-error
     >
-      <a-list :bordered="false" :loading="loading">
-        <a-form-item
-          field="PASSWORD_ERROR_LOCK_COUNT" :label="securityConfig.PASSWORD_ERROR_LOCK_COUNT.name"
-          :help="securityConfig.PASSWORD_ERROR_LOCK_COUNT.description" hide-asterisk
+      <a-form-item
+        field="PASSWORD_ERROR_LOCK_COUNT" :label="securityConfig.PASSWORD_ERROR_LOCK_COUNT.name"
+        :help="securityConfig.PASSWORD_ERROR_LOCK_COUNT.description" hide-asterisk
+      >
+        <a-input-number
+          v-model="form.PASSWORD_ERROR_LOCK_COUNT" class="input-width" :default-value="0" :precision="0"
+          :min="0" :max="10"
         >
-          <a-input-number
-            v-model="form.PASSWORD_ERROR_LOCK_COUNT" class="input-width" :default-value="0" :precision="0"
-            :min="0" :max="10"
-          >
-            <template #append>次</template>
-          </a-input-number>
-        </a-form-item>
-        <a-form-item
-          field="PASSWORD_ERROR_LOCK_MINUTES" :label="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.name"
-          :help="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.description" hide-asterisk
+          <template #append>次</template>
+        </a-input-number>
+      </a-form-item>
+      <a-form-item
+        field="PASSWORD_ERROR_LOCK_MINUTES" :label="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.name"
+        :help="securityConfig.PASSWORD_ERROR_LOCK_MINUTES.description" hide-asterisk
+      >
+        <a-input-number
+          v-model="form.PASSWORD_ERROR_LOCK_MINUTES" class="input-width" :precision="0" :min="1"
+          :max="1440"
         >
-          <a-input-number
-            v-model="form.PASSWORD_ERROR_LOCK_MINUTES" class="input-width" :precision="0" :min="1"
-            :max="1440"
-          >
-            <template #append>分钟</template>
-          </a-input-number>
-        </a-form-item>
-        <a-form-item
-          field="PASSWORD_EXPIRATION_DAYS" :label="securityConfig.PASSWORD_EXPIRATION_DAYS.name"
-          :help="securityConfig.PASSWORD_EXPIRATION_DAYS.description" hide-asterisk
+          <template #append>分钟</template>
+        </a-input-number>
+      </a-form-item>
+      <a-form-item
+        field="PASSWORD_EXPIRATION_DAYS" :label="securityConfig.PASSWORD_EXPIRATION_DAYS.name"
+        :help="securityConfig.PASSWORD_EXPIRATION_DAYS.description" hide-asterisk
+      >
+        <a-input-number
+          v-model="form.PASSWORD_EXPIRATION_DAYS" class="input-width" :precision="0" :min="0"
+          :max="999"
         >
-          <a-input-number
-            v-model="form.PASSWORD_EXPIRATION_DAYS" class="input-width" :precision="0" :min="0"
-            :max="999"
-          >
-            <template #append>天</template>
-          </a-input-number>
-        </a-form-item>
-        <a-form-item
-          :label="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.name"
-          field="PASSWORD_EXPIRATION_WARNING_DAYS" :help="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.description"
-          hide-asterisk
+          <template #append>天</template>
+        </a-input-number>
+      </a-form-item>
+      <a-form-item
+        :label="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.name"
+        field="PASSWORD_EXPIRATION_WARNING_DAYS" :help="securityConfig.PASSWORD_EXPIRATION_WARNING_DAYS.description"
+        hide-asterisk
+      >
+        <a-input-number
+          v-model="form.PASSWORD_EXPIRATION_WARNING_DAYS" class="input-width" :precision="0" :min="0"
+          :max="998"
         >
-          <a-input-number
-            v-model="form.PASSWORD_EXPIRATION_WARNING_DAYS" class="input-width" :precision="0" :min="0"
-            :max="998"
-          >
-            <template #append>天</template>
-          </a-input-number>
-        </a-form-item>
-        <a-form-item
-          field="PASSWORD_REPETITION_TIMES" :label="securityConfig.PASSWORD_REPETITION_TIMES.name"
-          :help="securityConfig.PASSWORD_REPETITION_TIMES.description" hide-asterisk
+          <template #append>天</template>
+        </a-input-number>
+      </a-form-item>
+      <a-form-item
+        field="PASSWORD_REPETITION_TIMES" :label="securityConfig.PASSWORD_REPETITION_TIMES.name"
+        :help="securityConfig.PASSWORD_REPETITION_TIMES.description" hide-asterisk
+      >
+        <a-input-number
+          v-model="form.PASSWORD_REPETITION_TIMES" class="input-width" :precision="0" :min="3"
+          :max="32"
         >
-          <a-input-number
-            v-model="form.PASSWORD_REPETITION_TIMES" class="input-width" :precision="0" :min="3"
-            :max="32"
-          >
-            <template #append>次</template>
-          </a-input-number>
-        </a-form-item>
-        <a-form-item
-          field="PASSWORD_MIN_LENGTH" :label="securityConfig.PASSWORD_MIN_LENGTH.name"
-          :help="securityConfig.PASSWORD_MIN_LENGTH.description" hide-asterisk
-        >
-          <a-input-number v-model="form.PASSWORD_MIN_LENGTH" class="input-width" :precision="0" :min="8" :max="32" />
-        </a-form-item>
-        <a-form-item
-          field="PASSWORD_ALLOW_CONTAIN_USERNAME"
-          :label="securityConfig.PASSWORD_ALLOW_CONTAIN_USERNAME.name"
-        >
-          <a-switch v-model="form.PASSWORD_ALLOW_CONTAIN_USERNAME" type="round" :checked-value="1" :unchecked-value="0">
-            <template #checked>是</template>
-            <template #unchecked>否</template>
-          </a-switch>
-        </a-form-item>
-        <a-form-item field="PASSWORD_REQUIRE_SYMBOLS" :label="securityConfig.PASSWORD_REQUIRE_SYMBOLS.name">
-          <a-switch v-model="form.PASSWORD_REQUIRE_SYMBOLS" type="round" :checked-value="1" :unchecked-value="0">
-            <template #checked>是</template>
-            <template #unchecked>否</template>
-          </a-switch>
-        </a-form-item>
-        <a-space>
-          <a-button v-if="!isUpdate" v-permission="['system:config:update']" type="primary" @click="onUpdate">
-            <template #icon><icon-edit /></template>修改
-          </a-button>
-          <a-button v-if="!isUpdate" v-permission="['system:config:reset']" @click="onResetValue">
-            <template #icon><icon-undo /></template>恢复默认
-          </a-button>
-          <a-button v-if="isUpdate" type="primary" @click="handleSave">
-            <template #icon><icon-save /></template>保存
-          </a-button>
-          <a-button v-if="isUpdate" @click="reset">
-            <template #icon><icon-refresh /></template>重置
-          </a-button>
-          <a-button v-if="isUpdate" @click="handleCancel">
-            <template #icon><icon-undo /></template>取消
-          </a-button>
-        </a-space>
-      </a-list>
+          <template #append>次</template>
+        </a-input-number>
+      </a-form-item>
+      <a-form-item
+        field="PASSWORD_MIN_LENGTH" :label="securityConfig.PASSWORD_MIN_LENGTH.name"
+        :help="securityConfig.PASSWORD_MIN_LENGTH.description" hide-asterisk
+      >
+        <a-input-number v-model="form.PASSWORD_MIN_LENGTH" class="input-width" :precision="0" :min="8" :max="32" />
+      </a-form-item>
+      <a-form-item
+        field="PASSWORD_ALLOW_CONTAIN_USERNAME"
+        :label="securityConfig.PASSWORD_ALLOW_CONTAIN_USERNAME.name"
+      >
+        <a-switch v-model="form.PASSWORD_ALLOW_CONTAIN_USERNAME" type="round" :checked-value="1" :unchecked-value="0">
+          <template #checked>是</template>
+          <template #unchecked>否</template>
+        </a-switch>
+      </a-form-item>
+      <a-form-item field="PASSWORD_REQUIRE_SYMBOLS" :label="securityConfig.PASSWORD_REQUIRE_SYMBOLS.name">
+        <a-switch v-model="form.PASSWORD_REQUIRE_SYMBOLS" type="round" :checked-value="1" :unchecked-value="0">
+          <template #checked>是</template>
+          <template #unchecked>否</template>
+        </a-switch>
+      </a-form-item>
+      <a-space style="margin-bottom: 16px">
+        <a-button v-if="!isUpdate" v-permission="['system:config:update']" type="primary" @click="onUpdate">
+          <template #icon><icon-edit /></template>修改
+        </a-button>
+        <a-button v-if="!isUpdate" v-permission="['system:config:reset']" @click="onResetValue">
+          <template #icon><icon-undo /></template>恢复默认
+        </a-button>
+        <a-button v-if="isUpdate" type="primary" @click="handleSave">
+          <template #icon><icon-save /></template>保存
+        </a-button>
+        <a-button v-if="isUpdate" @click="reset">
+          <template #icon><icon-refresh /></template>重置
+        </a-button>
+        <a-button v-if="isUpdate" @click="handleCancel">
+          <template #icon><icon-undo /></template>取消
+        </a-button>
+      </a-space>
     </a-form>
-  </a-space>
+  </a-spin>
 </template>
 
 <script setup lang="ts">
@@ -230,11 +234,11 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.input-width {
-  width: 196px;
-}
-
 :deep(.arco-form-item.arco-form-item-has-help) {
   margin-bottom: 5px;
+}
+
+.input-width {
+  width: 200px;
 }
 </style>

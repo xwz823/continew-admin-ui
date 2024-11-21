@@ -1,59 +1,62 @@
 <template>
-  <a-space wrap :size="30">
+  <a-spin :loading="loading">
     <a-form
-      ref="formRef" :model="form" :rules="rules" auto-label-width label-align="left"
-      :layout="width >= 500 ? 'horizontal' : 'vertical'" :disabled="!isUpdate" scroll-to-first-error
+      ref="formRef"
+      :model="form"
+      :rules="rules"
+      auto-label-width
+      label-align="left"
+      :layout="width >= 500 ? 'horizontal' : 'vertical'"
+      :disabled="!isUpdate" scroll-to-first-error
     >
-      <a-list :bordered="false" :loading="loading">
-        <a-form-item field="MAIL_PROTOCOL" :label="mailConfig.MAIL_PROTOCOL.name" hide-asterisk>
-          <a-select v-model.trim="form.MAIL_PROTOCOL">
-            <a-option label="SMTP" value="smtp" />
-          </a-select>
-        </a-form-item>
-        <a-form-item field="MAIL_HOST" :label="mailConfig.MAIL_HOST.name" hide-asterisk>
-          <a-input v-model.trim="form.MAIL_HOST" />
-        </a-form-item>
-        <a-form-item field="MAIL_PORT" :label="mailConfig.MAIL_PORT.name" hide-asterisk>
-          <a-input-number v-model="form.MAIL_PORT" :min="0" />
-        </a-form-item>
-        <a-form-item field="MAIL_USERNAME" :label="mailConfig.MAIL_USERNAME.name" hide-asterisk>
-          <a-input v-model.trim="form.MAIL_USERNAME" />
-        </a-form-item>
-        <a-form-item field="MAIL_PASSWORD" :label="mailConfig.MAIL_PASSWORD?.name" hide-asterisk>
-          <a-input-password v-model.trim="form.MAIL_PASSWORD" />
-        </a-form-item>
-        <a-form-item field="MAIL_SSL_ENABLED" :label="mailConfig.MAIL_SSL_ENABLED?.name" hide-asterisk>
-          <a-radio-group v-model:model-value="form.MAIL_SSL_ENABLED">
-            <a-radio value="1">启用</a-radio>
-            <a-radio value="0">禁用</a-radio>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item
-          v-if="form.MAIL_SSL_ENABLED === '1'" field="MAIL_SSL_PORT" :label="mailConfig.MAIL_SSL_PORT.name"
-          hide-asterisk
-        >
-          <a-input-number v-model="form.MAIL_SSL_PORT" :min="0" />
-        </a-form-item>
-        <a-space>
-          <a-button v-if="!isUpdate" v-permission="['system:config:update']" type="primary" @click="onUpdate">
-            <template #icon><icon-edit /></template>修改
-          </a-button>
-          <a-button v-if="!isUpdate" v-permission="['system:config:reset']" @click="onResetValue">
-            <template #icon><icon-undo /></template>恢复默认
-          </a-button>
-          <a-button v-if="isUpdate" type="primary" @click="handleSave">
-            <template #icon><icon-save /></template>保存
-          </a-button>
-          <a-button v-if="isUpdate" @click="reset">
-            <template #icon><icon-refresh /></template>重置
-          </a-button>
-          <a-button v-if="isUpdate" @click="handleCancel">
-            <template #icon><icon-undo /></template>取消
-          </a-button>
-        </a-space>
-      </a-list>
+      <a-form-item field="MAIL_PROTOCOL" :label="mailConfig.MAIL_PROTOCOL.name" hide-asterisk>
+        <a-select v-model.trim="form.MAIL_PROTOCOL">
+          <a-option label="SMTP" value="smtp" />
+        </a-select>
+      </a-form-item>
+      <a-form-item field="MAIL_HOST" :label="mailConfig.MAIL_HOST.name" hide-asterisk>
+        <a-input v-model.trim="form.MAIL_HOST" class="input-width" />
+      </a-form-item>
+      <a-form-item field="MAIL_PORT" :label="mailConfig.MAIL_PORT.name" hide-asterisk>
+        <a-input-number v-model="form.MAIL_PORT" class="input-width" :min="0" />
+      </a-form-item>
+      <a-form-item field="MAIL_USERNAME" :label="mailConfig.MAIL_USERNAME.name" hide-asterisk>
+        <a-input v-model.trim="form.MAIL_USERNAME" class="input-width" />
+      </a-form-item>
+      <a-form-item field="MAIL_PASSWORD" :label="mailConfig.MAIL_PASSWORD?.name" hide-asterisk>
+        <a-input-password v-model.trim="form.MAIL_PASSWORD" class="input-width" />
+      </a-form-item>
+      <a-form-item field="MAIL_SSL_ENABLED" :label="mailConfig.MAIL_SSL_ENABLED?.name" hide-asterisk>
+        <a-radio-group v-model:model-value="form.MAIL_SSL_ENABLED">
+          <a-radio value="1">启用</a-radio>
+          <a-radio value="0">禁用</a-radio>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item
+        v-if="form.MAIL_SSL_ENABLED === '1'" field="MAIL_SSL_PORT" :label="mailConfig.MAIL_SSL_PORT.name"
+        hide-asterisk
+      >
+        <a-input-number v-model="form.MAIL_SSL_PORT" class="input-width" :min="0" />
+      </a-form-item>
+      <a-space style="margin-bottom: 16px">
+        <a-button v-if="!isUpdate" v-permission="['system:config:update']" type="primary" @click="onUpdate">
+          <template #icon><icon-edit /></template>修改
+        </a-button>
+        <a-button v-if="!isUpdate" v-permission="['system:config:reset']" @click="onResetValue">
+          <template #icon><icon-undo /></template>恢复默认
+        </a-button>
+        <a-button v-if="isUpdate" type="primary" @click="handleSave">
+          <template #icon><icon-save /></template>保存
+        </a-button>
+        <a-button v-if="isUpdate" @click="reset">
+          <template #icon><icon-refresh /></template>重置
+        </a-button>
+        <a-button v-if="isUpdate" @click="handleCancel">
+          <template #icon><icon-undo /></template>取消
+        </a-button>
+      </a-space>
     </a-form>
-  </a-space>
+  </a-spin>
 </template>
 
 <script setup lang="ts">
@@ -175,5 +178,9 @@ onMounted(() => {
 <style scoped lang="scss">
 :deep(.arco-form-item.arco-form-item-has-help) {
   margin-bottom: 5px;
+}
+
+.input-width, :deep(.arco-select-view-single) {
+  width: 220px;
 }
 </style>
