@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import type { RouteRecordRaw } from 'vue-router'
 import { mapTree, toTreeArray } from 'xe-utils'
 import { cloneDeep, omit } from 'lodash-es'
-import { constantRoutes } from '@/router'
+import { constantRoutes, systemRoutes } from '@/router/route'
 import ParentView from '@/components/ParentView/index.vue'
 import { type RouteItem, getUserRoute } from '@/apis'
 import { transformPathToName } from '@/utils'
@@ -103,7 +103,7 @@ const storeSetup = () => {
 
   // 合并路由
   const setRoutes = (data: RouteRecordRaw[]) => {
-    routes.value = constantRoutes.concat(data)
+    routes.value = [...constantRoutes, ...systemRoutes].concat(data)
     asyncRoutes.value = data
   }
 

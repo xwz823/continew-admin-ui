@@ -14,7 +14,7 @@ import {
   socialLogin as socialLoginApi,
 } from '@/apis'
 import { clearToken, getToken, setToken } from '@/utils/auth'
-import { resetHasRouteFlag } from '@/router/permission'
+import { resetHasRouteFlag } from '@/router/guard'
 
 const storeSetup = () => {
   const userInfo = reactive<UserInfo>({

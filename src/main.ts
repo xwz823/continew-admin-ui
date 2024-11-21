@@ -9,7 +9,7 @@ import ArcoVueIcon from '@arco-design/web-vue/es/icon'
 import App from './App.vue'
 import router from './router'
 
-import '@/router/permission'
+import '@/router/guard'
 
 // 使用动画库
 import 'animate.css/animate.min.css'
