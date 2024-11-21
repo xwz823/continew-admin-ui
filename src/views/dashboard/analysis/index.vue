@@ -35,7 +35,7 @@ import Geo from './components/Geo.vue'
 import Os from './components/Os.vue'
 import Browser from './components/Browser.vue'
 import Module from './components/Module.vue'
-import AccessTimeslot from '@/views/dashboard/analysis/components/AccessTimeslot.vue'
+import AccessTimeslot from './components/AccessTimeslot.vue'
 
 defineOptions({ name: 'Analysis' })
 </script>

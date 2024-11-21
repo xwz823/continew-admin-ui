@@ -12,7 +12,6 @@ import { useChart } from '@/hooks'
 import { type DashboardChartCommonResp, getAnalysisTimeslot as getData } from '@/apis/common'
 import handleIcon from '@/assets/icons/slider.svg'
 
-const Chart = defineAsyncComponent(() => import('@/components/Chart/index.vue'))
 // 提示框
 const tooltipItemsHtmlString = (items) => {
   return items

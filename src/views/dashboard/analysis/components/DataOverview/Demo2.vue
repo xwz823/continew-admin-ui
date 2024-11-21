@@ -42,7 +42,6 @@ import { computed } from 'vue'
 import { useChart } from '@/hooks'
 import { useAppStore } from '@/stores'
 
-const Chart = defineAsyncComponent(() => import('@/components/Chart/index.vue'))
 const appStore = useAppStore()
 const isDark = computed(() => appStore.theme === 'dark')
 
