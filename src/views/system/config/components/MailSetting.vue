@@ -69,13 +69,13 @@ import {
   resetOptionValue,
   updateOption,
 } from '@/apis/system'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 
 defineOptions({ name: 'MailSetting' })
 const { width } = useWindowSize()
 const loading = ref<boolean>(false)
 const formRef = ref<FormInstance>()
-const { form } = useForm({
+const [form] = useResetReactive({
   MAIL_PROTOCOL: '',
   MAIL_HOST: '',
   MAIL_PORT: 0,

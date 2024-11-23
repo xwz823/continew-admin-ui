@@ -105,7 +105,7 @@ import { type UserResp, deleteUser, exportUser, listUser } from '@/apis/system/u
 import type { Columns, Options } from '@/components/GiForm'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { DisEnableStatusList } from '@/constant/common'
-import { useDownload, useForm, useTable } from '@/hooks'
+import { useDownload, useResetReactive, useTable } from '@/hooks'
 import { isMobile } from '@/utils'
 import has from '@/utils/has'
 
@@ -116,7 +116,7 @@ const options: Options = reactive({
   grid: { cols: { xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 } },
   fold: { enable: true, index: 1, defaultCollapsed: true },
 })
-const { form: queryForm, resetForm } = useForm({
+const [queryForm, resetForm] = useResetReactive({
   sort: ['t1.id,desc'],
 })
 const queryFormColumns: Columns = reactive([

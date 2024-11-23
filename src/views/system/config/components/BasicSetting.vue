@@ -130,14 +130,14 @@ import {
   updateOption,
 } from '@/apis/system'
 import { useAppStore } from '@/stores'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { fileToBase64 } from '@/utils'
 
 defineOptions({ name: 'BasicSetting' })
 
 const loading = ref<boolean>(false)
 const formRef = ref<FormInstance>()
-const { form } = useForm({
+const [form] = useResetReactive({
   SITE_FAVICON: '',
   SITE_LOGO: '',
   SITE_TITLE: '',

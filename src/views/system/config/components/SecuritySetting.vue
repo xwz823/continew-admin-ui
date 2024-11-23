@@ -112,14 +112,14 @@
 import { useWindowSize } from '@vueuse/core'
 import { type FormInstance, Message, Modal } from '@arco-design/web-vue'
 import { type OptionResp, type SecurityConfig, listOption, resetOptionValue, updateOption } from '@/apis/system'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 
 defineOptions({ name: 'SecuritySetting' })
 const { width } = useWindowSize()
 
 const loading = ref<boolean>(false)
 const formRef = ref<FormInstance>()
-const { form } = useForm({
+const [form] = useResetReactive({
   PASSWORD_ERROR_LOCK_COUNT: 0,
   PASSWORD_ERROR_LOCK_MINUTES: 0,
   PASSWORD_EXPIRATION_DAYS: 0,
