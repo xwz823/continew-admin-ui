@@ -19,7 +19,7 @@ import { addUser, getUser, updateUser } from '@/apis/system/user'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import type { Gender, Status } from '@/types/global'
 import { GenderList } from '@/constant/common'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { useDept, useRole } from '@/hooks/app'
 import { encryptByRsa } from '@/utils/encrypt'
 
@@ -42,7 +42,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   gender: 1 as Gender,
   status: 1 as Status,
 })

@@ -18,8 +18,8 @@ import { useWindowSize } from '@vueuse/core'
 import { Message } from '@arco-design/web-vue'
 import { updateUserBaseInfo } from '@/apis/system'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { useForm } from '@/hooks'
 import { useUserStore } from '@/stores'
+import { useResetReactive } from '@/hooks'
 
 const { width } = useWindowSize()
 const userStore = useUserStore()
@@ -33,7 +33,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   nickname: userInfo.value.nickname,
   gender: userInfo.value.gender,
 })

@@ -19,7 +19,7 @@ import { useWindowSize } from '@vueuse/core'
 import { mapTree } from 'xe-utils'
 import { type DeptResp, addDept, getDept, updateDept } from '@/apis/system/dept'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 
 interface Props {
   depts: DeptResp[]
@@ -55,7 +55,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   sort: 999,
   status: 1,
 })

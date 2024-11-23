@@ -29,7 +29,7 @@ import { type BehaviorCaptchaReq, getEmailCaptcha, updateUserEmail, updateUserPa
 import { encryptByRsa } from '@/utils/encrypt'
 import { useUserStore } from '@/stores'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import * as Regexp from '@/utils/regexp'
 import modalErrorWrapper from '@/utils/modal-error-wrapper'
 import router from '@/router'
@@ -49,7 +49,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   phone: '',
   email: '',
   captcha: '',

@@ -95,7 +95,7 @@
 import { type FormInstance, Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import { addStorage, getStorage, updateStorage } from '@/apis/system/storage'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { useDict } from '@/hooks/app'
 import { encryptByRsa } from '@/utils/encrypt'
 import { isIPv4 } from '@/utils/validate'
@@ -123,7 +123,7 @@ const rules: FormInstance['rules'] = {
   bucketName: [{ required: true, message: '请输入桶名称' }],
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   type: 2,
   isDefault: false,
   sort: 999,

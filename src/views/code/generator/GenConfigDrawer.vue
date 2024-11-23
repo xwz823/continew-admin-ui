@@ -125,7 +125,7 @@ import { type FieldConfigResp, type GeneratorConfigResp, getGenConfig, listField
 import type { LabelValueState } from '@/types/global'
 import type { TableInstanceColumns } from '@/components/GiTable/type'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { useDict } from '@/hooks/app'
 
 const emit = defineEmits<{
@@ -146,7 +146,7 @@ const options: Options = {
   grid: { cols: 2 },
   btns: { hide: true },
 }
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   isOverride: false,
 })
 const formColumns: Columns = reactive([

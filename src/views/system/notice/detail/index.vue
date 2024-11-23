@@ -41,7 +41,7 @@
 import AiEditor from './components/index.vue'
 import { getNotice } from '@/apis/system/notice'
 import { useTabsStore } from '@/stores'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 
 const route = useRoute()
 const router = useRouter()
@@ -49,7 +49,7 @@ const tabsStore = useTabsStore()
 
 const { id } = route.query
 const containerRef = ref<HTMLElement | null>()
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   title: '',
   createUserString: '',
   effectiveTime: '',

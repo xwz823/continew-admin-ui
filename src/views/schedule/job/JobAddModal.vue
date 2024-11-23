@@ -180,10 +180,9 @@
 import { type ColProps, type FormInstance, Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import { addJob, listGroup, updateJob } from '@/apis/schedule/job'
-import { useForm } from '@/hooks'
-import { useDict } from '@/hooks/app'
-import CronGeneratorModal from '@/components/GenCron/CronModel/index.vue'
 import type { LabelValueState } from '@/types/global'
+import { useResetReactive } from '@/hooks'
+import { useDict } from '@/hooks/app'
 
 const emit = defineEmits<{
   (e: 'save-success'): void
@@ -221,7 +220,7 @@ const rules: FormInstance['rules'] = {
   parallelNum: [{ required: true, message: '请输入并行数' }],
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   triggerType: 2,
   triggerInterval: 60,
   taskType: 1,

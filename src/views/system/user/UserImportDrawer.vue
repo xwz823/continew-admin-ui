@@ -94,7 +94,7 @@ import {
   importUser,
   parseImportUser,
 } from '@/apis/system/user'
-import { useDownload, useForm } from '@/hooks'
+import { useDownload, useResetReactive } from '@/hooks'
 
 const emit = defineEmits<{
   (e: 'save-success'): void
@@ -106,7 +106,7 @@ const visible = ref(false)
 const formRef = ref<FormInstance>()
 const uploadFile = ref([])
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   errorPolicy: 1,
   duplicateUser: 1,
   duplicateEmail: 1,

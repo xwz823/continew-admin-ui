@@ -18,7 +18,7 @@
 import { Message } from '@arco-design/web-vue'
 import { resetUserPwd } from '@/apis/system'
 import { type Columns, GiForm } from '@/components/GiForm'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { encryptByRsa } from '@/utils/encrypt'
 
 const emit = defineEmits<{
@@ -34,7 +34,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({})
+const [form, resetForm] = useResetReactive({})
 
 const columns: Columns = reactive([
   { label: '密码', field: 'newPassword', type: 'input-password', rules: [{ required: true, message: '请输入密码' }] },

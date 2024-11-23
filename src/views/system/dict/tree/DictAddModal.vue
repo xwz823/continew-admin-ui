@@ -18,7 +18,7 @@ import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import { addDict, getDict, updateDict } from '@/apis/system/dict'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 
 const emit = defineEmits<{
   (e: 'save-success'): void
@@ -37,7 +37,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({})
+const [form, resetForm] = useResetReactive({})
 
 const columns: Columns = reactive([
   { label: '名称', field: 'name', type: 'input', rules: [{ required: true, message: '请输入名称' }] },

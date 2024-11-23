@@ -119,7 +119,7 @@ import { type FormInstance, Message, type TreeNodeData } from '@arco-design/web-
 import { useWindowSize } from '@vueuse/core'
 import { mapTree } from 'xe-utils'
 import { type MenuResp, addMenu, getMenu, updateMenu } from '@/apis/system/menu'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { filterTree, transformPathToName } from '@/utils'
 
 interface Props {
@@ -141,7 +141,7 @@ const isUpdate = computed(() => !!dataId.value)
 const title = computed(() => (isUpdate.value ? '修改菜单' : '新增菜单'))
 const formRef = ref<FormInstance>()
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   type: 1,
   sort: 999,
   isExternal: false,

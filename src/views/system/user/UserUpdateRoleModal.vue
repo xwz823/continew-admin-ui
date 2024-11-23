@@ -18,7 +18,7 @@ import { Message } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import { getUser, updateUserRole } from '@/apis/system'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { useRole } from '@/hooks/app'
 
 const emit = defineEmits<{
@@ -36,7 +36,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({})
+const [form, resetForm] = useResetReactive({})
 
 const columns: Columns = reactive([
   {

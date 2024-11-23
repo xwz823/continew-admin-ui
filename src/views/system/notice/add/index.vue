@@ -64,7 +64,7 @@ import { listUserDict } from '@/apis'
 import { type Columns, GiForm, type Options } from '@/components/GiForm'
 import type { LabelValueState } from '@/types/global'
 import { useTabsStore } from '@/stores'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { useDict } from '@/hooks/app'
 
 const { width } = useWindowSize()
@@ -85,7 +85,7 @@ const options: Options = {
   btns: { hide: true },
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   title: '',
   type: '',
   effectiveTime: '',

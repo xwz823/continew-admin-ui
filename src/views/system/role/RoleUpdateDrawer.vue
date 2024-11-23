@@ -84,7 +84,7 @@
 import { type FormInstance, Message, type TreeNodeData } from '@arco-design/web-vue'
 import { useWindowSize } from '@vueuse/core'
 import { getRole, updateRole } from '@/apis/system/role'
-import { useForm } from '@/hooks'
+import { useResetReactive } from '@/hooks'
 import { useDept, useDict, useMenu } from '@/hooks/app'
 
 const emit = defineEmits<{
@@ -106,7 +106,7 @@ const rules: FormInstance['rules'] = {
   dataScope: [{ required: true, message: '请选择数据权限' }],
 }
 
-const { form, resetForm } = useForm({
+const [form, resetForm] = useResetReactive({
   menuCheckStrictly: true,
   deptCheckStrictly: true,
   sort: 999,
