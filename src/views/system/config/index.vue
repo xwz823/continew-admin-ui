@@ -6,9 +6,15 @@
       </a-space>
     </a-row>
     <a-tabs v-model:active-key="activeKey" type="card-gutter" size="large" @change="change">
-      <a-tab-pane key="1" title="基础配置" />
-      <a-tab-pane key="2" title="邮件配置" />
-      <a-tab-pane key="3" title="安全配置" />
+      <a-tab-pane key="1">
+        <template #title><icon-settings /> 基础配置</template>
+      </a-tab-pane>
+      <a-tab-pane key="2">
+        <template #title><icon-email /> 邮件配置</template>
+      </a-tab-pane>
+      <a-tab-pane key="3">
+        <template #title><icon-safe /> 安全配置</template>
+      </a-tab-pane>
     </a-tabs>
     <keep-alive>
       <component :is="PanMap[activeKey]" />

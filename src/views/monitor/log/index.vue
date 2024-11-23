@@ -6,8 +6,12 @@
       </a-space>
     </a-row>
     <a-tabs v-model:active-key="activeKey" type="card-gutter" size="large" @change="change">
-      <a-tab-pane key="1" title="登录日志" />
-      <a-tab-pane key="2" title="操作日志" />
+      <a-tab-pane key="1">
+        <template #title><icon-lock /> 登录日志</template>
+      </a-tab-pane>
+      <a-tab-pane key="2">
+        <template #title><icon-find-replace /> 操作日志</template>
+      </a-tab-pane>
     </a-tabs>
     <keep-alive>
       <component :is="PaneMap[activeKey]" />
