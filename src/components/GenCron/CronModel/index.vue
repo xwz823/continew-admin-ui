@@ -49,8 +49,6 @@ const open = (cron: string = '') => {
   visible.value = true
 }
 
-defineExpose({ open })
-
 // 确定
 const handlerOk = () => {
   if (cronInputRef.value?.checkCron()) {
@@ -65,6 +63,8 @@ const handlerOk = () => {
 const handlerClose = () => {
   visible.value = false
 }
+
+defineExpose({ open })
 </script>
 
 <style lang="less" scoped>

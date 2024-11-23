@@ -106,8 +106,6 @@ const open = () => {
   visible.value = true
 }
 
-defineExpose({ open })
-
 // 默认显示的主题色列表
 const defaultColorList = [
   '#165DFF',
@@ -139,6 +137,8 @@ const changeColor = (colorObj: ColorObj) => {
   if (!/^#[0-9A-Z]{6}/i.test(colorObj.hex)) return
   appStore.setThemeColor(colorObj.hex)
 }
+
+defineExpose({ open })
 </script>
 
 <style scoped lang="scss">

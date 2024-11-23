@@ -55,8 +55,6 @@ const attrs = useAttrs()
 const form = computed(() => ({ tableData: props.data }))
 
 const formRef = useTemplateRef('formRef')
-defineExpose({ formRef })
-
 const headerCellClass = (col: ColumnItem) => {
   return col.required ? 'gi_column_require' : ''
 }
@@ -122,6 +120,7 @@ const isDisabled: Props['cellDisabled'] = (p) => {
   if (typeof props?.cellDisabled === 'function') return props.cellDisabled(p)
   return false
 }
+defineExpose({ formRef })
 </script>
 
 <style lang='scss' scoped></style>
