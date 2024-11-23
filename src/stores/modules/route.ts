@@ -44,7 +44,6 @@ const transformComponentView = (component: string) => {
  */
 const formatAsyncRoutes = (menus: RouteItem[]) => {
   if (!menus.length) return []
-  menus.sort((a, b) => (a?.sort ?? 0) - (b?.sort ?? 0)) // 排序
   const pathMap = new Map()
   const routes = mapTree(menus, (item) => {
     pathMap.set(item.id, item.path)
@@ -103,7 +102,9 @@ const storeSetup = () => {
 
   // 合并路由
   const setRoutes = (data: RouteRecordRaw[]) => {
+    // 合并路由并排序
     routes.value = [...constantRoutes, ...systemRoutes].concat(data)
+      .sort((a, b) => (a.meta?.sort ?? 0) - (b.meta?.sort ?? 0))
     asyncRoutes.value = data
   }
 

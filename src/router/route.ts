@@ -62,6 +62,50 @@ export const systemRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/about',
+    name: 'About',
+    component: Layout,
+    meta: { title: '关于项目', icon: 'apps', hidden: false, sort: 999 },
+    children: [
+      {
+        path: '/about/document',
+        name: 'AboutDocument',
+        meta: { title: '项目文档', icon: 'file', hidden: false, keepAlive: true },
+        children: [
+          {
+            path: '/about/document/api',
+            component: () => import('@/views/about/document/api/index.vue'),
+            meta: { title: 'API文档', icon: 'continew', hidden: false, keepAlive: true },
+          },
+          {
+            path: '/about/document/arco-design-vue',
+            component: () => import('@/views/about/document/arco-design-vue/index.vue'),
+            meta: { title: 'Arco Design文档', icon: 'arco', hidden: false, keepAlive: true },
+          },
+        ],
+      },
+      {
+        path: '/about/source',
+        name: 'AboutSource',
+        meta: { title: '开源地址', icon: 'github', hidden: false },
+        children: [
+          {
+            path: 'https://gitee.com/continew/continew-admin',
+            meta: { title: 'Gitee', icon: 'gitee', hidden: false },
+          },
+          {
+            path: 'https://gitcode.com/continew/continew-admin',
+            meta: { title: 'GitCode', icon: 'gitcode', hidden: false },
+          },
+          {
+            path: 'https://github.com/continew-org/continew-admin',
+            meta: { title: 'GitHub', icon: 'github', hidden: false },
+          },
+        ],
+      },
+    ],
+  },
 ]
 
 // 固定路由（默认路由）
