@@ -38,7 +38,7 @@
           <slot name="suffix">
             <a-button type="primary" @click="emit('search')">
               <template #icon><icon-search /></template>
-              <template #default>{{ options.btns?.searchBtnText || '查询' }}</template>
+              <template #default>{{ options.btns?.searchBtnText || '搜索' }}</template>
             </a-button>
             <a-button @click="emit('reset')">
               <template #icon><icon-refresh /></template>

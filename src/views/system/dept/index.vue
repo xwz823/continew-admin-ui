@@ -17,7 +17,7 @@
         <IconRight v-else />
       </template>
       <template #toolbar-left>
-        <a-input v-model="name" placeholder="请输入名称" allow-clear>
+        <a-input v-model="name" placeholder="搜索名称" allow-clear>
           <template #prefix><icon-search /></template>
         </a-input>
         <a-button @click="reset">

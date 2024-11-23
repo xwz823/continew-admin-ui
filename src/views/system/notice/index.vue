@@ -13,9 +13,7 @@
       @refresh="search"
     >
       <template #toolbar-left>
-        <a-input v-model="queryForm.title" placeholder="请输入标题" allow-clear @change="search">
-          <template #prefix><icon-search /></template>
-        </a-input>
+        <a-input-search v-model="queryForm.title" placeholder="搜索标题" allow-clear @search="search" />
         <a-select
           v-model="queryForm.type"
           :options="notice_type"

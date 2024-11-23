@@ -33,7 +33,15 @@
             <template #title>
               <a-space>
                 <img :src="item.logo" width="35px" height="25px" alt="logo" />
-                <a-typography-text bold>{{ item.alias }}</a-typography-text>
+                <a-typography-paragraph
+                  :ellipsis="{
+                    rows: 1,
+                    showTooltip: true,
+                    css: true,
+                  }"
+                >
+                  {{ item.alias }}
+                </a-typography-paragraph>
               </a-space>
             </template>
             <template #description>

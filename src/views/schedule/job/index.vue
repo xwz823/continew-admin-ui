@@ -20,7 +20,7 @@
           style="width: 200px"
           @change="search"
         />
-        <a-input v-model="queryForm.jobName" placeholder="请输入任务名称" allow-clear @change="search" />
+        <a-input-search v-model="queryForm.jobName" placeholder="搜索任务名称" allow-clear @search="search" />
         <a-select v-model="queryForm.jobStatus" placeholder="请选择任务状态" :options="job_status_enum" allow-clear style="width: 150px" @change="search" />
         <a-button @click="reset">
           <template #icon><icon-refresh /></template>

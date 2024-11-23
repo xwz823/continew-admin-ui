@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="search">
-      <a-input v-model="searchKey" placeholder="请输入部门名称" allow-clear>
+      <a-input v-model="searchKey" placeholder="搜索部门名称" allow-clear>
         <template #prefix><icon-search /></template>
       </a-input>
     </div>

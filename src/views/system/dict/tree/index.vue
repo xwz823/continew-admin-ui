@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="search">
-      <a-input v-model="searchKey" placeholder="请输入关键词" allow-clear>
+      <a-input v-model="searchKey" placeholder="搜索名称/编码" allow-clear>
         <template #prefix><icon-search /></template>
       </a-input>
       <a-button v-permission="['system:dict:add']" type="primary" @click="onAdd">

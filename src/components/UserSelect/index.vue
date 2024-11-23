@@ -19,7 +19,7 @@
         >
           <template #top>
             <a-space wrap :size="[8, 8]">
-              <a-input v-model="queryForm.description" placeholder="用户名/昵称/描述" allow-clear @change="search" />
+              <a-input-search v-model="queryForm.description" placeholder="搜索用户名/昵称/描述" allow-clear @search="search" />
               <a-tree-select
                 v-model="queryForm.deptId"
                 :data="deptList"

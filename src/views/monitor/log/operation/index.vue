@@ -12,10 +12,10 @@
     @refresh="search"
   >
     <template #toolbar-left>
-      <a-input v-model="queryForm.createUserString" placeholder="请输入操作人" allow-clear @change="search">
+      <a-input v-model="queryForm.createUserString" placeholder="搜索操作人" allow-clear @change="search">
         <template #prefix><icon-search /></template>
       </a-input>
-      <a-input v-model="queryForm.ip" placeholder="请输入操作 IP 或地点" allow-clear @change="search">
+      <a-input v-model="queryForm.ip" placeholder="搜索操作 IP 或地点" allow-clear @change="search">
         <template #prefix><icon-search /></template>
       </a-input>
       <DateRangePicker v-model="queryForm.createTime" @change="search" />

@@ -18,7 +18,7 @@
 
         <a-input-group>
           <a-input
-            v-model="queryForm.name" placeholder="请输入文件名" allow-clear style="width: 200px"
+            v-model="queryForm.name" placeholder="搜索文件名" allow-clear style="width: 200px"
             @change="search"
           />
           <a-button type="primary" @click="search">

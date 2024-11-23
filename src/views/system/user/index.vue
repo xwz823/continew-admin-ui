@@ -127,7 +127,7 @@ const queryFormColumns: Columns = reactive([
       hideLabel: true,
     },
     props: {
-      placeholder: '用户名/昵称/描述',
+      placeholder: '搜索用户名/昵称/描述',
     },
   },
   {

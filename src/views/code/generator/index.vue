@@ -13,9 +13,7 @@
       @refresh="search"
     >
       <template #toolbar-left>
-        <a-input v-model="queryForm.tableName" placeholder="请输入表名称" allow-clear @change="search">
-          <template #prefix><icon-search /></template>
-        </a-input>
+        <a-input-search v-model="queryForm.tableName" placeholder="搜索表名称" allow-clear @search="search" />
         <a-button @click="reset">
           <template #icon><icon-refresh /></template>
           <template #default>重置</template>
