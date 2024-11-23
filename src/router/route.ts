@@ -69,21 +69,19 @@ export const systemRoutes: RouteRecordRaw[] = [
     meta: { title: '关于项目', icon: 'apps', hidden: false, sort: 999 },
     children: [
       {
-        path: '/about/document',
-        name: 'AboutDocument',
-        meta: { title: '项目文档', icon: 'file', hidden: false, keepAlive: true },
-        children: [
-          {
-            path: '/about/document/api',
-            component: () => import('@/views/about/document/api/index.vue'),
-            meta: { title: 'API文档', icon: 'continew', hidden: false, keepAlive: true },
-          },
-          {
-            path: '/about/document/arco-design-vue',
-            component: () => import('@/views/about/document/arco-design-vue/index.vue'),
-            meta: { title: 'Arco Design文档', icon: 'arco', hidden: false, keepAlive: true },
-          },
-        ],
+        path: '/about/document/continew',
+        component: () => import('@/views/about/document/continew/index.vue'),
+        meta: { title: '在线文档', icon: 'continew', hidden: false, keepAlive: true },
+      },
+      {
+        path: '/about/document/api',
+        component: () => import('@/views/about/document/api/index.vue'),
+        meta: { title: '接口文档', icon: 'continew', hidden: false, keepAlive: true },
+      },
+      {
+        path: '/about/document/arco-design-vue',
+        component: () => import('@/views/about/document/arco-design-vue/index.vue'),
+        meta: { title: 'Arco Design文档', icon: 'arco', hidden: false, keepAlive: true },
       },
       {
         path: '/about/source',
