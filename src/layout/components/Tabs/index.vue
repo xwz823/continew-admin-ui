@@ -20,23 +20,34 @@
             <span @contextmenu="(e) => handleContextMenu(e, item.path)">
               {{ item.meta?.title }}
             </span>
-
             <template #content>
+              <a-doption @click="reload">
+                <template #icon>
+                  <icon-refresh class="reload-icon" :class="{ 'reload-icon--spin': loading }" />
+                </template>
+                <template #default>重新加载</template>
+              </a-doption>
               <a-doption @click="tabsStore.closeCurrent(currentContextPath)">
                 <template #icon>
                   <icon-close />
                 </template>
                 <template #default>关闭当前</template>
               </a-doption>
+              <a-doption @click="tabsStore.closeLeft(currentContextPath)">
+                <template #icon>
+                  <icon-to-left />
+                </template>
+                <template #default>关闭左侧</template>
+              </a-doption>
               <a-doption @click="tabsStore.closeRight(currentContextPath)">
                 <template #icon>
-                  <icon-close />
+                  <icon-to-right />
                 </template>
                 <template #default>关闭右侧</template>
               </a-doption>
               <a-doption @click="tabsStore.closeOther(currentContextPath)">
                 <template #icon>
-                  <icon-eraser />
+                  <icon-close />
                 </template>
                 <template #default>关闭其他</template>
               </a-doption>
@@ -58,21 +69,33 @@
             </template>
           </a-button>
           <template #content>
+            <a-doption @click="reload">
+              <template #icon>
+                <icon-refresh class="reload-icon" :class="{ 'reload-icon--spin': loading }" />
+              </template>
+              <template #default>重新加载</template>
+            </a-doption>
             <a-doption @click="tabsStore.closeCurrent(route.path)">
               <template #icon>
                 <icon-close />
               </template>
               <template #default>关闭当前</template>
             </a-doption>
-            <a-doption @click="tabsStore.closeRight(route.path)">
+            <a-doption @click="tabsStore.closeLeft(currentContextPath)">
               <template #icon>
-                <icon-close />
+                <icon-to-left />
+              </template>
+              <template #default>关闭左侧</template>
+            </a-doption>
+            <a-doption @click="tabsStore.closeRight(currentContextPath)">
+              <template #icon>
+                <icon-to-right />
               </template>
               <template #default>关闭右侧</template>
             </a-doption>
             <a-doption @click="tabsStore.closeOther(route.path)">
               <template #icon>
-                <icon-eraser />
+                <icon-close />
               </template>
               <template #default>关闭其他</template>
             </a-doption>
@@ -131,6 +154,17 @@ const handleContextMenu = (e: MouseEvent, path: string) => {
   e.preventDefault()
   currentContextPath.value = path
 }
+
+const loading = ref(false)
+// 重新加载
+const reload = () => {
+  if (loading.value) return
+  loading.value = true
+  tabsStore.reloadPage()
+  setTimeout(() => {
+    loading.value = false
+  }, 600)
+}
 </script>
 
 <style scoped lang="scss">
@@ -163,5 +197,14 @@ const handleContextMenu = (e: MouseEvent, path: string) => {
   padding-top: 5px;
   background-color: var(--color-bg-1);
   position: relative;
+}
+
+.reload-icon {
+  cursor: pointer;
+
+  &--spin {
+    animation-name: arco-loading-circle;
+    animation-duration: 0.6s;
+  }
 }
 </style>
