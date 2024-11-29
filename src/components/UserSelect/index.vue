@@ -106,7 +106,7 @@ const queryForm = reactive<UserQuery>({
 // 用户列表
 const { tableData: dataList, loading, pagination, search } = useTable(
   (page) => listUser({ ...queryForm, ...page }),
-  { immediate: true, formatResult: (data) => data.map((i) => ({ ...i, disabled: false })) },
+  { immediate: true, formatResult: (data) => data.map((i) => ({ ...i, id: `${i?.id}`, disabled: false })) },
 )
 
 // 表格列定义
@@ -232,7 +232,7 @@ onMounted(async () => {
     const { data } = await listAllUser({ userIds: props.value })
     if (props.multiple) {
       // 使用 Map 存储用户，避免重复
-      data.forEach((item) => {
+      data.map((i) => ({ ...i, id: `${i?.id}`, disabled: false })).forEach((item) => {
         if (props.value.includes(item.id)) {
           selectedData.value.set(item.id, item)
         }
