@@ -293,17 +293,6 @@ export interface SiteConfig {
   SITE_BEIAN: OptionResp
 }
 
-/** 邮箱配置类型 */
-export interface MailConfig {
-  MAIL_PROTOCOL: OptionResp
-  MAIL_HOST: OptionResp
-  MAIL_PORT: OptionResp
-  MAIL_USERNAME: OptionResp
-  MAIL_PASSWORD: OptionResp
-  MAIL_SSL_ENABLED: OptionResp
-  MAIL_SSL_PORT: OptionResp
-}
-
 /** 安全配置类型 */
 export interface SecurityConfig {
   PASSWORD_ERROR_LOCK_COUNT: OptionResp
@@ -316,9 +305,20 @@ export interface SecurityConfig {
   PASSWORD_REQUIRE_SYMBOLS: OptionResp
 }
 
-/** 安全配置类型 */
-export interface CaptchaSetting {
-  NEED_CAPTCHA: OptionResp
+/** 邮箱配置类型 */
+export interface MailConfig {
+  MAIL_PROTOCOL: OptionResp
+  MAIL_HOST: OptionResp
+  MAIL_PORT: OptionResp
+  MAIL_USERNAME: OptionResp
+  MAIL_PASSWORD: OptionResp
+  MAIL_SSL_ENABLED: OptionResp
+  MAIL_SSL_PORT: OptionResp
+}
+
+/** 登录配置类型 */
+export interface LoginConfig {
+  LOGIN_CAPTCHA_ENABLED: OptionResp
 }
 
 /** 绑定三方账号信息 */

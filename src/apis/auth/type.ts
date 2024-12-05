@@ -45,7 +45,6 @@ export interface RouteItem {
 export interface AccountLoginReq {
   username: string
   password: string
-  unCaptcha: boolean
   captcha: string
   uuid: string
 }

@@ -10,14 +10,14 @@
         <template #title><icon-settings /> 基础配置</template>
       </a-tab-pane>
       <a-tab-pane key="2">
-        <template #title><icon-email /> 邮件配置</template>
-      </a-tab-pane>
-      <a-tab-pane key="3">
         <template #title><icon-safe /> 安全配置</template>
       </a-tab-pane>
+      <a-tab-pane key="3">
+        <template #title><icon-email /> 邮件配置</template>
+      </a-tab-pane>
       <a-tab-pane key="4">
-      <template #title><icon-safe /> 登录配置</template>
-    </a-tab-pane>
+        <template #title><icon-lock /> 登录配置</template>
+      </a-tab-pane>
     </a-tabs>
     <keep-alive>
       <component :is="PanMap[activeKey]" />
@@ -28,16 +28,16 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import BasicSetting from './components/BasicSetting.vue'
-import MailSetting from './components/MailSetting.vue'
 import SecuritySetting from './components/SecuritySetting.vue'
-import LoginSetting from './components/CaptchaSetting.vue'
+import MailSetting from './components/MailSetting.vue'
+import LoginSetting from './components/LoginSetting.vue'
 
 defineOptions({ name: 'SystemConfig' })
 
 const PanMap: Record<string, Component> = {
   1: BasicSetting,
-  2: MailSetting,
-  3: SecuritySetting,
+  2: SecuritySetting,
+  3: MailSetting,
   4: LoginSetting,
 }
 

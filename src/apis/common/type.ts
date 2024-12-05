@@ -3,6 +3,7 @@ export interface ImageCaptchaResp {
   uuid: string
   img: string
   expireTime: number
+  isEnabled: boolean
 }
 
 /** 仪表盘公告类型 */

@@ -7,7 +7,8 @@
       auto-label-width
       label-align="left"
       :layout="width >= 500 ? 'horizontal' : 'vertical'"
-      :disabled="!isUpdate" scroll-to-first-error
+      :disabled="!isUpdate"
+      scroll-to-first-error
     >
       <a-form-item field="MAIL_PROTOCOL" :label="mailConfig.MAIL_PROTOCOL.name" hide-asterisk>
         <a-select v-model.trim="form.MAIL_PROTOCOL">
@@ -27,10 +28,15 @@
         <a-input-password v-model.trim="form.MAIL_PASSWORD" class="input-width" />
       </a-form-item>
       <a-form-item field="MAIL_SSL_ENABLED" :label="mailConfig.MAIL_SSL_ENABLED?.name" hide-asterisk>
-        <a-radio-group v-model:model-value="form.MAIL_SSL_ENABLED">
-          <a-radio value="1">启用</a-radio>
-          <a-radio value="0">禁用</a-radio>
-        </a-radio-group>
+        <a-switch
+          v-model="form.MAIL_SSL_ENABLED"
+          type="round"
+          :checked-value="1"
+          :unchecked-value="0"
+        >
+          <template #checked>启用</template>
+          <template #unchecked>禁用</template>
+        </a-switch>
       </a-form-item>
       <a-form-item
         v-if="form.MAIL_SSL_ENABLED === '1'" field="MAIL_SSL_PORT" :label="mailConfig.MAIL_SSL_PORT.name"
