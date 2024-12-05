@@ -4,6 +4,7 @@
   "version": "3.4.0",
   "private": "true",
   "scripts": {
+    "bootstrap": "pnpm install --registry=https://registry.npmmirror.com",
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
     "build:test": "vue-tsc --noEmit && vite build --mode test",

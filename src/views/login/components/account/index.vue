@@ -1,18 +1,18 @@
 <template>
   <a-form
-    ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
-    :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin"
+      ref="formRef" :model="form" :rules="rules" :label-col-style="{ display: 'none' }"
+      :wrapper-col-style="{ flex: 1 }" size="large" @submit="handleLogin"
   >
     <a-form-item field="username" hide-label>
-      <a-input v-model="form.username" placeholder="请输入用户名" allow-clear />
+      <a-input v-model="form.username" placeholder="请输入用户名" allow-clear/>
     </a-form-item>
     <a-form-item field="password" hide-label>
-      <a-input-password v-model="form.password" placeholder="请输入密码" />
+      <a-input-password v-model="form.password" placeholder="请输入密码"/>
     </a-form-item>
-    <a-form-item field="captcha" hide-label>
-      <a-input v-model="form.captcha" placeholder="请输入验证码" :max-length="4" allow-clear style="flex: 1 1" />
+    <a-form-item field="captcha" hide-label v-if="unCaptcha">
+      <a-input v-model="form.captcha" placeholder="请输入验证码" :max-length="4" allow-clear style="flex: 1 1"/>
       <div class="captcha-container" @click="getCaptcha">
-        <img :src="captchaImgBase64" alt="验证码" class="captcha" />
+        <img :src="captchaImgBase64" alt="验证码" class="captcha"/>
         <div v-if="form.expired" class="overlay">
           <p>已过期，请刷新</p>
         </div>
@@ -33,11 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import { type FormInstance, Message } from '@arco-design/web-vue'
-import { useStorage } from '@vueuse/core'
-import { getImageCaptcha } from '@/apis/common'
-import { useTabsStore, useUserStore } from '@/stores'
-import { encryptByRsa } from '@/utils/encrypt'
+import {type FormInstance, Message} from '@arco-design/web-vue'
+import {useStorage} from '@vueuse/core'
+import {getCaptchaConfig, getImageCaptcha} from '@/apis/common'
+import {useTabsStore, useUserStore} from '@/stores'
+import {encryptByRsa} from '@/utils/encrypt'
 
 const loginConfig = useStorage('login-config', {
   rememberMe: true,
@@ -46,19 +46,24 @@ const loginConfig = useStorage('login-config', {
   // username: debug ? 'admin' : '', // 演示默认值
   // password: debug ? 'admin123' : '', // 演示默认值
 })
+// 是否开启验证码
+const unCaptcha = ref(true)
+// 验证码图片
+const captchaImgBase64 = ref()
 
 const formRef = ref<FormInstance>()
 const form = reactive({
   username: loginConfig.value.username,
   password: loginConfig.value.password,
+  unCaptcha: unCaptcha.value,
   captcha: '',
   uuid: '',
   expired: false,
 })
 const rules: FormInstance['rules'] = {
-  username: [{ required: true, message: '请输入用户名' }],
-  password: [{ required: true, message: '请输入密码' }],
-  captcha: [{ required: true, message: '请输入验证码' }],
+  username: [{required: true, message: '请输入用户名'}],
+  password: [{required: true, message: '请输入密码'}],
+  captcha: [{required: unCaptcha.value, message: '请输入验证码'}],
 }
 
 // 验证码过期定时器
@@ -83,15 +88,25 @@ onBeforeUnmount(() => {
   }
 })
 
-const captchaImgBase64 = ref()
 // 获取验证码
 const getCaptcha = () => {
   getImageCaptcha().then((res) => {
-    const { uuid, img, expireTime } = res.data
+    const {uuid, img, expireTime} = res.data
     form.uuid = uuid
     captchaImgBase64.value = img
     form.expired = false
     startTimer(expireTime)
+  })
+}
+
+const initCaptchaConfig = () => {
+  getCaptchaConfig().then((res) => {
+    const result = res.data
+    if (result.NEED_CAPTCHA == 0) {
+      unCaptcha.value = false
+    } else {
+      getCaptcha()
+    }
   })
 }
 
@@ -108,18 +123,19 @@ const handleLogin = async () => {
     await userStore.accountLogin({
       username: form.username,
       password: encryptByRsa(form.password) || '',
+      unCaptcha: form.unCaptcha,
       captcha: form.captcha,
       uuid: form.uuid,
     })
     tabsStore.reset()
-    const { redirect, ...othersQuery } = router.currentRoute.value.query
+    const {redirect, ...othersQuery} = router.currentRoute.value.query
     await router.push({
       path: (redirect as string) || '/',
       query: {
         ...othersQuery,
       },
     })
-    const { rememberMe } = loginConfig.value
+    const {rememberMe} = loginConfig.value
     loginConfig.value.username = rememberMe ? form.username : ''
     Message.success('欢迎使用')
   } catch (error) {
@@ -131,7 +147,7 @@ const handleLogin = async () => {
 }
 
 onMounted(() => {
-  getCaptcha()
+  initCaptchaConfig()
 })
 </script>
 

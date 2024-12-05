@@ -15,6 +15,9 @@
       <a-tab-pane key="3">
         <template #title><icon-safe /> 安全配置</template>
       </a-tab-pane>
+      <a-tab-pane key="4">
+      <template #title><icon-safe /> 登录配置</template>
+    </a-tab-pane>
     </a-tabs>
     <keep-alive>
       <component :is="PanMap[activeKey]" />
@@ -27,6 +30,7 @@ import { useRoute, useRouter } from 'vue-router'
 import BasicSetting from './components/BasicSetting.vue'
 import MailSetting from './components/MailSetting.vue'
 import SecuritySetting from './components/SecuritySetting.vue'
+import LoginSetting from './components/CaptchaSetting.vue'
 
 defineOptions({ name: 'SystemConfig' })
 
@@ -34,6 +38,7 @@ const PanMap: Record<string, Component> = {
   1: BasicSetting,
   2: MailSetting,
   3: SecuritySetting,
+  4: LoginSetting,
 }
 
 const route = useRoute()
