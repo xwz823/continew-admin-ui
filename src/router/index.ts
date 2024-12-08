@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useRouteStore } from '@/stores'
 import { constantRoutes, systemRoutes } from '@/router/route'
+import { setupRouterGuard } from '@/router/guard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [...constantRoutes, ...systemRoutes],
   scrollBehavior: () => ({ left: 0, top: 0 }),
 })
+
+setupRouterGuard(router)
 
 /**
  * @description 重置路由
