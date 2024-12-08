@@ -57,6 +57,11 @@ export function useTable<T extends U, U = T>(api: Api<T>, options?: Options<T, U
     pagination.onChange(1)
   }
 
+  // 刷新
+  const refresh = () => {
+    getTableData()
+  }
+
   // 删除
   const handleDelete = async <T>(
     deleteApi: () => Promise<ApiRes<T>>,
@@ -89,5 +94,5 @@ export function useTable<T extends U, U = T>(api: Api<T>, options?: Options<T, U
     })
   }
 
-  return { loading, tableData, getTableData, search, pagination, selectedKeys, select, selectAll, handleDelete }
+  return { loading, tableData, getTableData, search, pagination, selectedKeys, select, selectAll, handleDelete, refresh }
 }
