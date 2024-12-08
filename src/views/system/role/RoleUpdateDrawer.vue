@@ -15,7 +15,7 @@
           <a-input v-model.trim="form.name" placeholder="请输入名称" />
         </a-form-item>
         <a-form-item label="编码" field="code">
-          <a-input v-model.trim="form.code" placeholder="请输入编码" :disabled="isUpdate" />
+          <a-input v-model.trim="form.code" placeholder="请输入编码" :disabled="true" />
         </a-form-item>
         <a-form-item label="排序" field="sort">
           <a-input-number v-model="form.sort" placeholder="请输入排序" :min="1" mode="button" />
@@ -41,6 +41,7 @@
           <template #extra>
             <a-tree
               ref="menuTreeRef"
+              class="menu-tree"
               :data="menuList"
               :default-expand-all="isMenuExpanded"
               :check-strictly="!form.menuCheckStrictly"
@@ -234,5 +235,13 @@ fieldset legend {
   padding: 2px 5px 2px 5px;
   border: 1px solid var(--color-neutral-3);
   border-radius: 3px;
+}
+.menu-tree{
+  :deep(.arco-tree-node-is-leaf) {
+    display: inline-flex;
+  }
+  :deep(.arco-tree-node-indent-block){
+    width: 10px;
+  }
 }
 </style>

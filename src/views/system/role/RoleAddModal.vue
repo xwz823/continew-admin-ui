@@ -45,7 +45,7 @@
             <a-tree
               ref="menuTreeRef"
               v-model:checked-keys="form.menuIds"
-              class="w-full"
+              class="w-full menu-tree"
               :data="menuList"
               :default-expand-all="isMenuExpanded"
               :check-strictly="!form.menuCheckStrictly"
@@ -283,7 +283,17 @@ fieldset legend {
 :deep(.arco-form-item-extra) {
   width: 100%;
 }
+
 :deep(.arco-modal-footer){
   margin-top: -20px;
+}
+
+.menu-tree{
+  :deep(.arco-tree-node-is-leaf) {
+    display: inline-flex;
+  }
+  :deep(.arco-tree-node-indent-block){
+    width: 10px;
+  }
 }
 </style>
